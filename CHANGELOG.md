@@ -2,6 +2,30 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.3 (2024-08-29)
+
+### Fix
+
+* Fix python den bugs ([#1710](https://github.com/ocadotechnology/rapid-router/issues/1710)) ([`292ae8a`](https://github.com/ocadotechnology/rapid-router/commit/292ae8a9d958adeacf1e201997b84a07e4acc76a))
+
+## v6.3.2 (2024-08-29)
+
+### Fix
+
+* Change black text to white ([#1708](https://github.com/ocadotechnology/rapid-router/issues/1708)) ([`51c6579`](https://github.com/ocadotechnology/rapid-router/commit/51c65796e67b5a89b4ac1c2d550f442e6e97cc53))
+
+## v6.3.1 (2024-08-29)
+
+### Fix
+
+* Fix episode 15 ([#1709](https://github.com/ocadotechnology/rapid-router/issues/1709)) ([`1f0a74a`](https://github.com/ocadotechnology/rapid-router/commit/1f0a74ac13eee626b9241608633aab530b019465))
+
+## v6.3.0 (2024-08-28)
+
+### Feature
+
+* Python den levels page ([#1702](https://github.com/ocadotechnology/rapid-router/issues/1702)) ([`701a36b`](https://github.com/ocadotechnology/rapid-router/commit/701a36b15a478bc87b8c2d3c3b13ba297d8f6270))
+
 ## v6.2.0 (2024-08-20)
 
 ### Feature

@@ -145,6 +145,9 @@ ocargo.Game.prototype.setup = function () {
   const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
   const subtitle = SUBTITLE == "None" ? "" : "<b>" + SUBTITLE + "</b> <br> <br> ";
+  const next_button_html = NEXT_LEVEL_URL == "/pythonden/" 
+    ? ocargo.button.episodeRedirectButtonHtml("next_button", NEXT_LEVEL_URL, gettext('Next episode'), NEXT_EPISODE)
+    : ocargo.button.dismissButtonHtml("next_button", gettext('Next level'))
   ocargo.Drawing.startPopup(
       title,
       subtitle + LESSON,
@@ -153,7 +156,7 @@ ocargo.Game.prototype.setup = function () {
       [
         ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
         ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
-        ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
+        next_button_html
       ]
   )
 }

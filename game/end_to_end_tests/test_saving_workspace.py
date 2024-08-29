@@ -12,7 +12,8 @@ class TestSavingWorkspace(BaseGameTest):
         self.login_once()
         level = 10
         random_save_entry_name = "".join(
-            random.choice(string.ascii_uppercase + string.digits) for _ in range(10)
+            random.choice(string.ascii_uppercase + string.digits)
+            for _ in range(10)
         )
         return (
             self.go_to_level(level)

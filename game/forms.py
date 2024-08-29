@@ -20,7 +20,7 @@ class ScoreboardForm(forms.Form):
         # Second element is the string displayed on the dropdown menu
         episodes_choices = (
             (episode.id, episode.name)
-            for episode in Episode.objects.filter(in_development=False)
+            for episode in Episode.objects.filter(pk__in=range(1, 10))
         )
         self.fields["episodes"] = forms.MultipleChoiceField(
             choices=itertools.chain(episodes_choices),

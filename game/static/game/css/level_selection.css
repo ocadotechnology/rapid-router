@@ -94,3 +94,22 @@
   font-weight: 300;
   text-decoration: none;
 }
+
+.banner--python-den--image {
+  width: 100%;
+}
+
+.button--level {
+  background-color: #f6be00;
+  padding: 5px 12px;
+  margin: -10px 0px 0px 0px;
+  font-size: 14px;
+}
+
+.python-den-level {
+  padding: 1rem 0rem;
+}
+
+.text--warning {
+  color: #d60026;
+}

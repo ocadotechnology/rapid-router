@@ -43,15 +43,17 @@ class BaseGameTest(SeleniumTestCase):
             else:
                 break
 
-    def _complete_level(self, level_number, **kwargs):
-        page = self.go_to_level(level_number)
-        self.complete_and_check_level(level_number, page, **kwargs)
+    def _complete_level(self, level_number, from_python_den=False, **kwargs):
+        page = self.go_to_level(level_number, from_python_den)
+        (self.complete_and_check_level(level_number, page, from_python_den, **kwargs))
 
     def complete_and_check_level(
         self,
         level_number,
         page,
+        from_python_den=False,
         next_episode=None,
+        redirects=False,
         check_algorithm_score=True,
         check_route_score=True,
         final_level=False,
@@ -60,18 +62,21 @@ class BaseGameTest(SeleniumTestCase):
         if check_algorithm_score:
             page.assert_algorithm_score(10)
         if check_route_score:
-            if level_number < 13:
+            if level_number < 13 and not from_python_den:
                 page.assert_route_score(20)
             else:
                 page.assert_route_score(10)
         if final_level:
             return page
         if next_episode is None:
-            page.next_level()
-            page.assert_level_number(level_number + 1)
+            if redirects:
+                page.next_level_redirected(from_python_den)
+            else:
+                page.next_level(from_python_den)
+                page.assert_level_number(level_number + 1, from_python_den)
         else:
             page.next_episode()
-            page.assert_episode_number(next_episode)
+            page.assert_episode_number(next_episode, from_python_den)
         return page
 
     def go_to_reverse(self, url_reverse):
@@ -84,13 +89,25 @@ class BaseGameTest(SeleniumTestCase):
         self._go_to_path(path)
         return HomePage(self.selenium)
 
-    def go_to_level(self, level_name):
-        path = reverse(
-            "play_default_level", kwargs={"levelName": str(level_name)}
+    def go_to_level(self, level_name, from_python_den=False):
+        viewname = (
+            "play_python_default_level" if from_python_den else "play_default_level"
         )
+
+        path = reverse(viewname, kwargs={"level_name": str(level_name)})
         self._go_to_path(path)
 
         return GamePage(self.selenium)
+
+    def go_to_level_without_dismissing_dialog(self, level_name, from_python_den=False):
+        viewname = (
+            "play_python_default_level" if from_python_den else "play_default_level"
+        )
+
+        path = reverse(viewname, kwargs={"level_name": str(level_name)})
+        self._go_to_path(path)
+
+        return BasePage(self.selenium)
 
     def go_to_custom_level(self, level):
         path = reverse("play_custom_level", kwargs={"levelId": str(level.id)})
@@ -104,7 +121,10 @@ class BaseGameTest(SeleniumTestCase):
         return EditorPage(self.selenium)
 
     def go_to_episode(self, episodeId):
-        path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
+        if int(episodeId) > 9:
+            path = reverse("start_python_episode", kwargs={"episodeId": str(episodeId)})
+        else:
+            path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
         self._go_to_path(path)
 
         return GamePage(self.selenium)
@@ -119,11 +139,7 @@ class BaseGameTest(SeleniumTestCase):
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_retry_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_retry_program()
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()
@@ -131,28 +147,8 @@ class BaseGameTest(SeleniumTestCase):
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
         return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_crashing_program()
+            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
         )
-
-    def run_python_commands_test(self, level):
-        return self.go_to_level(level).check_python_commands()
-
-    def run_clear_console_test(self, level):
-        return self.go_to_level(level).write_to_then_clear_console()
-
-    def run_console_parse_error_test(self, level):
-        return self.go_to_level(level).run_parse_error_program()
-
-    def run_console_attribute_error_test(self, level):
-        return self.go_to_level(level).run_attribute_error_program()
-
-    def run_console_print_test(self, level):
-        return self.go_to_level(level).run_print_program()
-
-    def run_invalid_import_test(self, level):
-        return self.go_to_level(level).run_invalid_import_program()
 
     def run_animal_sound_horn_test(self, level):
         return self.go_to_custom_level(level).run_animal_sound_horn_program()
@@ -228,9 +224,7 @@ class BaseGameTest(SeleniumTestCase):
             login_page = self.go_to_homepage().go_to_teacher_login_page()
             login_page.login(email, password)
             email = email
-            BaseGameTest.user_profile = UserProfile.objects.get(
-                user__email=email
-            )
+            BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
 
             BaseGameTest.already_logged_on = True
 
@@ -247,9 +241,7 @@ class BaseGameTest(SeleniumTestCase):
         BaseGameTest.already_logged_on = False
 
     def solution_file_path(self, filename):
-        return os.path.join(
-            BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml"
-        )
+        return os.path.join(BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml")
 
     def read_solution(self, filename):
         path = self.solution_file_path(filename)

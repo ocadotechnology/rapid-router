@@ -1,9 +1,6 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
-from builtins import map
-from builtins import next
-from builtins import object
+from builtins import map, next, object
 from datetime import timedelta
 
 from common.models import Class, Teacher, Student
@@ -99,7 +96,7 @@ def student_row(levels_sorted, student, best_attempts):
                 total_possible_score += max_score
 
                 elapsed_time = attempt.elapsed_time()
-                times.append(chop_miliseconds(elapsed_time))
+                times.append(chop_milliseconds(elapsed_time))
                 # '-' is used to show that the student has started the level but has not submitted any attempts
 
                 level_scores[level.id]["score"] = (
@@ -272,7 +269,7 @@ def scoreboard(request):
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
     all_episode_ids = [
-        episode.id for episode in Episode.objects.filter(in_development=False)
+        episode.id for episode in Episode.objects.filter(pk__in=range(1, 10))
     ]
 
     if user.is_independent_student():
@@ -485,7 +482,7 @@ def is_viewable(class_):
     return class_.classmates_data_viewable
 
 
-def chop_miliseconds(delta):
+def chop_milliseconds(delta):
     return delta - timedelta(microseconds=delta.microseconds)
 
 

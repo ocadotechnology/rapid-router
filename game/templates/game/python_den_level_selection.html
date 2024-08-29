@@ -1,0 +1,264 @@
+{% extends 'game/base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load app_tags %}
+
+{% block scripts %}
+{{block.super}}
+<script>
+    var EPISODES = [];
+
+    {% for episode in pythonEpisodes %}
+        var levels = [];
+        {% for level in episode.levels %}
+        levels.push({
+            'name': {{level.name}},
+            'score': '{{level.score}}',
+            'maxScore': {{level.maxScore}}
+        });
+        {% endfor %}
+        EPISODES.push({'id' : {{episode.id}}, 'levels': levels});
+    {% endfor %}
+</script>
+
+<script src="{% static 'game/js/level_selection.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+{{block.super}}
+<link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block header %}
+<section class="banner">
+    {% if user|is_logged_in_as_student %}
+        <img class="banner--python-den--image" title="Python Den logo" alt="Python Den logo" src="{% static 'game/image/Python_Den_student_hero_image.png' %}">
+    {% else %}
+        <img class="banner--python-den--image" title="Python Den logo" alt="Python Den logo" src="{% static 'game/image/Python_Den_hero_image.svg' %}">
+    {% endif %}
+</section>
+{% endblock header %}
+
+
+{% block nav_ocargo_levels %}
+    {% if user|is_logged_in_as_student %}
+    <a class="button button--secondary button--secondary--light sub-nav--student-active">Levels</a>
+    {% elif user|is_independent_student %}
+    <a class="button button--secondary sub-nav--independent-active">Levels</a>
+    {% else %}
+    <a class="button button--secondary button--secondary--light sub-nav--teacher-active">Levels</a>
+    {% endif %}
+{% endblock nav_ocargo_levels %}
+
+{% block content %}
+<div class="container background">
+    <div id="episodes">
+        <div class="panel-intro">
+            <h4>Introduction to Python</h4>
+            Python lessons using split-screen Blockly/Python and an online IDE for programming lessons in Python.
+            We have created free editable plans, presentations, and worksheets to support these lessons.
+        </div>
+        {% for episode in pythonEpisodes %}
+            {% if episode.difficulty != "late-python" %}
+                <div class="panel">
+                    <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
+                        <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                            {{episode.name}}
+                        </p>
+                    </div>
+
+                    <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
+                        <div class="panel-body">
+                            {% if user|is_logged_in %}
+                                <div class="col-sm-7 python-den-level">
+                                    <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}</a>
+                                </div>
+                                {% if user|is_logged_in_as_teacher %}
+                                    <div class="col-sm-3 python-den-level">
+                                        <a href="{{episode.lesson_plan_link}}" class="button button--level button--icon" target="_blank">
+                                            Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a href="{{episode.slides_link}}" class="button button--level button--icon" target="_blank">
+                                            Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                    </div>
+                                {% elif user|is_independent_student %}
+                                    <div class="col-sm-3 python-den-level">
+                                        <a href="{{episode.worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a href="{{episode.video_link}}" class="button button--level button--icon" target="_blank">
+                                            Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                {% else %}
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a href="{{episode.worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <p class="text--warning">In order to access the full content for this course, please log in.</p>
+                                <div class="col-sm-10 python-den-level">
+                                    <a class="disabled">{{episode.name}}</a>
+                                </div>
+                                <div class="col-sm-2 python-den-level">
+                                    <a class="button button--level button--icon disabled">
+                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="panel-subintro">
+            This section introduces Python using a mix of Blockly split screen and text based programming.
+        </div>
+        {% for episode in pythonEpisodes %}
+            {% if episode.difficulty == "late-python" %}
+                <div class="panel">
+                    <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
+                        <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                            {{episode.name}}
+                            {% if episode.first_level != None and episode.last_level != None %}
+                                {% if episode.first_level > 1009 %}
+                                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                                        Levels {{episode.first_level|stringformat:"i"|slice:"2:4"}}-{{episode.last_level|stringformat:"i"|slice:"2:4"}}
+                                    </span>
+                                {% else %}
+                                    {% if episode.last_level > 1009 %}
+                                        <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                                            Levels {{episode.first_level|stringformat:"i"|slice:"3:4"}}-{{episode.last_level|stringformat:"i"|slice:"2:4"}}
+                                        </span>
+                                    {% else %}
+                                        <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                                            Levels {{episode.first_level|stringformat:"i"|slice:"3:4"}}-{{episode.last_level|stringformat:"i"|slice:"3:4"}}
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            <img class="episode_image coin_image" value="{{episode.id}}">
+                        </p>
+                    </div>
+
+                    <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
+                        <div class="panel-body">
+                            {% if user|is_logged_in %}
+                                <div class="col-sm-7 python-den-level">
+                                    <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}</a>
+                                </div>
+                                {% if user|is_logged_in_as_teacher %}
+                                    <div class="col-sm-3 python-den-level">
+                                        <a href="{{episode.lesson_plan_link}}" class="button button--level button--icon" target="_blank">
+                                            Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a href="{{episode.slides_link}}" class="button button--level button--icon" target="_blank">
+                                            Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                    </div>
+                                {% elif user|is_independent_student %}
+                                    <div class="col-sm-3 python-den-level">
+                                        <a href="{{episode.worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a href="{{episode.video_link}}" class="button button--level button--icon" target="_blank">
+                                            Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                {% else %}
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a href="{{episode.worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <p class="text--warning">In order to access the full content for this course, please log in.</p>
+                                <div class="col-sm-10 python-den-level">
+                                    <a class="disabled">{{episode.name}}</a>
+                                </div>
+                                <div class="col-sm-2 python-den-level">
+                                    <a class="button button--level button--icon disabled">
+                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                </div>
+                            {% endif %}
+                            {% for level in episode.levels %}
+                                {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
+                                    <!-- Mark level as locked -->
+                                    <p>
+                                        {% if level.name > 1009 %}
+                                            <a class="disabled">{{level.name|stringformat:"i"|slice:"2:4"}}: {{level.title.strip | safe}}</a>
+                                        {% else %}
+                                            <a class="disabled">{{level.name|stringformat:"i"|slice:"3:4"}}: {{level.title.strip | safe}}</a>
+                                        {% endif %}
+                                        {% if level.score != None %}
+                                            <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                            <img class="level_image coin_image" value="{{level.name}}">
+                                        {% endif %}
+                                    </p>
+                                {% else %}
+                                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                                    <p>
+                                        {% if level.name > 1009 %}
+                                            <a href="{% url 'play_python_default_level' level.name|stringformat:'i'|slice:'2:4' %}">{{level.name|stringformat:"i"|slice:"2:4"}}: {{level.title.strip | safe}}</a>
+                                        {% else %}
+                                            <a href="{% url 'play_python_default_level' level.name|stringformat:'i'|slice:'3:4' %}">{{level.name|stringformat:"i"|slice:"3:4"}}: {{level.title.strip | safe}}</a>
+                                        {% endif %}
+                                        {% if level.score != None %}
+                                            <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                            <img class="level_image coin_image" value="{{level.name}}">
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
+                            {% endfor %}
+                            {% if episode.id == 12 %}
+                                {% if user|is_logged_in %}
+                                    <div class="col-sm-7 python-den-level">
+                                        <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}} pt. 2</a>
+                                    </div>
+                                    {% if user|is_logged_in_as_teacher %}
+                                        <div class="col-sm-3 python-den-level">
+                                            <a href="https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-6-iteration-part-2" class="button button--level button--icon" target="_blank">
+                                                Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                        </div>
+                                        <div class="col-sm-2 python-den-level">
+                                            <a href="https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FcEO90C76g4N17ss2K5PN%2FPython%206%20-%20Iteration%202.pptx?alt=media&token=df237a62-21ad-44a8-a4fe-bc9eed24092b" class="button button--level button--icon" target="_blank">
+                                                Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                        </div>
+                                    {% elif user|is_independent_student %}
+                                        <div class="col-sm-3 python-den-level">
+                                            <a href="https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-6-iteration-part-2" class="button button--level button--icon" target="_blank">
+                                                Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                        </div>
+                                        <div class="col-sm-2 python-den-level">
+                                            <a href="https://youtu.be/kf-EavpnBNg" class="button button--level button--icon" target="_blank">
+                                                Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-2 python-den-level">
+                                            <a href="https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-6-iteration-part-2" class="button button--level button--icon" target="_blank">
+                                                Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="col-sm-10 python-den-level">
+                                        <a class="disabled">{{episode.name}} pt. 2</a>
+                                    </div>
+                                    <div class="col-sm-2 python-den-level">
+                                        <a class="button button--level button--icon disabled">
+                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
