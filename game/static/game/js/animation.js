@@ -41,6 +41,7 @@ ocargo.Animation.prototype.addCows = function() {
 
 	for (let i = 0 ; i < cows.length ; i++){
 		let cow = cows[i];
+		console.log(cow.type);
 		for (let j = 0; j < cow.potentialNodes.length; j++) {
 			const cowImage = this.drawing.renderCow(cow.id, cow.potentialNodes[j].coordinate, cow.potentialNodes[j], 0, cow.type);
 			this.numberOfCowsOnMap++;

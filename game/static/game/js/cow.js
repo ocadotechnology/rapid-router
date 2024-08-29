@@ -49,3 +49,4 @@ ocargo.Cow.ACTIVE = 'ACTIVE';
 ocargo.Cow.INACTIVE = 'INACTIVE';
 ocargo.Cow.WHITE = 'WHITE';
 ocargo.Cow.BROWN = 'BROWN';
+ocargo.Cow.PIGEON = 'PIGEON';

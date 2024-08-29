@@ -100,6 +100,10 @@ ocargo.sound.cow = function() {
     safePlay(ocargo.sound.cowSound);
 };
 
+ocargo.sound.pigeon = function() {
+    safePlay(ocargo.sound.pigeonSound);
+}
+
 ocargo.sound.sound_horn = function() {
     safePlay(ocargo.sound.hornSound);
 };

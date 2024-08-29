@@ -1239,6 +1239,8 @@ ocargo.Drawing.cowUrl = function (type) {
       return ocargo.Drawing.whiteCowUrl
     case ocargo.Cow.BROWN:
       return ocargo.Drawing.brownCowUrl
+    case ocargo.Cow.PIGEON:
+      return ocargo.Drawing.pigeonUrl
     default:
       return ocargo.Drawing.whiteCowUrl
   }
@@ -1282,6 +1284,7 @@ ocargo.Drawing.TOP_VIEW = 'top_view'
 
 ocargo.Drawing.whiteCowUrl = 'Clarice.svg'
 ocargo.Drawing.brownCowUrl = 'Clarice_Jersey.svg'
+ocargo.Drawing.pigeonUrl = 'pigeon.svg'
 
 ocargo.Drawing.imageDir = '/static/game/image/'
 ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/'
