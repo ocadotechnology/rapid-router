@@ -34,4 +34,9 @@ jobs:
           SELENIUM_WEBDRIVER: chrome-headless
           SELENIUM_HEADLESS: True
       - name: Upload coverage to Codecov
+        if: github.repository_owner_id == env.OCADO_TECH_ORG_ID
         uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ${{ env.COVERAGE_REPORT }}
