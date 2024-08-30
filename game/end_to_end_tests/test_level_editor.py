@@ -291,6 +291,8 @@ class TestLevelEditor(BaseGameTest):
         assert "visibility: visible" in electric_fuel_gauge.get_attribute("style")
 
     def test_pigeon(self):
+        """ Test that cows on the map automatically become pigeons when the theme is changed to "city"
+        """
         page = self.go_to_level_editor()
         page.go_to_scenery_tab()
 
@@ -302,6 +304,10 @@ class TestLevelEditor(BaseGameTest):
 
         Select(self.selenium.find_element(By.ID, "theme_select")).select_by_value(
             "city"
+        )
+
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "image[href='/static/game/raphael_image/pigeon.svg']"))
         )
 
         pigeon = self.selenium.find_elements(By.CSS_SELECTOR, "image[href='/static/game/raphael_image/pigeon.svg']")
