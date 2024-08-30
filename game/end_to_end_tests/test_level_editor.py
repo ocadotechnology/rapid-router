@@ -292,11 +292,10 @@ class TestLevelEditor(BaseGameTest):
 
     def test_pigeon(self):
         page = self.go_to_level_editor()
-        [road_start, road_end] = self.set_up_basic_map()
 
         source_cow = self.selenium.find_element(By.ID, "cow")
         end_space = self.selenium.find_element(
-            By.CSS_SELECTOR, "rect[x='230'][y='530']"
+            By.CSS_SELECTOR, "rect[x='130'][y='530']"
         )
         ActionChains(self.selenium).drag_and_drop(source_cow, end_space).perform()
 
