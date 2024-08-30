@@ -306,7 +306,7 @@ class TestLevelEditor(BaseGameTest):
             "city"
         )
 
-        pigeon = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'pigeon')]]")
+        pigeon = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'pigeon')]")
         nonexistent_cow = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'Clarice')]")
 
         assert len(pigeon) == 1
