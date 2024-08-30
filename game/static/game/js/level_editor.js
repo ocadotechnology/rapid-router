@@ -2409,9 +2409,8 @@ ocargo.LevelEditor = function(levelId) {
             element.innerHTML = theme == THEMES.city ? "Pigeons" : "Cows";
         })
 
-        for (let i = 0; i < cowGroups.length; i++) {
-            let cowGroupId = Object.keys(cowGroups)[i];
-            cowGroup[cowGroupId] = theme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
+        for (let [key, value] of Object.entries(cowGroups)) {
+            value["type"] = theme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
         }
 
         for (let i = 0; i < cows.length; i++) {

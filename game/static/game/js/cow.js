@@ -26,7 +26,7 @@ ocargo.Cow.prototype.reset = function() {
 ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
     ocargo.animation.appendAnimation({
         type: 'callable',
-        functionCall: ocargo.sound.cow,
+        functionCall: this.type == ocargo.Cow.PIGEON ? ocargo.sound.pigeon : ocargo.sound.cow,
         description: 'cow sound'
     });
     ocargo.animation.appendAnimation({
