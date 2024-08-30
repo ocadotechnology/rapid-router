@@ -302,18 +302,15 @@ class TestLevelEditor(BaseGameTest):
         )
         ActionChains(self.selenium).drag_and_drop(source_cow, end_space).perform()
 
-        scenery_cow = self.selenium.find_elements(
+        scenery_animal = self.selenium.find_elements(
             By.CSS_SELECTOR, "image[x='0'][y='0']"
         )
-        cow_link = scenery_cow[0].get_attribute("href")
+        cow_link = scenery_animal[0].get_attribute("href")
         assert cow_link == "/static/game/raphael_image/Clarice.svg"
 
         Select(self.selenium.find_element(By.ID, "theme_select")).select_by_value(
             "city"
         )
 
-        scenery_pigeon = self.selenium.find_elements(
-            By.CSS_SELECTOR, "image[x='0'][y='0']"
-        )
-        pigeon_link = scenery_pigeon[0].get_attribute("href")
+        pigeon_link = scenery_animal[0].get_attribute("href")
         assert pigeon_link == "/static/game/raphael_image/pigeon.svg"
