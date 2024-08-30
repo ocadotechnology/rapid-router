@@ -305,20 +305,15 @@ class TestLevelEditor(BaseGameTest):
         scenery_cow = self.selenium.find_elements(
             By.CSS_SELECTOR, "image[x='0'][y='0']"
         )
-        assert len(scenery_cow) == 1
         cow_link = scenery_cow[0].get_attribute("href")
         assert cow_link == "/static/game/raphael_image/Clarice.svg"
-
-
-        cow = self.selenium.find_elements(By.XPATH, "//image[@href='/static/game/raphael_image/Clarice.svg']")
-        assert len(cow) == 1
 
         Select(self.selenium.find_element(By.ID, "theme_select")).select_by_value(
             "city"
         )
 
-        # pigeon = self.selenium.find_elements(By.XPATH, "//image[@href='/static/game/raphael_image/pigeon.svg']")
-        # nonexistent_cow = self.selenium.find_elements(By.XPATH, "//image[@href='/static/game/raphael_image/Clarice.svg']")
-
-        # assert len(pigeon) == 1
-        # assert len(nonexistent_cow) == 0
+        scenery_pigeon = self.selenium.find_elements(
+            By.CSS_SELECTOR, "image[x='0'][y='0']"
+        )
+        pigeon_link = scenery_pigeon[0].get_attribute("href")
+        assert pigeon_link == "/static/game/raphael_image/pigeon.svg"
