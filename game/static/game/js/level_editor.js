@@ -909,7 +909,7 @@ ocargo.LevelEditor = function(levelId) {
             var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
             var style = 'background-color: ' + color;
             var value = 'group' + currentCowGroupId++;
-            var type = ocargo.Cow.WHITE;
+            var type = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
 
             cowGroups[value] = {
                 id: value,
@@ -1857,6 +1857,7 @@ ocargo.LevelEditor = function(levelId) {
         function handleDraggableCowMouseUp(e){
             let internalCow = new InternalCow({group: cowGroups["group1"]});
             let image = internalCow.image;
+            console.log(cowGroups);
 
             if (isValidDraggedCowPlacement(controlledCoord)) {
                 internalCow.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
@@ -2397,6 +2398,25 @@ ocargo.LevelEditor = function(levelId) {
         });
 
         $('#paper').css({'background-color': theme.background});
+
+        const animalSource = theme == THEMES.city ? "/static/game/image/pigeon.svg" : "/static/game/image/Clarice.svg";
+
+        $('#cow').each(function(index, element) {
+            element.src = animalSource;
+        })
+
+        $('#animals_label').each(function(index, element) {
+            element.innerHTML = theme == THEMES.city ? "Pigeons" : "Cows";
+        })
+
+        for (let i = 0; i < cowGroups.length; i++) {
+            let cowGroupId = Object.keys(cowGroups)[i];
+            cowGroup[cowGroupId] = theme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
+        }
+
+        for (let i = 0; i < cows.length; i++) {
+            cows[i].updateTheme();
+        }
     }
 
     function sortNodes(nodes) {
@@ -2554,35 +2574,6 @@ ocargo.LevelEditor = function(levelId) {
             new InternalTrafficLight(trafficLightData[i]);
         }
 
-        if(COW_LEVELS_ENABLED) {
-            var cowGroupData = JSON.parse(state.cows);
-            for (var i = 0; i < cowGroupData.length; i++) {
-                // Add new group to group select element
-                if (i >= Object.keys(cowGroups).length) {
-                    addCowGroup();
-                }
-                var cowGroupId = Object.keys(cowGroups)[i];
-                cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
-                cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
-                cowGroups[cowGroupId].type = cowGroupData[i].type;
-
-                if (cowGroupData[i].potentialCoordinates != null) {
-                    for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
-                        var cowData = {
-                            coordinates: [cowGroupData[i].potentialCoordinates[j]],
-                            group: cowGroups[cowGroupId]
-                        };
-                        new InternalCow(cowData);
-                    }
-                }
-            }
-
-            // Trigger change listener on cow group select box to set initial min/max values
-            $('#cow_group_select').change();
-
-            markCowNodes();
-        }
-
         // Load in destination and origin nodes
         if (state.destinations) {
             var houses = JSON.parse(state.destinations);
@@ -2628,6 +2619,36 @@ ocargo.LevelEditor = function(levelId) {
             var decorObject = new InternalDecor(decor[i].decorName);
             decorObject.setPosition(decor[i].x + PAPER_PADDING,
                                     PAPER_HEIGHT - currentTheme.decor[decor[i].decorName].height - decor[i].y + PAPER_PADDING);
+        }
+
+        //Load in cow data
+        if(COW_LEVELS_ENABLED) {
+            var cowGroupData = JSON.parse(state.cows);
+            for (var i = 0; i < cowGroupData.length; i++) {
+                // Add new group to group select element
+                if (i >= Object.keys(cowGroups).length) {
+                    addCowGroup();
+                }
+                var cowGroupId = Object.keys(cowGroups)[i];
+                cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
+                cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
+                cowGroups[cowGroupId].type = cowGroupData[i].type;
+
+                if (cowGroupData[i].potentialCoordinates != null) {
+                    for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
+                        var cowData = {
+                            coordinates: [cowGroupData[i].potentialCoordinates[j]],
+                            group: cowGroups[cowGroupId]
+                        };
+                        new InternalCow(cowData);
+                    }
+                }
+            }
+
+            // Trigger change listener on cow group select box to set initial min/max values
+            $('#cow_group_select').change();
+
+            markCowNodes();
         }
 
         // Load in block data
@@ -2917,6 +2938,20 @@ ocargo.LevelEditor = function(levelId) {
             }
 
         };
+
+        this.updateTheme = function() {
+            console.log(this);
+            let newType = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
+            let controlledNode = this.controlledNode;
+            let coordinates = controlledNode.coordinate;
+
+            this.image.remove();
+
+            this.image = drawing.createCowImage(newType);
+            drawing.setCowImagePosition(coordinates, this.image, controlledNode);
+
+            setupCowListeners(this);
+        }
 
         this.image = drawing.createCowImage(data.group.type);
         this.valid = false;
