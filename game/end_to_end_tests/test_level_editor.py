@@ -289,3 +289,23 @@ class TestLevelEditor(BaseGameTest):
         )
         electric_fuel_gauge = self.selenium.find_element(By.ID, "electricFuelGauge")
         assert "visibility: visible" in electric_fuel_gauge.get_attribute("style")
+
+    def test_pigeon(self):
+        page = self.go_to_level_editor()
+        [road_start, road_end] = self.set_up_basic_map()
+
+        source_cow = self.selenium.find_element(By.ID, "cow")
+        end_space = self.selenium.find_element(
+            By.CSS_SELECTOR, "rect[x='230'][y='530']"
+        )
+        ActionChains(self.selenium).drag_and_drop(source_cow, end_space).perform()
+
+        Select(self.selenium.find_element(By.ID, "theme_select")).select_by_value(
+            "city"
+        )
+
+        pigeon = self.selenium.find_elements(By.CSS_SELECTOR, "image[href='/static/game/raphael_image/pigeon.svg']")
+        nonexistent_cow = self.selenium.find_elements(By.CSS_SELECTOR, "image[href='/static/game/raphael_image/Clarice.svg']")
+
+        assert len(pigeon) == 1
+        assert len(nonexistent_cow) == 0

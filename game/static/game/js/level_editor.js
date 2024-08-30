@@ -1857,7 +1857,6 @@ ocargo.LevelEditor = function(levelId) {
         function handleDraggableCowMouseUp(e){
             let internalCow = new InternalCow({group: cowGroups["group1"]});
             let image = internalCow.image;
-            console.log(cowGroups);
 
             if (isValidDraggedCowPlacement(controlledCoord)) {
                 internalCow.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
@@ -2939,15 +2938,26 @@ ocargo.LevelEditor = function(levelId) {
         };
 
         this.updateTheme = function() {
-            console.log(this);
             let newType = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
-            let controlledNode = this.controlledNode;
-            let coordinates = controlledNode.coordinate;
+            let transformDimensions = this["image"]["_"]["transform"][0]
+            let rotateDimensions = this["image"]["_"]["transform"][1]
+            let x = transformDimensions[1]
+            let y = transformDimensions[2]
+            let r = 0;
+            if (rotateDimensions) {
+                r = rotateDimensions[1];
+            }
 
             this.image.remove();
 
             this.image = drawing.createCowImage(newType);
-            drawing.setCowImagePosition(coordinates, this.image, controlledNode);
+            if (this.controlledNode !== null) {
+                let controlledNode = this.controlledNode;
+                let coordinates = controlledNode.coordinate;
+                drawing.setCowImagePosition(coordinates, this.image, controlledNode);
+            } else {
+                this.image.transform("t" + x + "," + y + " r" + r);
+            }
 
             setupCowListeners(this);
         }
