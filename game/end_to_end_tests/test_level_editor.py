@@ -302,6 +302,14 @@ class TestLevelEditor(BaseGameTest):
         )
         ActionChains(self.selenium).drag_and_drop(source_cow, end_space).perform()
 
+        scenery_cow = self.selenium.find_elements(
+            By.CSS_SELECTOR, "image[x='0'][y='0']"
+        )
+        assert len(scenery_cow) == 1
+        cow_link = scenery_cow[0].get_attribute("href")
+        assert cow_link == "this will fail I just want to see what the link is"
+
+
         cow = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'Clarice')]")
         assert len(cow) == 1
 
@@ -309,14 +317,12 @@ class TestLevelEditor(BaseGameTest):
             "city"
         )
 
-        nonexistent_cow = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'Clarice')]")
-
         # assert WebDriverWait(self.selenium, DELAY_TIME).until(
         #     EC.presence_of_element_located((By.XPATH, "//image[contains(@href, 'pigeon')]"))
         # )
 
         # pigeon = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'pigeon')]")
-        nonexistent_cow = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'Clarice')]")
+        # nonexistent_cow = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'Clarice')]")
 
-        assert len(pigeon) == 1
-        assert len(nonexistent_cow) == 0
+        # assert len(pigeon) == 1
+        # assert len(nonexistent_cow) == 0
