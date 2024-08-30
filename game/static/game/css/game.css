@@ -60,7 +60,7 @@ option {
 
 #tabs #blockly_tab img,
 #tabs #python_tab img {
-    filter: none;
+    filter: invert(1);
 }
 
 #right {

@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.5 (2024-08-29)
+
+### Fix
+
+* Fixes for hiding Episode 22 ([`a91c565`](https://github.com/ocadotechnology/rapid-router/commit/a91c565920e00cd1803fe0c0adfd8b0871adbd83))
+
+## v6.3.4 (2024-08-29)
+
+### Fix
+
+* Fix icon colors ([#1711](https://github.com/ocadotechnology/rapid-router/issues/1711)) ([`9ff5fcc`](https://github.com/ocadotechnology/rapid-router/commit/9ff5fcc7a27f6593643d0e4eadb7e23d29821bd3))
+
 ## v6.3.3 (2024-08-29)
 
 ### Fix
