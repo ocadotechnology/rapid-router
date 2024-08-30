@@ -27,13 +27,13 @@ ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: this.type == ocargo.Cow.PIGEON ? ocargo.sound.pigeon : ocargo.sound.cow,
-        description: 'cow sound'
+        description: 'animal sound'
     });
     ocargo.animation.appendAnimation({
         type: 'cow_leave',
         id: this.id,
         coordinate: node.coordinate,
-        description: 'Cow leaving'
+        description: 'animal leaving'
     });
 };
 
