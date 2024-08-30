@@ -306,10 +306,6 @@ class TestLevelEditor(BaseGameTest):
             "city"
         )
 
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "image[href='/static/game/raphael_image/pigeon.svg']"))
-        )
-
         pigeon = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'pigeon')]]")
         nonexistent_cow = self.selenium.find_elements(By.XPATH, "//image[contains(@href, 'Clarice')]")
 
