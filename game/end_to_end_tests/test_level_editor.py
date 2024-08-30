@@ -292,6 +292,7 @@ class TestLevelEditor(BaseGameTest):
 
     def test_pigeon(self):
         page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
 
         source_cow = self.selenium.find_element(By.ID, "cow")
         end_space = self.selenium.find_element(
