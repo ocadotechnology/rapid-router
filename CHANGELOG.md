@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.6 (2024-09-02)
+
+### Fix
+
+* Remove comment ([`5cd4311`](https://github.com/ocadotechnology/rapid-router/commit/5cd4311321eed80b2eddea8527784f830e55016e))
+* Remove architecture arg ([`fe8c8dc`](https://github.com/ocadotechnology/rapid-router/commit/fe8c8dc6431cf5b9a80cdbcdc88b7df27abe9625))
+* Bump version properly ([`208164a`](https://github.com/ocadotechnology/rapid-router/commit/208164aff47898bb188e1ba5d111d2d12fffe640))
+* Install portal branches to bump up version but in the right workflow ([`96a865e`](https://github.com/ocadotechnology/rapid-router/commit/96a865ef38e2b74176fb456105daa50aad1cd764))
+* Install portal branches to bump up version ([`4cbf9ad`](https://github.com/ocadotechnology/rapid-router/commit/4cbf9ad6de2d1ce9237b3a04ddb823f1e90636f7))
+* Upgrade to Python 3.12 ([#1713](https://github.com/ocadotechnology/rapid-router/issues/1713)) ([`9b9d015`](https://github.com/ocadotechnology/rapid-router/commit/9b9d015420c0b3b2201f5bd68112ec50c2ba2a8a))
+
 ## v6.3.5 (2024-08-29)
 
 ### Fix
