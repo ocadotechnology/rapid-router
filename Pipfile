@@ -10,7 +10,7 @@ rapid-router = {path = ".", editable = true}
 
 [dev-packages]
 black = "*"
-codeforlife-portal = "*"
+#codeforlife-portal = "*"
 django-import-export = "*"
 django-selenium-clean = "==1.0.0"
 django-test-migrations = "==1.2.0"
