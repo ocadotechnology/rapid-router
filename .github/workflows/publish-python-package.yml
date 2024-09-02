@@ -10,23 +10,23 @@ on:
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.12"
           architecture: "x64"
       - name: Install pip requirements
         run: |
           pip install pipenv
           pipenv install --dev --system
-#          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+      #    pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@python312
           pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@python312#egg=cfl-common&subdirectory=cfl_common"
           sudo apt-get install gettext
