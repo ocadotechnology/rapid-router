@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          architecture: "x64"
       - name: Install pip requirements
         run: |
           pip install pipenv
           pipenv install --dev --system
-      #    pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@python312
           pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@python312#egg=cfl-common&subdirectory=cfl_common"
           sudo apt-get install gettext
