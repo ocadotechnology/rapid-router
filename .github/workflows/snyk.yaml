@@ -26,7 +26,7 @@ jobs:
       - name: Generate requirements
         run: pip freeze > requirements.txt
       - name: Run Snyk to check for vulnerabilities in Python
-        uses: snyk/actions/python-3.10@master
+        uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
