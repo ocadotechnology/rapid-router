@@ -5,7 +5,9 @@ import sys
 from setuptools import find_packages, setup
 
 with open("game/__init__.py", "r") as fd:
-    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fd.read(), re.MULTILINE).group(1)
+    version = re.search(
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fd.read(), re.MULTILINE
+    ).group(1)
 
 try:
     from semantic_release import setup_hook
@@ -21,7 +23,7 @@ setup(
     install_requires=[
         "django==3.2.25",
         "django-csp==3.7",
-        "django-js-reverse==0.9.1",
+        "django-reverse-js==0.1.7",
         "django-pipeline==2.0.8",
         "djangorestframework==3.13.1",
         "more-itertools==8.7.0",
@@ -29,7 +31,11 @@ setup(
         "libsass==0.23.0",
         "cfl-common",
     ],
-    classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.8", "Framework :: Django"],
+    classifiers=[
+        "Programming Language :: Python",
+        "Programming Language :: " "Python :: 3.12",
+        "Framework :: Django",
+    ],
     version=version,
     zip_safe=False,
 )

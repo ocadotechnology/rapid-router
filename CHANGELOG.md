@@ -2,6 +2,36 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.7 (2024-09-03)
+
+### Fix
+
+* Install portal master when publishing ([`e5c0682`](https://github.com/ocadotechnology/rapid-router/commit/e5c068261a5c3f47906d296e3a767dd5307d4976))
+* Django js reverse upgrade ([#1714](https://github.com/ocadotechnology/rapid-router/issues/1714)) ([`e6a9fe8`](https://github.com/ocadotechnology/rapid-router/commit/e6a9fe8c84d8ea8ebd317ba7a840ddf4c67ba061))
+
+## v6.3.6 (2024-09-02)
+
+### Fix
+
+* Remove comment ([`5cd4311`](https://github.com/ocadotechnology/rapid-router/commit/5cd4311321eed80b2eddea8527784f830e55016e))
+* Remove architecture arg ([`fe8c8dc`](https://github.com/ocadotechnology/rapid-router/commit/fe8c8dc6431cf5b9a80cdbcdc88b7df27abe9625))
+* Bump version properly ([`208164a`](https://github.com/ocadotechnology/rapid-router/commit/208164aff47898bb188e1ba5d111d2d12fffe640))
+* Install portal branches to bump up version but in the right workflow ([`96a865e`](https://github.com/ocadotechnology/rapid-router/commit/96a865ef38e2b74176fb456105daa50aad1cd764))
+* Install portal branches to bump up version ([`4cbf9ad`](https://github.com/ocadotechnology/rapid-router/commit/4cbf9ad6de2d1ce9237b3a04ddb823f1e90636f7))
+* Upgrade to Python 3.12 ([#1713](https://github.com/ocadotechnology/rapid-router/issues/1713)) ([`9b9d015`](https://github.com/ocadotechnology/rapid-router/commit/9b9d015420c0b3b2201f5bd68112ec50c2ba2a8a))
+
+## v6.3.5 (2024-08-29)
+
+### Fix
+
+* Fixes for hiding Episode 22 ([`a91c565`](https://github.com/ocadotechnology/rapid-router/commit/a91c565920e00cd1803fe0c0adfd8b0871adbd83))
+
+## v6.3.4 (2024-08-29)
+
+### Fix
+
+* Fix icon colors ([#1711](https://github.com/ocadotechnology/rapid-router/issues/1711)) ([`9ff5fcc`](https://github.com/ocadotechnology/rapid-router/commit/9ff5fcc7a27f6593643d0e4eadb7e23d29821bd3))
+
 ## v6.3.3 (2024-08-29)
 
 ### Fix

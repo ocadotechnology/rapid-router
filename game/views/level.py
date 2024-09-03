@@ -52,7 +52,7 @@ def play_default_level(request, level_name):
 
 
 def play_default_python_level(request, level_name):
-    if int(level_name) > 60:
+    if int(level_name) > 49:
         raise Http404
 
     levelId = int(level_name) + 1000
