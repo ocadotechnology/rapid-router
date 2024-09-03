@@ -852,6 +852,7 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.renderCow = function (id, coordinate, node, animationLength, type) {
+    console.log(type);
     let res = this.determineCowOrientation(coordinate, node)
     let image = paper.image(
       ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type),
@@ -1236,14 +1237,20 @@ ocargo.Drawing.renderCoins = function (coins) {
 }
 
 ocargo.Drawing.cowUrl = function (type) {
+  console.log(ocargo.Drawing.animalType)
+  //ocargo.Drawing.animalType = type;
   switch (type) {
     case ocargo.Cow.WHITE:
+      ocargo.Drawing.animalType = "white"
       return ocargo.Drawing.whiteCowUrl
     case ocargo.Cow.BROWN:
+      ocargo.Drawing.animalType = "brown"
       return ocargo.Drawing.brownCowUrl
     case ocargo.Cow.PIGEON:
+      ocargo.Drawing.animalType = "pigeon"
       return ocargo.Drawing.pigeonUrl
     default:
+      ocargo.Drawing.animalType = "white"
       return ocargo.Drawing.whiteCowUrl
   }
 }
@@ -1290,3 +1297,5 @@ ocargo.Drawing.pigeonUrl = 'pigeon.svg'
 
 ocargo.Drawing.imageDir = '/static/game/image/'
 ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/'
+
+ocargo.Drawing.animalType = 'WHITE'

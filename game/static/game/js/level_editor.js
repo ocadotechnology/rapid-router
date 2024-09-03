@@ -416,6 +416,7 @@ ocargo.LevelEditor = function(levelId) {
                 for (var i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
                     var block = Blockly.mainWorkspace.newBlock(type);
+                    console.log(type);
                     block.initSvg();
                     block.render();
 
@@ -2958,6 +2959,24 @@ ocargo.LevelEditor = function(levelId) {
             } else {
                 this.image.transform("t" + x + "," + y + " r" + r);
             }
+
+            let cowsBlock = document.getElementById("cow_crossing_image");
+
+            let block = Blockly.mainWorkspace.newBlock("cow_crossing");
+
+            if (newType == ocargo.Cow.PIGEON) {
+                block = Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY");
+            }
+
+            block.initSvg();
+            block.render();
+            let svg = block.getSvgRoot();
+            let newContent = '<svg class="block_image">'
+            newContent += '<g transform="translate(10,0)"';
+            newContent += svg.innerHTML
+            newContent += '</g></svg>';
+
+            $("#cow_crossing_image").html(newContent);
 
             setupCowListeners(this);
         }
