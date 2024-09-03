@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.7 (2024-09-03)
+
+### Fix
+
+* Install portal master when publishing ([`e5c0682`](https://github.com/ocadotechnology/rapid-router/commit/e5c068261a5c3f47906d296e3a767dd5307d4976))
+* Django js reverse upgrade ([#1714](https://github.com/ocadotechnology/rapid-router/issues/1714)) ([`e6a9fe8`](https://github.com/ocadotechnology/rapid-router/commit/e6a9fe8c84d8ea8ebd317ba7a840ddf4c67ba061))
+
 ## v6.3.6 (2024-09-02)
 
 ### Fix
