@@ -418,7 +418,7 @@ ocargo.LevelEditor = function(levelId) {
 
                 for (var i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
-                    let usePigeons = type === "cow_crossing" && currentTheme == THEMES.grass
+                    let usePigeons = type === "cow_crossing" && currentTheme == THEMES.city
                     var block = usePigeons ? Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY") : Blockly.mainWorkspace.newBlock(type);
                     block.initSvg();
                     block.render();
@@ -2421,28 +2421,17 @@ ocargo.LevelEditor = function(levelId) {
             cows[i].updateTheme();
         }
 
-        let block = Blockly.mainWorkspace.newBlock("cow_crossing");
+        const pigeonHTML = `<svg class="block_image"><g transform="translate(10,0)" <path="" class="blocklyPathDark" fill="#496684" d="m 0,0 H 111.34375 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "><path class="blocklyPath" stroke="none" fill="#5b80a5" d="m 0,0 H 111.34375 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "></path><path class="blocklyPathLight" stroke="#8ca6c0" d="m 0.5,0.5 H 110.84375 M 110.84375,0.5 M 0.5,29.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1
+                            "></path><text class="blocklyText" y="12.5" transform="translate(10,5)">pigeons</text><g transform="translate(71.34375,5)"><image height="20px" width="30px" xlink:href="/static/game/image/pigeon.svg" alt=""></image></g></g></svg>`;
+        
+        const cowHTML = `<svg class="block_image"><g transform="translate(10,0)" <path="" class="blocklyPathDark" fill="#496684" d="m 0,0 H 93.40625 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "><path class="blocklyPath" stroke="none" fill="#5b80a5" d="m 0,0 H 93.40625 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "></path><path class="blocklyPathLight" stroke="#8ca6c0" d="m 0.5,0.5 H 92.90625 M 92.90625,0.5 M 0.5,29.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1
+                            "></path><text class="blocklyText" y="12.5" transform="translate(10,5)">cows</text><g transform="translate(53.40625,5)"><image height="20px" width="30px" xlink:href="/static/game/image/Clarice.svg" alt=""></image></g></g></svg>`;
 
-        if (newType == ocargo.Cow.PIGEON) {
-            block = Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY");
-        }
-
-        block.initSvg();
-        block.render();
-        let svg = block.getSvgRoot();
-        let innerHTML = svg.innerHTML;
-        let innerParts = innerHTML.split("<g")
-        let innerSmallerParts = innerParts[1].split("<image")
-        let finalInnerHTML = innerParts[0] + '<g transform="translate(53.40625, 5)"><image' + innerSmallerParts[1]
-
-        let newContent = '<svg class="block_image">';
-        newContent += '<g transform="translate(10,0)"';
-        newContent += finalInnerHTML;
-        newContent += '</g></svg>';
-
-        console.log(svg.innerHTML);
-        console.log(finalInnerHTML);
-        $("#cow_crossing_image").html(newContent);
+        $("#cow_crossing_image").html(newType == ocargo.Cow.PIGEON ? pigeonHTML : cowHTML);
     }
 
     function sortNodes(nodes) {
@@ -2987,31 +2976,6 @@ ocargo.LevelEditor = function(levelId) {
             } else {
                 this.image.transform("t" + x + "," + y + " r" + r);
             }
-
-            // initCustomBlocksDescription();
-
-            // let block = Blockly.mainWorkspace.newBlock("cow_crossing");
-
-            // if (newType == ocargo.Cow.PIGEON) {
-            //     block = Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY");
-            // }
-
-            // block.initSvg();
-            // block.render();
-            // let svg = block.getSvgRoot();
-            // let innerHTML = svg.innerHTML;
-            // let innerParts = innerHTML.split("<g")
-            // let innerSmallerParts = innerParts[1].split("<image")
-            // let finalInnerHTML = innerParts[0] + '<g transform="translate(53.40625, 5)"><image' + innerSmallerParts[1]
-
-            // let newContent = '<svg class="block_image">';
-            // newContent += '<g transform="translate(10,0)"';
-            // newContent += finalInnerHTML;
-            // newContent += '</g></svg>';
-
-            // console.log(svg.innerHTML);
-            // console.log(finalInnerHTML);
-            // $("#cow_crossing_image").html(newContent);
 
             setupCowListeners(this);
         }

@@ -281,10 +281,10 @@ function initCustomBlocksDescription() {
         init: function() {
             this.setColour(210);
             this.setOutput(true, 'Boolean');
-            console.log(ocargo.Drawing.animalType);
+            let imageUrl = ocargo.Drawing.animalType == "pigeon" ? ocargo.Drawing.pigeonUrl : ocargo.Drawing.whiteCowUrl
             this.appendDummyInput()
                 .appendField(ocargo.Drawing.animalType == "pigeon" ? "pigeons": Blockly.Msg.COW_CROSSING_TITLE)
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + imageUrl,
                     ocargo.BlocklyControl.COW_WIDTH,
                     ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
         }

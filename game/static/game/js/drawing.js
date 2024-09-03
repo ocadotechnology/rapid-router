@@ -852,7 +852,6 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.renderCow = function (id, coordinate, node, animationLength, type) {
-    console.log(type);
     let res = this.determineCowOrientation(coordinate, node)
     let image = paper.image(
       ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type),
