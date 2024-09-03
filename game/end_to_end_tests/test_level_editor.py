@@ -241,23 +241,14 @@ class TestLevelEditor(BaseGameTest):
 
     def test_solar_panels(self):
         """test that the solar panels appear as a scenery option when clicking on the scenery tab
-        and that they disappear as a scenery option when switching to an incompatible theme, i.e. snow
         """
         page = self.go_to_level_editor()
         page.go_to_scenery_tab()
 
-        solar_panel_style = self.selenium.find_element(
+        solar_panel = self.selenium.find_element(
             By.ID, "solar_panel"
-        ).get_attribute("style")
-        assert "inline" in solar_panel_style
-
-        Select(self.selenium.find_element(By.ID, "theme_select")).select_by_value(
-            "snow"
         )
-        solar_panel_snow_style = self.selenium.find_element(
-            By.ID, "solar_panel"
-        ).get_attribute("style")
-        assert "none" in solar_panel_snow_style
+        assert solar_panel.is_displayed()
 
     def test_electric_fuel_gauge(self):
         self.login_once()
