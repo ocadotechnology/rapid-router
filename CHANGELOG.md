@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.8 (2024-09-03)
+
+### Fix
+
+* Adjust Python den banner size ([#1715](https://github.com/ocadotechnology/rapid-router/issues/1715)) ([`77ee1ab`](https://github.com/ocadotechnology/rapid-router/commit/77ee1abf48734229ed2a8ea193be4f1ae443a7f4))
+
 ## v6.3.7 (2024-09-03)
 
 ### Fix
