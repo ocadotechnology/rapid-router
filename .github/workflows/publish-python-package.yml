@@ -26,8 +26,7 @@ jobs:
         run: |
           pip install pipenv
           pipenv install --dev --system
-          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@python312
-          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@python312#egg=cfl-common&subdirectory=cfl_common"
+          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           sudo apt-get install gettext
       # TODO: Restore action once we figure out how to use bot token properly (if still needed)
       #      - name: Prepare files for Crowdin
