@@ -126,13 +126,16 @@ ocargo.LevelEditor = function(levelId) {
 
     // Initialise the grid
     initialiseGrid();
-    setTheme(THEMES.grass);
+    //setTheme(THEMES.grass);
 
     // Setup the toolbox
     setupToolbox();
 
     if (levelId !== null) {
         loadLevel(levelId);
+        console.log(currentTheme);
+    } else {
+        setTheme(THEMES.grass);
     }
 
     setupTrashcan();
@@ -415,8 +418,8 @@ ocargo.LevelEditor = function(levelId) {
 
                 for (var i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
-                    var block = Blockly.mainWorkspace.newBlock(type);
-                    console.log(type);
+                    let usePigeons = type === "cow_crossing" && currentTheme == THEMES.grass
+                    var block = usePigeons ? Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY") : Blockly.mainWorkspace.newBlock(type);
                     block.initSvg();
                     block.render();
 
@@ -2375,6 +2378,7 @@ ocargo.LevelEditor = function(levelId) {
 
     function setTheme(theme) {
         currentTheme = theme;
+        let newType = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
 
         for (var x = 0; x < GRID_WIDTH; x++) {
             for (var y = 0; y < GRID_HEIGHT; y++) {
@@ -2416,6 +2420,29 @@ ocargo.LevelEditor = function(levelId) {
         for (let i = 0; i < cows.length; i++) {
             cows[i].updateTheme();
         }
+
+        let block = Blockly.mainWorkspace.newBlock("cow_crossing");
+
+        if (newType == ocargo.Cow.PIGEON) {
+            block = Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY");
+        }
+
+        block.initSvg();
+        block.render();
+        let svg = block.getSvgRoot();
+        let innerHTML = svg.innerHTML;
+        let innerParts = innerHTML.split("<g")
+        let innerSmallerParts = innerParts[1].split("<image")
+        let finalInnerHTML = innerParts[0] + '<g transform="translate(53.40625, 5)"><image' + innerSmallerParts[1]
+
+        let newContent = '<svg class="block_image">';
+        newContent += '<g transform="translate(10,0)"';
+        newContent += finalInnerHTML;
+        newContent += '</g></svg>';
+
+        console.log(svg.innerHTML);
+        console.log(finalInnerHTML);
+        $("#cow_crossing_image").html(newContent);
     }
 
     function sortNodes(nodes) {
@@ -2691,8 +2718,8 @@ ocargo.LevelEditor = function(levelId) {
         }
     }
 
-    function loadLevel(levelID) {
-        saving.retrieveLevel(levelID, function(err, level, owned) {
+    async function loadLevel(levelID) {
+        await saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
                 console.error(err);
                 return;
@@ -2702,6 +2729,7 @@ ocargo.LevelEditor = function(levelId) {
 
             saveState.loaded(owned, extractState(), level.id);
         });
+        console.log(currentTheme);
     }
 
     function saveLevel(name, levelId, callback) {
@@ -2960,23 +2988,30 @@ ocargo.LevelEditor = function(levelId) {
                 this.image.transform("t" + x + "," + y + " r" + r);
             }
 
-            let cowsBlock = document.getElementById("cow_crossing_image");
+            // initCustomBlocksDescription();
 
-            let block = Blockly.mainWorkspace.newBlock("cow_crossing");
+            // let block = Blockly.mainWorkspace.newBlock("cow_crossing");
 
-            if (newType == ocargo.Cow.PIGEON) {
-                block = Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY");
-            }
+            // if (newType == ocargo.Cow.PIGEON) {
+            //     block = Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY");
+            // }
 
-            block.initSvg();
-            block.render();
-            let svg = block.getSvgRoot();
-            let newContent = '<svg class="block_image">'
-            newContent += '<g transform="translate(10,0)"';
-            newContent += svg.innerHTML
-            newContent += '</g></svg>';
+            // block.initSvg();
+            // block.render();
+            // let svg = block.getSvgRoot();
+            // let innerHTML = svg.innerHTML;
+            // let innerParts = innerHTML.split("<g")
+            // let innerSmallerParts = innerParts[1].split("<image")
+            // let finalInnerHTML = innerParts[0] + '<g transform="translate(53.40625, 5)"><image' + innerSmallerParts[1]
 
-            $("#cow_crossing_image").html(newContent);
+            // let newContent = '<svg class="block_image">';
+            // newContent += '<g transform="translate(10,0)"';
+            // newContent += finalInnerHTML;
+            // newContent += '</g></svg>';
+
+            // console.log(svg.innerHTML);
+            // console.log(finalInnerHTML);
+            // $("#cow_crossing_image").html(newContent);
 
             setupCowListeners(this);
         }
