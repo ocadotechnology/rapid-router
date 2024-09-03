@@ -368,8 +368,8 @@ DECOR_DATA = {
     ("solar_panel", "snow"): Decor(
         z_index=4,
         name="solar_panel",
-        url="decor/snow/tree1.svg",
-        xmas_url="decor/snow/tree1.svg",
+        url="decor/snow/solar_panel.svg",
+        xmas_url="decor/snow/solar_panel.svg",
         height=100,
         width=100,
         theme=get_theme("snow"),
