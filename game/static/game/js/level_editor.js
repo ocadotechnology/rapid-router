@@ -126,16 +126,13 @@ ocargo.LevelEditor = function(levelId) {
 
     // Initialise the grid
     initialiseGrid();
-    //setTheme(THEMES.grass);
+    setTheme(THEMES.grass);
 
     // Setup the toolbox
     setupToolbox();
 
     if (levelId !== null) {
         loadLevel(levelId);
-        console.log(currentTheme);
-    } else {
-        setTheme(THEMES.grass);
     }
 
     setupTrashcan();
@@ -2707,8 +2704,8 @@ ocargo.LevelEditor = function(levelId) {
         }
     }
 
-    async function loadLevel(levelID) {
-        await saving.retrieveLevel(levelID, function(err, level, owned) {
+    function loadLevel(levelID) {
+        saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
                 console.error(err);
                 return;
@@ -2718,7 +2715,6 @@ ocargo.LevelEditor = function(levelId) {
 
             saveState.loaded(owned, extractState(), level.id);
         });
-        console.log(currentTheme);
     }
 
     function saveLevel(name, levelId, callback) {

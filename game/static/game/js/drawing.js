@@ -1236,20 +1236,15 @@ ocargo.Drawing.renderCoins = function (coins) {
 }
 
 ocargo.Drawing.cowUrl = function (type) {
-  console.log(ocargo.Drawing.animalType)
-  //ocargo.Drawing.animalType = type;
+  ocargo.Drawing.animalType = type;
   switch (type) {
     case ocargo.Cow.WHITE:
-      ocargo.Drawing.animalType = "white"
       return ocargo.Drawing.whiteCowUrl
     case ocargo.Cow.BROWN:
-      ocargo.Drawing.animalType = "brown"
       return ocargo.Drawing.brownCowUrl
     case ocargo.Cow.PIGEON:
-      ocargo.Drawing.animalType = "pigeon"
       return ocargo.Drawing.pigeonUrl
     default:
-      ocargo.Drawing.animalType = "white"
       return ocargo.Drawing.whiteCowUrl
   }
 }
