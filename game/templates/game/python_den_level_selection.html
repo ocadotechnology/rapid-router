@@ -32,7 +32,7 @@
 
 {% block header %}
 <section class="banner">
-    {% if user|is_logged_in_as_student %}
+    {% if user|is_logged_in_as_student or user|is_independent_student %}
         <img class="banner--python-den--image" title="Python Den logo" alt="Python Den logo" src="{% static 'game/image/Python_Den_hero_student.png' %}">
     {% else %}
         <img class="banner--python-den--image" title="Python Den logo" alt="Python Den logo" src="{% static 'game/image/Python_levels_page.svg' %}">
