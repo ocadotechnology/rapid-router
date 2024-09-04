@@ -280,7 +280,7 @@ class LevelSelectionTestCase(TestCase):
             level1014, student.new_user, False, True
         )
 
-        assert next_level_url == f"/pythonden/15/"
+        assert next_level_url == f"/pythonden/16/"
 
         prev_level_url = _prev_level_url(
             level1016, student.new_user, False, True
