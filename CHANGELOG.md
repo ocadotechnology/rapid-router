@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.4.3 (2024-09-04)
+
+### Fix
+
+* Use correct level name limit for next level URL ([#1722](https://github.com/ocadotechnology/rapid-router/issues/1722)) ([`dded4c6`](https://github.com/ocadotechnology/rapid-router/commit/dded4c6bea0a3b7313f7151479dd654225e639ba))
+
 ## v6.4.2 (2024-09-04)
 
 ### Fix
