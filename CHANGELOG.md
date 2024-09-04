@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.4.2 (2024-09-04)
+
+### Fix
+
+* Update broken python and blockly documentation links ([#1721](https://github.com/ocadotechnology/rapid-router/issues/1721)) ([`f84ff64`](https://github.com/ocadotechnology/rapid-router/commit/f84ff6443fb21747fc6b4a1fcdcba10ef73b0f6b))
+
 ## v6.4.1 (2024-09-04)
 
 ### Fix
