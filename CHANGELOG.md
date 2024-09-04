@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.4.0 (2024-09-04)
+
+### Feature
+
+* Add pigeon ([#1712](https://github.com/ocadotechnology/rapid-router/issues/1712)) ([`5c7029b`](https://github.com/ocadotechnology/rapid-router/commit/5c7029b965a124faa7d593d0f9997729de98b192))
+
 ## v6.3.8 (2024-09-03)
 
 ### Fix
