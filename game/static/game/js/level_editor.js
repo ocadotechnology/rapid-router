@@ -2389,13 +2389,6 @@ ocargo.LevelEditor = function(levelId) {
 
         $('.decor_button').each(function(index, element) {
             element.src = theme.decor[element.id].url;
-            if (element.id === "solar_panel") {
-                if (currentTheme === THEMES.grass || currentTheme === THEMES.farm) {
-                    element.style = "display: inline;"
-                } else {
-                    element.style = "display: none;"
-                }
-            }
         });
 
         $('#paper').css({'background-color': theme.background});
