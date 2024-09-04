@@ -1951,7 +1951,7 @@ def hint_level91():
 
 PYTHON_HINT = (
     "<br /><br />Check our documentation site, to see "
-    "<a href='https://docs.codeforlife.education/rapid-router/python-commands' target='_blank'>the full list of commands</a>."
+    "<a href='https://code-for-life.gitbook.io/rapid-router/rapid-router-python-commands' target='_blank'>the full list of commands</a>."
     "<br /><br />To learn more about Python in general, check this "
     "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
 )
