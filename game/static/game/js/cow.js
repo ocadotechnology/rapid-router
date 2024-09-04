@@ -26,14 +26,14 @@ ocargo.Cow.prototype.reset = function() {
 ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
     ocargo.animation.appendAnimation({
         type: 'callable',
-        functionCall: ocargo.sound.cow,
-        description: 'cow sound'
+        functionCall: this.type == ocargo.Cow.PIGEON ? ocargo.sound.pigeon : ocargo.sound.cow,
+        description: 'animal sound'
     });
     ocargo.animation.appendAnimation({
         type: 'cow_leave',
         id: this.id,
         coordinate: node.coordinate,
-        description: 'Cow leaving'
+        description: 'animal leaving'
     });
 };
 
@@ -49,3 +49,4 @@ ocargo.Cow.ACTIVE = 'ACTIVE';
 ocargo.Cow.INACTIVE = 'INACTIVE';
 ocargo.Cow.WHITE = 'WHITE';
 ocargo.Cow.BROWN = 'BROWN';
+ocargo.Cow.PIGEON = 'PIGEON';

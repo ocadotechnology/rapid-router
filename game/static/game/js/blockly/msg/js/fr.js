@@ -461,6 +461,7 @@ Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "feu vert";
 Blockly.Msg["DEAD_END_TITLE"] = "cul-de-sac";
 Blockly.Msg["AT_DESTINATION_TITLE"] = "arrivé à destination";
 Blockly.Msg["COW_CROSSING_TITLE"] = "vaches";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "pigeons";
 
 Blockly.Msg["CALL_PROC_TITLE"] = "Appeler";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "Appeler une fonction";
