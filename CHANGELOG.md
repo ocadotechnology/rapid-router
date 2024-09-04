@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.4.1 (2024-09-04)
+
+### Fix
+
+* Add snow and city solar panel graphics ([#1716](https://github.com/ocadotechnology/rapid-router/issues/1716)) ([`53beace`](https://github.com/ocadotechnology/rapid-router/commit/53beace8e93a425aa96b4f84190c128365e3db41))
+
 ## v6.4.0 (2024-09-04)
 
 ### Feature
