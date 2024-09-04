@@ -109,7 +109,7 @@ def _next_level_url(level, user, night_mode, from_python_den):
 
         if is_next_level_locked:
             while is_next_level_locked and (
-                int(next_level.name) < 1042 if from_python_den else 80
+                int(next_level.name) < 1050 if from_python_den else 80
             ):
                 next_level = next_level.next_level
                 is_next_level_locked = (
