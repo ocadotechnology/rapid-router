@@ -461,6 +461,7 @@ Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "semáforo en verde";
 Blockly.Msg["DEAD_END_TITLE"] = "es un callejón sin salida";
 Blockly.Msg["AT_DESTINATION_TITLE"] = "en destino";
 Blockly.Msg["COW_CROSSING_TITLE"] = "vacas";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "palomas";
 
 Blockly.Msg["CALL_PROC_TITLE"] = "Llamar";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "Llamar a una función";

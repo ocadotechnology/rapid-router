@@ -281,13 +281,26 @@ function initCustomBlocksDescription() {
         init: function() {
             this.setColour(210);
             this.setOutput(true, 'Boolean');
+            let imageUrl = ocargo.Drawing.animalType == ocargo.Cow.PIGEON ? ocargo.Drawing.pigeonUrl : ocargo.Drawing.whiteCowUrl
             this.appendDummyInput()
-                .appendField(Blockly.Msg.COW_CROSSING_TITLE)
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
+                .appendField(ocargo.Drawing.animalType == ocargo.Cow.PIGEON ? Blockly.Msg.PIGEON_CROSSING_TITLE: Blockly.Msg.COW_CROSSING_TITLE)
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + imageUrl,
                     ocargo.BlocklyControl.COW_WIDTH,
                     ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
         }
     };
+
+    Blockly.Blocks['pigeon_crossing_IMAGE_ONLY'] = {
+        init: function() {
+          this.setColour(210);
+          this.setOutput(true, 'Boolean');
+          this.appendDummyInput()
+              .appendField("pigeons")
+              .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.pigeonUrl,
+                ocargo.BlocklyControl.COW_WIDTH,
+                ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
+        }
+    }
     /****************/
     /*  Procedures  */
     /****************/

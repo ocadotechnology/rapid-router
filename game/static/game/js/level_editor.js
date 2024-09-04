@@ -415,7 +415,8 @@ ocargo.LevelEditor = function(levelId) {
 
                 for (var i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
-                    var block = Blockly.mainWorkspace.newBlock(type);
+                    let usePigeons = type === "cow_crossing" && currentTheme == THEMES.city
+                    var block = usePigeons ? Blockly.mainWorkspace.newBlock("pigeon_crossing_IMAGE_ONLY") : Blockly.mainWorkspace.newBlock(type);
                     block.initSvg();
                     block.render();
 
@@ -909,7 +910,7 @@ ocargo.LevelEditor = function(levelId) {
             var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
             var style = 'background-color: ' + color;
             var value = 'group' + currentCowGroupId++;
-            var type = ocargo.Cow.WHITE;
+            var type = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
 
             cowGroups[value] = {
                 id: value,
@@ -2374,6 +2375,7 @@ ocargo.LevelEditor = function(levelId) {
 
     function setTheme(theme) {
         currentTheme = theme;
+        let newType = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
 
         for (var x = 0; x < GRID_WIDTH; x++) {
             for (var y = 0; y < GRID_HEIGHT; y++) {
@@ -2390,6 +2392,36 @@ ocargo.LevelEditor = function(levelId) {
         });
 
         $('#paper').css({'background-color': theme.background});
+
+        const animalSource = theme == THEMES.city ? "/static/game/image/pigeon.svg" : "/static/game/image/Clarice.svg";
+
+        $('#cow').each(function(index, element) {
+            element.src = animalSource;
+        })
+
+        $('#animals_label').each(function(index, element) {
+            element.innerHTML = theme == THEMES.city ? "Pigeons" : "Cows";
+        })
+
+        for (let [key, value] of Object.entries(cowGroups)) {
+            value["type"] = theme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
+        }
+
+        for (let i = 0; i < cows.length; i++) {
+            cows[i].updateTheme();
+        }
+
+        const pigeonHTML = `<svg class="block_image"><g transform="translate(10,0)" <path="" class="blocklyPathDark" fill="#496684" d="m 0,0 H 111.34375 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "><path class="blocklyPath" stroke="none" fill="#5b80a5" d="m 0,0 H 111.34375 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "></path><path class="blocklyPathLight" stroke="#8ca6c0" d="m 0.5,0.5 H 110.84375 M 110.84375,0.5 M 0.5,29.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1
+                            "></path><text class="blocklyText" y="12.5" transform="translate(10,5)">pigeons</text><g transform="translate(71.34375,5)"><image height="20px" width="30px" xlink:href="/static/game/image/pigeon.svg" alt=""></image></g></g></svg>`;
+        
+        const cowHTML = `<svg class="block_image"><g transform="translate(10,0)" <path="" class="blocklyPathDark" fill="#496684" d="m 0,0 H 93.40625 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "><path class="blocklyPath" stroke="none" fill="#5b80a5" d="m 0,0 H 93.40625 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
+                            "></path><path class="blocklyPathLight" stroke="#8ca6c0" d="m 0.5,0.5 H 92.90625 M 92.90625,0.5 M 0.5,29.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1
+                            "></path><text class="blocklyText" y="12.5" transform="translate(10,5)">cows</text><g transform="translate(53.40625,5)"><image height="20px" width="30px" xlink:href="/static/game/image/Clarice.svg" alt=""></image></g></g></svg>`;
+
+        $("#cow_crossing_image").html(newType == ocargo.Cow.PIGEON ? pigeonHTML : cowHTML);
     }
 
     function sortNodes(nodes) {
@@ -2547,35 +2579,6 @@ ocargo.LevelEditor = function(levelId) {
             new InternalTrafficLight(trafficLightData[i]);
         }
 
-        if(COW_LEVELS_ENABLED) {
-            var cowGroupData = JSON.parse(state.cows);
-            for (var i = 0; i < cowGroupData.length; i++) {
-                // Add new group to group select element
-                if (i >= Object.keys(cowGroups).length) {
-                    addCowGroup();
-                }
-                var cowGroupId = Object.keys(cowGroups)[i];
-                cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
-                cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
-                cowGroups[cowGroupId].type = cowGroupData[i].type;
-
-                if (cowGroupData[i].potentialCoordinates != null) {
-                    for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
-                        var cowData = {
-                            coordinates: [cowGroupData[i].potentialCoordinates[j]],
-                            group: cowGroups[cowGroupId]
-                        };
-                        new InternalCow(cowData);
-                    }
-                }
-            }
-
-            // Trigger change listener on cow group select box to set initial min/max values
-            $('#cow_group_select').change();
-
-            markCowNodes();
-        }
-
         // Load in destination and origin nodes
         if (state.destinations) {
             var houses = JSON.parse(state.destinations);
@@ -2621,6 +2624,36 @@ ocargo.LevelEditor = function(levelId) {
             var decorObject = new InternalDecor(decor[i].decorName);
             decorObject.setPosition(decor[i].x + PAPER_PADDING,
                                     PAPER_HEIGHT - currentTheme.decor[decor[i].decorName].height - decor[i].y + PAPER_PADDING);
+        }
+
+        //Load in cow data
+        if(COW_LEVELS_ENABLED) {
+            var cowGroupData = JSON.parse(state.cows);
+            for (var i = 0; i < cowGroupData.length; i++) {
+                // Add new group to group select element
+                if (i >= Object.keys(cowGroups).length) {
+                    addCowGroup();
+                }
+                var cowGroupId = Object.keys(cowGroups)[i];
+                cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
+                cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
+                cowGroups[cowGroupId].type = cowGroupData[i].type;
+
+                if (cowGroupData[i].potentialCoordinates != null) {
+                    for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
+                        var cowData = {
+                            coordinates: [cowGroupData[i].potentialCoordinates[j]],
+                            group: cowGroups[cowGroupId]
+                        };
+                        new InternalCow(cowData);
+                    }
+                }
+            }
+
+            // Trigger change listener on cow group select box to set initial min/max values
+            $('#cow_group_select').change();
+
+            markCowNodes();
         }
 
         // Load in block data
@@ -2910,6 +2943,31 @@ ocargo.LevelEditor = function(levelId) {
             }
 
         };
+
+        this.updateTheme = function() {
+            let newType = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
+            let transformDimensions = this["image"]["_"]["transform"][0]
+            let rotateDimensions = this["image"]["_"]["transform"][1]
+            let x = transformDimensions[1]
+            let y = transformDimensions[2]
+            let r = 0;
+            if (rotateDimensions) {
+                r = rotateDimensions[1];
+            }
+
+            this.image.remove();
+
+            this.image = drawing.createCowImage(newType);
+            if (this.controlledNode !== null) {
+                let controlledNode = this.controlledNode;
+                let coordinates = controlledNode.coordinate;
+                drawing.setCowImagePosition(coordinates, this.image, controlledNode);
+            } else {
+                this.image.transform("t" + x + "," + y + " r" + r);
+            }
+
+            setupCowListeners(this);
+        }
 
         this.image = drawing.createCowImage(data.group.type);
         this.valid = false;

@@ -461,6 +461,7 @@ Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "ट्रैफिक लाइट �
 Blockly.Msg["DEAD_END_TITLE"] = "आगे का रास्ता बंद है";
 Blockly.Msg["AT_DESTINATION_TITLE"] = "मंजिल /गंतव्य पर";
 Blockly.Msg["COW_CROSSING_TITLE"] = "गायों";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "कबूतरों";
 
 Blockly.Msg["CALL_PROC_TITLE"] = "पुकारना";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "एक प्रक्रिया बुलाना";

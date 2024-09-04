@@ -461,6 +461,7 @@ Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "semàfor verd";
 Blockly.Msg["DEAD_END_TITLE"] = "és carrer sense sortida";
 Blockly.Msg["AT_DESTINATION_TITLE"] = "a destí";
 Blockly.Msg["COW_CROSSING_TITLE"] = "vaques";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "coloms";
 
 Blockly.Msg["CALL_PROC_TITLE"] = "Crida";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "Crida un procediment";
