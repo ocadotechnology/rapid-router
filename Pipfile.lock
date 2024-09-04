@@ -197,13 +197,6 @@
             "markers": "python_version >= '3.8'",
             "version": "==4.1.1"
         },
-        "django-js-reverse": {
-            "hashes": [
-                "sha256:2a392d169f44e30b883c30dfcfd917a14167ce8fe196c99d2385b31c90d77aa0",
-                "sha256:8134c2ab6307c945edfa90671ca65e85d6c1754d48566bdd6464be259cc80c30"
-            ],
-            "version": "==0.9.1"
-        },
         "django-otp": {
             "hashes": [
                 "sha256:931a4f46f0ec10cab4d25ac8b7dfd6344538320b0489716cabb0da3108dabd75",
@@ -226,6 +219,14 @@
                 "sha256:56c299cec0e644e77d5f928f4cebfff804b919cc10ff5c0bfaa070ff57e8da44"
             ],
             "version": "==2.0.8"
+        },
+        "django-reverse-js": {
+            "hashes": [
+                "sha256:7d626f4d660604e4c2623a494a08ddb70587375110cf4e7bb6f56eeb4471630f",
+                "sha256:89c15e3f1bd656a6f7c7f3641144c0a79d42ec692182c8edd6a91061674f6b62"
+            ],
+            "markers": "python_version >= '3.10'",
+            "version": "==0.1.7"
         },
         "django-two-factor-auth": {
             "hashes": [

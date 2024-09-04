@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
+from django.urls import path
 from django.views.i18n import JavaScriptCatalog
-from django_js_reverse.views import urls_js
+from django_reverse_js.views import urls_js
 
 from game.views.api import (
     level_list,
@@ -266,7 +267,7 @@ urlpatterns = [
             ]
         ),
     ),
-    url(r"^js-reverse/$", urls_js, name="js-reverse"),
+    path("reverse.js", urls_js, name="js-reverse"),
     url(
         r"^js-i18n/$",
         JavaScriptCatalog.as_view(packages=["game"]),
