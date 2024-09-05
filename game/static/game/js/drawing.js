@@ -1167,10 +1167,18 @@ ocargo.Drawing.startPopup = function (
     $("#modal-buttons").html(buttonDiv)
   }
   // Show popup
-  $("#myModal").show()
-  $("#ocargo-modal").show()
-  window.location.hash = 'myModal'
+  $("#myModal").addClass("show");
+  $("#ocargo-modal").addClass("show");
 }
+
+var hideModal = function() {
+  $("#myModal").removeClass("show");
+  $("#ocargo-modal").removeClass("show");
+}
+
+$("#close-modal").on('click', function() {
+  hideModal();
+})
 
 // This is the function that starts the pop-up with a yes and a no button
 ocargo.Drawing.startYesNoPopup = function (
