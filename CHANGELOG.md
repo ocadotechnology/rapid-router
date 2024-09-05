@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.4.4 (2024-09-05)
+
+### Fix
+
+* Rename old coming soon episodes ([#1723](https://github.com/ocadotechnology/rapid-router/issues/1723)) ([`a3fb2e3`](https://github.com/ocadotechnology/rapid-router/commit/a3fb2e37d8fde711a8507c00b7eef73049ce4093))
+
 ## v6.4.3 (2024-09-04)
 
 ### Fix
