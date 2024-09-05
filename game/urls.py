@@ -53,7 +53,7 @@ from game.views.level_editor import (
 )
 from game.views.level_moderation import level_moderation
 from game.views.level_selection import blockly_levels, random_level_for_episode
-from game.views.scoreboard import scoreboard
+from game.views.scoreboard import blockly_scoreboard
 
 urlpatterns = [
     url(r"^$", blockly_levels, name="levels"),
@@ -76,7 +76,7 @@ urlpatterns = [
         random_level_for_episode,
         name="random_level_for_episode",
     ),
-    url(r"^scoreboard/$", scoreboard, name="scoreboard"),
+    url(r"^scoreboard/$", blockly_scoreboard, name="scoreboard"),
     url(
         r"^workspace/",
         include(

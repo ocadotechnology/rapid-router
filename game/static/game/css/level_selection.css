@@ -73,13 +73,13 @@
   margin-left: 15px;
 }
 
-#episodes .panel-header:not(.bg--loops-coming-soon) .collapsed.episode_range_text::after {
+#episodes .panel-header .collapsed.episode_range_text::after {
   content: "\e250";
   font-family: "Glyphicons Halflings";
   margin-left: 10px;
 }
 
-#episodes .panel-header:not(.bg--loops-coming-soon) .episode_range_text::after {
+#episodes .panel-header .episode_range_text::after {
   content: "\e252";
   font-family: "Glyphicons Halflings";
   margin-left: 10px;
@@ -93,10 +93,6 @@
   cursor: default;
   font-weight: 300;
   text-decoration: none;
-}
-
-.banner--python-den--image {
-  width: 100%;
 }
 
 .button--level {

@@ -235,6 +235,7 @@ def scoreboard_view(
     shared_headers,
     shared_level_headers,
     shared_student_data,
+    language,
 ):
     database_episodes = level_selection.fetch_episode_data(False)
 
@@ -253,11 +254,20 @@ def scoreboard_view(
             "shared_headers": shared_headers,
             "shared_level_headers": shared_level_headers,
             "shared_student_data": shared_student_data,
+            "language": language,
         },
     )
 
 
-def scoreboard(request):
+def blockly_scoreboard(request):
+    return scoreboard(request, "blockly")
+
+
+def python_scoreboard(request):
+    return scoreboard(request, "python")
+
+
+def scoreboard(request, language):
     """
     Renders a page with students' scores. A teacher can see the visible classes in
     their school. Student's view is restricted to their class if their teacher enabled
@@ -268,8 +278,11 @@ def scoreboard(request):
 
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
+
+    episodes_range = range(1, 10) if language == "blockly" else range(12, 16)
+
     all_episode_ids = [
-        episode.id for episode in Episode.objects.filter(pk__in=range(1, 10))
+        episode.id for episode in Episode.objects.filter(pk__in=episodes_range)
     ]
 
     if user.is_independent_student():
@@ -302,6 +315,7 @@ def scoreboard(request):
     form = ScoreboardForm(
         request.POST or None,
         classes=users_classes,
+        language=language,
         initial={
             "classes": class_ids,
             "episodes": episode_ids,
@@ -319,56 +333,63 @@ def scoreboard(request):
         all_levels += episode.levels
 
     attempts_per_student = {}
-    attempts_per_student_shared_levels = {}
-
-    if user.is_teacher():
-        if user.teacher.is_admin:
-            # Get all custom levels owned by non-admin teachers
-            standard_teachers = Teacher.objects.filter(
-                school=user.teacher.school, is_admin=False
-            )
-            for standard_teacher in standard_teachers:
-                shared_levels += levels_owned_by(standard_teacher.new_user)
-        else:
-            # Get logged in teacher's custom levels
-            shared_levels += levels_owned_by(request.user)
-
-        # In all cases, get all admins' custom levels
-        school_admins = Teacher.objects.filter(
-            school=user.teacher.school, is_admin=True
-        )
-        for school_admin in school_admins:
-            shared_levels += levels_owned_by(school_admin.new_user)
-
-    elif user.is_student():
-        shared_levels += levels_shared_with(request.user)
 
     for student in students:
         best_attempts = Attempt.objects.filter(
             level__in=all_levels, student=student, is_best_attempt=True
         ).select_related("level")
         attempts_per_student[student] = best_attempts
-        shared_levels += levels_owned_by(student.new_user)
-        best_attempts_shared_levels = Attempt.objects.filter(
-            level__in=shared_levels, student=student, is_best_attempt=True
-        ).select_related("level")
-        attempts_per_student_shared_levels[
-            student
-        ] = best_attempts_shared_levels
 
     (student_data, headers, level_headers, levels_sorted) = scoreboard_data(
         episode_ids, attempts_per_student
     )
     improvement_data = get_improvement_data(attempts_per_student)
-    (
-        shared_headers,
-        shared_level_headers,
-        shared_student_data,
-    ) = shared_levels_data(
-        request.user.userprofile,
-        shared_levels,
-        attempts_per_student_shared_levels,
-    )
+
+    shared_headers = shared_level_headers = shared_student_data = []
+
+    if language == "blockly":
+        attempts_per_student_shared_levels = {}
+
+        if user.is_teacher():
+            if user.teacher.is_admin:
+                # Get all custom levels owned by non-admin teachers
+                standard_teachers = Teacher.objects.filter(
+                    school=user.teacher.school, is_admin=False
+                )
+                for standard_teacher in standard_teachers:
+                    shared_levels += levels_owned_by(standard_teacher.new_user)
+            else:
+                # Get logged in teacher's custom levels
+                shared_levels += levels_owned_by(request.user)
+
+            # In all cases, get all admins' custom levels
+            school_admins = Teacher.objects.filter(
+                school=user.teacher.school, is_admin=True
+            )
+            for school_admin in school_admins:
+                shared_levels += levels_owned_by(school_admin.new_user)
+
+        elif user.is_student():
+            shared_levels += levels_shared_with(request.user)
+
+        for student in students:
+            shared_levels += levels_owned_by(student.new_user)
+            best_attempts_shared_levels = Attempt.objects.filter(
+                level__in=shared_levels, student=student, is_best_attempt=True
+            ).select_related("level")
+            attempts_per_student_shared_levels[
+                student
+            ] = best_attempts_shared_levels
+
+        (
+            shared_headers,
+            shared_level_headers,
+            shared_student_data,
+        ) = shared_levels_data(
+            request.user.userprofile,
+            shared_levels,
+            attempts_per_student_shared_levels,
+        )
 
     csv_export = "export" in request.POST
 
@@ -391,6 +412,7 @@ def scoreboard(request):
             shared_headers,
             shared_level_headers,
             shared_student_data,
+            language,
         )
 
 
