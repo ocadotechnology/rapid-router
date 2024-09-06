@@ -131,7 +131,7 @@ def get_blockly_episodes(request):
 
 def get_python_episodes(request):
     return fetch_episode_data(
-        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 15
+        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 22
     )
 
 
@@ -248,6 +248,8 @@ def levels(request, language):
 
     elif language == "python":
         python_episodes = get_python_episodes(request)
+
+        print(python_episodes)
 
         for episode in python_episodes:
             for level in episode["levels"]:
