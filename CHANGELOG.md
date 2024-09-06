@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.4.5 (2024-09-06)
+
+### Fix
+
+* Using the browser's back arrow reopens intro popup ([#1725](https://github.com/ocadotechnology/rapid-router/issues/1725)) ([`b23d08c`](https://github.com/ocadotechnology/rapid-router/commit/b23d08cf9f767f7d0b5967eb58b098a5f0b03b17))
+
 ## v6.4.4 (2024-09-05)
 
 ### Fix
