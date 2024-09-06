@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.5.0 (2024-09-06)
+
+### Feature
+
+* Python Den scoreboard ([#1726](https://github.com/ocadotechnology/rapid-router/issues/1726)) ([`6a3c526`](https://github.com/ocadotechnology/rapid-router/commit/6a3c526f07d03b07135aa3b2f84c034889b8fab5))
+
 ## v6.4.5 (2024-09-06)
 
 ### Fix
