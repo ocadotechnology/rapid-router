@@ -80,7 +80,7 @@ class ScoreboardTestCase(TestCase):
 
         # Generate results
         student_data, headers, level_headers, levels_sorted = scoreboard_data(
-            episode_ids, attempts_per_student
+            episode_ids, attempts_per_student, "blockly"
         )
         (
             shared_headers,
@@ -154,6 +154,30 @@ class ScoreboardTestCase(TestCase):
         response = c.post(url, data)
 
         active_levels = Level.objects.filter(episode__pk__in=range(1, 10))
+
+        assert response.status_code == 200
+        assert len(response.context["level_headers"]) == active_levels.count()
+
+    def test_python_scoreboard_loads(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        klass, name, access_code = create_class_directly(email)
+        create_school_student_directly(access_code)
+
+        url = reverse("python_scoreboard")
+        c = Client()
+        c.login(username=email, password=password)
+
+        # test scoreboard page loads properly
+        response = c.get(url)
+        assert response.status_code == 200
+
+        # test scoreboard shows all episodes if no episodes are manually selected
+        data = {"classes": [klass.id], "view": [""]}
+
+        response = c.post(url, data)
+
+        active_levels = Level.objects.filter(episode__pk__in=range(12, 16))
 
         assert response.status_code == 200
         assert len(response.context["level_headers"]) == active_levels.count()

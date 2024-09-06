@@ -10,7 +10,6 @@
     </script>
 
     <script type='text/javascript' src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
-    <script type='text/javascript' src="{% static 'django_reverse_js/js/reverse.js' %}"></script>
     <script type='text/javascript' src="{% url 'rapid-router/javascript-catalog' %}"></script>
     <script type='text/javascript' src="{% static 'game/js/jquery.touchy.min.js' %}"></script>
 {% endblock %}
@@ -56,26 +55,30 @@
     {% endif %}
 
     {% block nav_ocargo_levels %}
-        {% if request.path == "/pythonden/" %}
+        {% if "/pythonden/" in request.path %}
             <a class="button button--secondary button--secondary--light" href="{% url 'python_levels' %}">{% trans "Levels" %}</a>
         {% else %}
             <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
         {% endif %}
     {% endblock nav_ocargo_levels %}
 
-    {% if request.path != "/pythonden/" %}
+{% if "/pythonden/" not in request.path %}
         {% block nav_ocargo_create %}
             <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
         {% endblock nav_ocargo_create %}
     {% endif %}
 
-    {% if user|is_logged_in_as_school_user and request.path != "/pythonden/" %}
+    {% if user|is_logged_in_as_school_user %}
         {% block nav_ocargo_scoreboard %}
+            {% if "/pythonden/" in request.path %}
+            <a class="button button--secondary button--secondary--light" href="{% url 'python_scoreboard' %}">{% trans "Scoreboard" %}</a>
+            {% else %}
             <a class="button button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
+            {% endif %}
         {% endblock nav_ocargo_scoreboard %}
     {% endif %}
 
-    {% if user|is_logged_in_as_teacher and request.path != "/pythonden/" %}
+    {% if user|is_logged_in_as_teacher and "/pythonden/" not in request.path %}
         {% block nav_ocargo_moderate %}
             <a class="button button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
         {% endblock nav_ocargo_moderate %}
