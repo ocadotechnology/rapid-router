@@ -95,7 +95,7 @@ def _next_level_url(level, user, night_mode, from_python_den):
     """
 
     if not level.next_level:
-        if level.episode and len(level.episode.next_episode.levels()) == 0:
+        if level.episode and len(level.episode.next_episode.levels) == 0:
             return reverse("python_levels")
         return ""
 
