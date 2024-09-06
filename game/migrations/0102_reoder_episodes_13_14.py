@@ -51,7 +51,7 @@ def swap_episodes_13_14(apps: Apps, *args):
     episode13.save()
     episode14.save()
 
-    episode12_last_level = episode12.level_set.last()
+    episode12_last_level = episode12.level_set.first()
     episode13_last_level = episode13.level_set.last()
     episode14_last_level = episode14.level_set.last()
 
@@ -113,7 +113,7 @@ def unswap_episodes_13_14(apps: Apps, *args):
     episode13.save()
     episode14.save()
 
-    episode12_last_level = episode12.level_set.last()
+    episode12_last_level = episode12.level_set.first()
     episode13_last_level = episode13.level_set.last()
     episode14_last_level = episode14.level_set.last()
 
