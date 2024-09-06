@@ -249,8 +249,6 @@ def levels(request, language):
     elif language == "python":
         python_episodes = get_python_episodes(request)
 
-        print(python_episodes)
-
         for episode in python_episodes:
             for level in episode["levels"]:
                 attach_attempts_to_level(attempts, level)
