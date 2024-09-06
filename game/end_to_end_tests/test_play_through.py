@@ -343,8 +343,8 @@ class TestPlayThrough(BaseGameTest):
             13, check_algorithm_score=False, from_python_den=True
         )
 
-    def test_episode_14(self):
-        self._complete_episode(14, 14, from_python_den=True)
+    def test_episode_13(self):
+        self._complete_episode(13, 14, from_python_den=True)
 
     def test_python_level_014(self):
         self._complete_level(14, from_python_den=True)
@@ -396,8 +396,8 @@ class TestPlayThrough(BaseGameTest):
             25, check_algorithm_score=False, from_python_den=True
         )
 
-    def test_episode_13(self):
-        self._complete_episode(13, 26, from_python_den=True)
+    def test_episode_14(self):
+        self._complete_episode(14, 26, from_python_den=True)
 
     def test_python_level_026(self):
         self._complete_level(26, from_python_den=True)
