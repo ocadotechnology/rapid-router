@@ -134,6 +134,10 @@ def to_name(level):
     return f"L{level.name}"
 
 
+def to_python_name(level):
+    return f"L{int(level.name) - 1000}"
+
+
 def shared_level_to_name(level, user):
     return (
         f"{level.name} (you)"
@@ -142,14 +146,16 @@ def shared_level_to_name(level, user):
     )
 
 
-def scoreboard_data(episode_ids, attempts_per_students):
+def scoreboard_data(episode_ids, attempts_per_students, language):
     # Show the total score, total time and score of each level
     levels_sorted = []
     for episode_id in episode_ids:
         episode = Episode.objects.get(id=episode_id)
         levels_sorted += episode.levels
 
-    level_headers = list(map(to_name, levels_sorted))
+    to_name_function = to_name if language == "blockly" else to_python_name
+
+    level_headers = list(map(to_name_function, levels_sorted))
     student_data = [
         student_row(levels_sorted, student, best_attempts)
         for student, best_attempts in attempts_per_students.items()
@@ -341,7 +347,7 @@ def scoreboard(request, language):
         attempts_per_student[student] = best_attempts
 
     (student_data, headers, level_headers, levels_sorted) = scoreboard_data(
-        episode_ids, attempts_per_student
+        episode_ids, attempts_per_student, language
     )
     improvement_data = get_improvement_data(attempts_per_student)
 

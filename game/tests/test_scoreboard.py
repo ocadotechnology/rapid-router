@@ -80,7 +80,7 @@ class ScoreboardTestCase(TestCase):
 
         # Generate results
         student_data, headers, level_headers, levels_sorted = scoreboard_data(
-            episode_ids, attempts_per_student
+            episode_ids, attempts_per_student, "blockly"
         )
         (
             shared_headers,
