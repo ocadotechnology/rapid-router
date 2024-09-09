@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "01516cb04016480f927b2afe28ce0107abacc2e2c942ef174f940e64c38cc79c"
+            "sha256": "99757dfdead709146cd48636b7540e953db720f2f814fcd852c05ef26b737c1f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -41,10 +41,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:27e9da29befec4bda55c2160781103e640ca804e0a07c1c30b0094490e048a56",
-                "sha256:4e2ea706899d4bfa77b6e02d19c2939ea77a70bcf206d8b50db8a44baa73f905"
+                "sha256:3de96e625fc52a9ef97667313e76523d8229133fa788219fb2096208feeeec55",
+                "sha256:7e4d4d67c210d19f5bd06214856e0b24e3954ff97a1d362197f59adcd5bb6dcd"
             ],
-            "version": "==7.2.1"
+            "version": "==7.3.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -199,11 +199,11 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:12a6656b262da8d27c2090ab714e5bbaa1d9898cb3662b04eb8af45269f122ed",
-                "sha256:e7cbf5e1c65ba3ec891b4861405a97820521e6b3663fb5c623d7bfb544318317"
+                "sha256:0d9497ea4fb13fc04d50b49aa53dd1c740fe4bc5dde0ca27fb394f84e5da7bac",
+                "sha256:783dea669ac0eaf5cd336f73839443584ee665af427a84175cca5a9d620366db"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.5.3"
+            "version": "==1.5.4"
         },
         "django-phonenumber-field": {
             "hashes": [
@@ -637,10 +637,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:27e9da29befec4bda55c2160781103e640ca804e0a07c1c30b0094490e048a56",
-                "sha256:4e2ea706899d4bfa77b6e02d19c2939ea77a70bcf206d8b50db8a44baa73f905"
+                "sha256:3de96e625fc52a9ef97667313e76523d8229133fa788219fb2096208feeeec55",
+                "sha256:7e4d4d67c210d19f5bd06214856e0b24e3954ff97a1d362197f59adcd5bb6dcd"
             ],
-            "version": "==7.2.1"
+            "version": "==7.3.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -748,11 +748,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:a2ff374e2fb259ce2be2546c4c85f0a803c50708034e5939d5485da57ec70adc",
-                "sha256:bc26d1503bd591aaf048e59631d68ca75a3e428726b75a2bbc6ca07a12417877"
+                "sha256:c1b5eeef06150c48060d6a43830304b31a4bf73915b886930f8400713902d963",
+                "sha256:f348d0b115339baa06ec45b63b3d23fad970f111b9e23f287f0f00639ccb9eaf"
             ],
             "index": "pypi",
-            "version": "==7.2.1"
+            "version": "==7.3.1"
         },
         "diff-match-patch": {
             "hashes": [
@@ -810,11 +810,11 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:12a6656b262da8d27c2090ab714e5bbaa1d9898cb3662b04eb8af45269f122ed",
-                "sha256:e7cbf5e1c65ba3ec891b4861405a97820521e6b3663fb5c623d7bfb544318317"
+                "sha256:0d9497ea4fb13fc04d50b49aa53dd1c740fe4bc5dde0ca27fb394f84e5da7bac",
+                "sha256:783dea669ac0eaf5cd336f73839443584ee665af427a84175cca5a9d620366db"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.5.3"
+            "version": "==1.5.4"
         },
         "django-phonenumber-field": {
             "hashes": [
@@ -1203,11 +1203,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:2d7a1657e36a80ea911db832a8a6ece5ee53d8de21edd5cc5879af6530b1bfee",
-                "sha256:38b7b51f512eed9e84a22788b4bce1de17c0adb134d6becb09836e37d8654cd3"
+                "sha256:9e5e27a08aa095dd127b9f2e764d74254f482fef22b0970773bfba79d091ab8c",
+                "sha256:eb1c8582560b34ed4ba105009a4badf7f6f85768b30126f351328507b2beb617"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.2.2"
+            "version": "==4.3.2"
         },
         "pluggy": {
             "hashes": [
