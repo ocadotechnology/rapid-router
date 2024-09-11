@@ -15,7 +15,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock css %}
 
-{% block title %}Code for Life - Rapid Router{% endblock %}
+{% block title %}
+    {% if "rapidrouter" in request.path %}
+        Code for Life - Rapid Router
+    {% else %}
+        Code for Life - Python Den
+    {% endif %}
+{% endblock %}
 
 {% block topBar %}
 {% endblock topBar %}
