@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.5.2 (2024-09-16)
+
+### Fix
+
+* Separate JS for base scoreboard and custom levels table ([#1729](https://github.com/ocadotechnology/rapid-router/issues/1729)) ([`1c6ef47`](https://github.com/ocadotechnology/rapid-router/commit/1c6ef479cc51a4c03b61270f091eb8297e69f64a))
+
 ## v6.5.1 (2024-09-11)
 
 ### Fix
