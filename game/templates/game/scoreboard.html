@@ -20,6 +20,9 @@
     <script src="{% static 'game/js/pqselect.min.js' %}"></script>
     <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
     <script src="{% static 'game/js/scoreboard.js' %}"></script>
+    {% if language == "blockly" %}
+        <script src="{% static 'game/js/scoreboardSharedLevels.js' %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block css %}
