@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.5.1 (2024-09-11)
+
+### Fix
+
+* Change page titles for Python Den ([#1728](https://github.com/ocadotechnology/rapid-router/issues/1728)) ([`fcbbf15`](https://github.com/ocadotechnology/rapid-router/commit/fcbbf150a3e5371915ce240e7875ae2e43cef4b1))
+
 ## v6.5.0 (2024-09-06)
 
 ### Feature

@@ -14,7 +14,13 @@
     <script type='text/javascript' src="{% static 'game/js/jquery.touchy.min.js' %}"></script>
 {% endblock %}
 
-{% block title %}Code for Life - Rapid Router{% endblock %}
+{% block title %}
+    {% if "rapidrouter" in request.path %}
+        Code for Life - Rapid Router
+    {% else %}
+        Code for Life - Python Den
+    {% endif %}
+{% endblock %}
 
 {% block head %}
     {% include 'game/crowdin.html' %}
