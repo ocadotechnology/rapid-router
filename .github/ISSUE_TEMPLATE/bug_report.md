@@ -25,5 +25,10 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
+**Good Places to Start**
+
+_Link to a specific directory / file / line that would be a good place to
+start working on this task. The more specific the better._
+
 **Additional context**
 Add any other context about the problem here.
