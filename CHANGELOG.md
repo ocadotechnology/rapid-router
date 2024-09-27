@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v6.5.3 (2024-09-27)
+
+### Fix
+
+* Migrations ([#1735](https://github.com/ocadotechnology/rapid-router/issues/1735)) ([`559525a`](https://github.com/ocadotechnology/rapid-router/commit/559525a10f942ba5df9fae352bf2c8dd29496b0a))
+
+### Documentation
+
+* Add section to issue templates for code guidance ([#1734](https://github.com/ocadotechnology/rapid-router/issues/1734)) ([`bb7e7a2`](https://github.com/ocadotechnology/rapid-router/commit/bb7e7a2c9ca51eb599b31a9de4771f4525783655))
+
 ## v6.5.2 (2024-09-16)
 
 ### Fix
