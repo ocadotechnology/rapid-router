@@ -2874,6 +2874,7 @@ def add_episode_7_to_9(apps, schema_editor):
     level59.save()
 
     episode9 = Episode(
+        pk=9,
         name="Blockly Brain Teasers",
         first_level=level68,
         r_branchiness=0.5,
@@ -3555,6 +3556,7 @@ def add_levels_80_to_107(apps, schema_editor):
         count += 1
 
     blocklyAndPythonEpisode = Episode(
+        pk=10,
         name="Introduction to Python",
         first_level=level80,
         r_branchiness=0.5,
@@ -3569,6 +3571,7 @@ def add_levels_80_to_107(apps, schema_editor):
     blocklyAndPythonEpisode.save()
 
     pythonOnlyEpisode = Episode(
+        pk=11,
         name="Python",
         first_level=level100,
         r_branchiness=0.5,

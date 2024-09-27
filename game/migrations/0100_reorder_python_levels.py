@@ -1,6 +1,7 @@
 from django.apps.registry import Apps
 from django.db import migrations
-from django.db.models import F
+from django.db.models import F, IntegerField, CharField
+from django.db.models.functions import Cast
 
 
 def adjust_python_den_episodes(apps: Apps, *args):
@@ -69,7 +70,10 @@ def rename_episode_12_levels(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
 
     Level.objects.filter(default=True, name__in=range(110, 123)).update(
-        name=F("name") + 891
+        name=Cast(
+            Cast(F("name"), output_field=IntegerField()) + 891,
+            output_field=CharField()
+        )
     )
 
 
@@ -77,7 +81,10 @@ def undo_rename_episode_12_levels(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
 
     Level.objects.filter(default=True, name__in=range(1001, 1014)).update(
-        name=F("name") - 891
+        name=Cast(
+            Cast(F("name"), output_field=IntegerField()) - 891,
+            output_field=CharField()
+        )
     )
 
 
