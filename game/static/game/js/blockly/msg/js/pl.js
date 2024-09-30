@@ -434,3 +434,54 @@ Blockly.Msg["TEXTS_HUE"] = "160";
 Blockly.Msg["PROCEDURES_HUE"] = "290";
 Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
+
+Blockly.Msg["START_TITLE"] = "Rozpocznij";
+Blockly.Msg["START_TOOLTIP"] = "początek programu"
+Blockly.Msg["MOVE_FORWARDS_TITLE"] = "Naprzód";
+Blockly.Msg["MOVE_FORWARDS_TOOLTIP"] = "przesuń pojazd do przodu";
+Blockly.Msg["TURN_LEFT_TITLE"] = "Skręć w lewo";
+Blockly.Msg["TURN_LEFT_TOOLTIP"] = "obróć pojazd w lewo";
+Blockly.Msg["TURN_RIGHT_TITLE"] = "Skręć w prawo";
+Blockly.Msg["TURN_RIGHT_TOOLTIP"] = "obróć pojazd w prawo";
+Blockly.Msg["TURN_AROUND_TITLE"] = "Zawróć";
+Blockly.Msg["TURN_AROUND_TOOLTIP"] = "zawróć pojazd w przeciwnym kierunku";
+
+Blockly.Msg["WAIT_TITLE"] = "Czekaj";
+Blockly.Msg["WAIT_TOOLTIP"] = "nie wykonuj ruchów pojazdem";
+Blockly.Msg["DELIVER_TITLE"] = "Dostarcz";
+Blockly.Msg["DELIVER_TOOLTIP"] = "dostarcz towary z pojazdu";
+Blockly.Msg["SOUND_HORN_TITLE"] = "Zatrąb";
+Blockly.Msg["SOUND_HORN_TOOLTIP"] = "użyj klaksonu aby przegonić krowy";
+
+Blockly.Msg["ROAD_EXISTS_FORWARD_TITLE"] = "Droga istnieje z przodu";
+Blockly.Msg["ROAD_EXISTS_LEFT_TITLE"] = "Droga istnieje z po lewej";
+Blockly.Msg["ROAD_EXISTS_RIGHT_TITLE"] = "Droga istnieje z po prawej";
+Blockly.Msg["TRAFFIC_LIGHT_RED_TITLE"] = "sygnalizacja świetlna Czerwone";
+Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "sygnalizacja świetlna zielone";
+Blockly.Msg["DEAD_END_TITLE"] = "Ślepa ulica";
+Blockly.Msg["AT_DESTINATION_TITLE"] = "U celu";
+Blockly.Msg["COW_CROSSING_TITLE"] = "Krowy";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "pigeons"; // untranslated
+
+Blockly.Msg["CALL_PROC_TITLE"] = "Wywołanie";
+Blockly.Msg["CALL_PROC_TOOLTIP"] = "wywołuje procedurę";
+Blockly.Msg["DECLARE_PROC_TITLE"] = "Zdefiniuj";
+Blockly.Msg["DECLARE_PROC_SUBTITLE"] = "Do";
+Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "deklaruje procedurę";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "Powtarzaj dopóki";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "wykonuj";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TOOLTIP"] = "dopóki warunek jest spełniany wykonuj instrukcje";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TITLE"] = "Powtarzaj aż";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_SUBTITLE"] = "wykonuj";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TOOLTIP"] = "powtarzaj instrukcje aż warunek będzie spełniony";
+
+Blockly.Msg["VARIABLES_GET_TOOLTIP"] = "zmienna";
+Blockly.Msg["VARIABLES_SET_TITLE"] = "Ustaw";
+Blockly.Msg["VARIABLES_SET_SUBTITLE"] = "na";
+Blockly.Msg["VARIABLES_SET_TOOLTIP"] = "ustaw zmienną";
+Blockly.Msg["VARIABLES_NUMERIC_SET_TOOLTIP"] = "ustaw zmienną liczbową";
+Blockly.Msg["VARIABLES_INCREMENT_TITLE"] = "Zwiększ";
+Blockly.Msg["VARIABLES_INCREMENT_SUBTITLE"] = "o";
+Blockly.Msg["VARIABLES_INCREMENT_TOOLTIP"] = "zwiększ zmienną";
+Blockly.Msg["NUMBER_TITLE"] = "Liczba";
+Blockly.Msg["NUMBER_TOOLTIP"] = "liczba";
