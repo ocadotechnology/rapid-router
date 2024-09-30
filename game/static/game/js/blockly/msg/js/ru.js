@@ -434,3 +434,54 @@ Blockly.Msg["TEXTS_HUE"] = "160";
 Blockly.Msg["PROCEDURES_HUE"] = "290";
 Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
+
+Blockly.Msg["START_TITLE"] = "";
+Blockly.Msg["START_TOOLTIP"] = ""
+Blockly.Msg["MOVE_FORWARDS_TITLE"] = "";
+Blockly.Msg["MOVE_FORWARDS_TOOLTIP"] = "";
+Blockly.Msg["TURN_LEFT_TITLE"] = "";
+Blockly.Msg["TURN_LEFT_TOOLTIP"] = "";
+Blockly.Msg["TURN_RIGHT_TITLE"] = "";
+Blockly.Msg["TURN_RIGHT_TOOLTIP"] = "";
+Blockly.Msg["TURN_AROUND_TITLE"] = "";
+Blockly.Msg["TURN_AROUND_TOOLTIP"] = "";
+
+Blockly.Msg["WAIT_TITLE"] = "";
+Blockly.Msg["WAIT_TOOLTIP"] = "";
+Blockly.Msg["DELIVER_TITLE"] = "";
+Blockly.Msg["DELIVER_TOOLTIP"] = "";
+Blockly.Msg["SOUND_HORN_TITLE"] = "";
+Blockly.Msg["SOUND_HORN_TOOLTIP"] = "";
+
+Blockly.Msg["ROAD_EXISTS_FORWARD_TITLE"] = "";
+Blockly.Msg["ROAD_EXISTS_LEFT_TITLE"] = "";
+Blockly.Msg["ROAD_EXISTS_RIGHT_TITLE"] = "";
+Blockly.Msg["TRAFFIC_LIGHT_RED_TITLE"] = "";
+Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "";
+Blockly.Msg["DEAD_END_TITLE"] = "";
+Blockly.Msg["AT_DESTINATION_TITLE"] = "";
+Blockly.Msg["COW_CROSSING_TITLE"] = "";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = ""; // untranslated
+
+Blockly.Msg["CALL_PROC_TITLE"] = "";
+Blockly.Msg["CALL_PROC_TOOLTIP"] = "";
+Blockly.Msg["DECLARE_PROC_TITLE"] = "";
+Blockly.Msg["DECLARE_PROC_SUBTITLE"] = "";
+Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TOOLTIP"] = "";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TITLE"] = "";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_SUBTITLE"] = "";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TOOLTIP"] = "";
+
+Blockly.Msg["VARIABLES_GET_TOOLTIP"] = "";
+Blockly.Msg["VARIABLES_SET_TITLE"] = "";
+Blockly.Msg["VARIABLES_SET_SUBTITLE"] = "";
+Blockly.Msg["VARIABLES_SET_TOOLTIP"] = "";
+Blockly.Msg["VARIABLES_NUMERIC_SET_TOOLTIP"] = "";
+Blockly.Msg["VARIABLES_INCREMENT_TITLE"] = "";
+Blockly.Msg["VARIABLES_INCREMENT_SUBTITLE"] = "";
+Blockly.Msg["VARIABLES_INCREMENT_TOOLTIP"] = "";
+Blockly.Msg["NUMBER_TITLE"] = "";
+Blockly.Msg["NUMBER_TOOLTIP"] = "";
