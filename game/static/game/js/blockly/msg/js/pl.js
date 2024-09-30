@@ -436,7 +436,7 @@ Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
 
 Blockly.Msg["START_TITLE"] = "Rozpocznij";
-Blockly.Msg["START_TOOLTIP"] = "początek programu"
+Blockly.Msg["START_TOOLTIP"] = "początek programu";
 Blockly.Msg["MOVE_FORWARDS_TITLE"] = "Naprzód";
 Blockly.Msg["MOVE_FORWARDS_TOOLTIP"] = "przesuń pojazd do przodu";
 Blockly.Msg["TURN_LEFT_TITLE"] = "Skręć w lewo";
