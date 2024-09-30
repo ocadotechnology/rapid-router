@@ -476,8 +476,8 @@ Blockly.Msg["CONTROLS_REPEAT_UNTIL_SUBTITLE"] = ""; // ?
 Blockly.Msg["CONTROLS_REPEAT_UNTIL_TOOLTIP"] = "ripeti le istruzioni finchè la condizione è true";
 
 Blockly.Msg["VARIABLES_GET_TOOLTIP"] = "una variabile";
-Blockly.Msg["VARIABLES_SET_TITLE"] = "Assegna";
-Blockly.Msg["VARIABLES_SET_SUBTITLE"] = "a";
+Blockly.Msg["VARIABLES_SET_TITLE"] = "Setta";
+Blockly.Msg["VARIABLES_SET_SUBTITLE"] = "al valore";
 Blockly.Msg["VARIABLES_SET_TOOLTIP"] = "assegna una variabile";
 Blockly.Msg["VARIABLES_NUMERIC_SET_TOOLTIP"] = "assegna un numero alla variabile";
 Blockly.Msg["VARIABLES_INCREMENT_TITLE"] = "Incrementa";
