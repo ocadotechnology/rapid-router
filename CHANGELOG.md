@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.5.4 (2024-10-02)
+
+### Fix
+
+* Update Python Den level 15 model solution ([#1736](https://github.com/ocadotechnology/rapid-router/issues/1736)) ([`59fa7c1`](https://github.com/ocadotechnology/rapid-router/commit/59fa7c1de1a8d097301ff301336ef4349e982bde))
+
 ## v6.5.3 (2024-09-27)
 
 ### Fix
