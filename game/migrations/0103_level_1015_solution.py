@@ -17,7 +17,7 @@ def revert_level_model_solution(apps: Apps, *args):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("game", "0102_reorder_episodes_13_14")]
+    dependencies = [("game", "0102_reoder_episodes_13_14")]
     operations = [
         migrations.RunPython(
             update_level_model_solution,
