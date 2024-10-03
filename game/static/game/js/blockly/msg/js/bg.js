@@ -461,7 +461,7 @@ Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "зелен светофар";
 Blockly.Msg["DEAD_END_TITLE"] = "Път без изход";
 Blockly.Msg["AT_DESTINATION_TITLE"] = "На адреса";
 Blockly.Msg["COW_CROSSING_TITLE"] = "Крави";
-Blockly.Msg["PIGEON_CROSSING_TITLE"] = "pigeons"; // untranslated
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "гълъби";
 
 Blockly.Msg["CALL_PROC_TITLE"] = "Изпълни";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "изпълнява процедура";
