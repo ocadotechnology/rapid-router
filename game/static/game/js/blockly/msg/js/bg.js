@@ -434,3 +434,54 @@ Blockly.Msg["TEXTS_HUE"] = "160";
 Blockly.Msg["PROCEDURES_HUE"] = "290";
 Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
+
+Blockly.Msg["START_TITLE"] = "Начало";
+Blockly.Msg["START_TOOLTIP"] = "Началото на програмата"
+Blockly.Msg["MOVE_FORWARDS_TITLE"] = "Премести напред";
+Blockly.Msg["MOVE_FORWARDS_TOOLTIP"] = "премества камиона напред";
+Blockly.Msg["TURN_LEFT_TITLE"] = "Завий наляво";
+Blockly.Msg["TURN_LEFT_TOOLTIP"] = "камионът прави ляв завой";
+Blockly.Msg["TURN_RIGHT_TITLE"] = "Завий надясно";
+Blockly.Msg["TURN_RIGHT_TOOLTIP"] = "камионът прави десен завой";
+Blockly.Msg["TURN_AROUND_TITLE"] = "Завърти се наобратно";
+Blockly.Msg["TURN_AROUND_TOOLTIP"] = "камионът ще се движи в противоположна посока";
+
+Blockly.Msg["WAIT_TITLE"] = "Изчакай";
+Blockly.Msg["WAIT_TOOLTIP"] = "камионът стои неподвижно";
+Blockly.Msg["DELIVER_TITLE"] = "Достави";
+Blockly.Msg["DELIVER_TOOLTIP"] = "доставя стоките от камиона";
+Blockly.Msg["SOUND_HORN_TITLE"] = "Свирни";
+Blockly.Msg["SOUND_HORN_TOOLTIP"] = "включва клаксон за да плаши кравите";
+
+Blockly.Msg["ROAD_EXISTS_FORWARD_TITLE"] = "Има път направо";
+Blockly.Msg["ROAD_EXISTS_LEFT_TITLE"] = "Има път наляво";
+Blockly.Msg["ROAD_EXISTS_RIGHT_TITLE"] = "Има път надясно";
+Blockly.Msg["TRAFFIC_LIGHT_RED_TITLE"] = "Червен светофар";
+Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "зелен светофар";
+Blockly.Msg["DEAD_END_TITLE"] = "Път без изход";
+Blockly.Msg["AT_DESTINATION_TITLE"] = "На адреса";
+Blockly.Msg["COW_CROSSING_TITLE"] = "Крави";
+Blockly.Msg["PIGEON_CROSSING_TITLE"] = "гълъби";
+
+Blockly.Msg["CALL_PROC_TITLE"] = "Изпълни";
+Blockly.Msg["CALL_PROC_TOOLTIP"] = "изпълнява процедура";
+Blockly.Msg["DECLARE_PROC_TITLE"] = "Дефинирай";
+Blockly.Msg["DECLARE_PROC_SUBTITLE"] = "прави";
+Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "декларира процедура";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "Повтори докато";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "прави";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TOOLTIP"] = "докато стойността е вярна, изпълнявай действията";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TITLE"] = "Повтори докато не";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_SUBTITLE"] = "прави";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TOOLTIP"] = "изпълнявай действията, докато стойността не е вярна";
+
+Blockly.Msg["VARIABLES_GET_TOOLTIP"] = "променлива";
+Blockly.Msg["VARIABLES_SET_TITLE"] = "Задай на";
+Blockly.Msg["VARIABLES_SET_SUBTITLE"] = "стойност";
+Blockly.Msg["VARIABLES_SET_TOOLTIP"] = "задаване на стойност на променлива";
+Blockly.Msg["VARIABLES_NUMERIC_SET_TOOLTIP"] = "задаване на числена стойност на променлива";
+Blockly.Msg["VARIABLES_INCREMENT_TITLE"] = "Увеличи";
+Blockly.Msg["VARIABLES_INCREMENT_SUBTITLE"] = "с";
+Blockly.Msg["VARIABLES_INCREMENT_TOOLTIP"] = "увеличаване на променлива";
+Blockly.Msg["NUMBER_TITLE"] = "Число";
+Blockly.Msg["NUMBER_TOOLTIP"] = "число";
