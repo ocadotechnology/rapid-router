@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.6.0 (2024-10-03)
+
+### Feature
+
+* Rapid router 1732 ([#1737](https://github.com/ocadotechnology/rapid-router/issues/1737)) ([`8ac9fae`](https://github.com/ocadotechnology/rapid-router/commit/8ac9faeae2b4895407d3c3043f1d5ccf059011e4))
+
 ## v6.5.4 (2024-10-02)
 
 ### Fix
