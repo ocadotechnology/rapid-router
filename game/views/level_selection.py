@@ -194,22 +194,23 @@ def levels(request, language):
                         get_shared_level(level, attempts)
                     )
                 else:
-                    student_class = level.owner.student.class_field
-                    class_teacher = student_class.teacher.new_user
+                    if not level.owner.student.is_independent():
+                        student_class = level.owner.student.class_field
+                        class_teacher = student_class.teacher.new_user
 
-                    # get levels shared by students in the current user's classes
-                    if class_teacher == user:
-                        directly_shared_levels.append(
-                            get_shared_level(level, attempts, student_class)
-                        )
-                    # get levels shared by students in the other teachers' classes
-                    else:
-                        if class_teacher not in indirectly_shared_levels:
-                            indirectly_shared_levels[class_teacher] = []
+                        # get levels shared by students in the current user's classes
+                        if class_teacher == user:
+                            directly_shared_levels.append(
+                                get_shared_level(level, attempts, student_class)
+                            )
+                        # get levels shared by students in the other teachers' classes
+                        else:
+                            if class_teacher not in indirectly_shared_levels:
+                                indirectly_shared_levels[class_teacher] = []
 
-                        indirectly_shared_levels[class_teacher].append(
-                            get_shared_level(level, attempts, student_class)
-                        )
+                            indirectly_shared_levels[class_teacher].append(
+                                get_shared_level(level, attempts, student_class)
+                            )
             # if user is a student or a standard teacher, just get levels shared with them directly.
             else:
                 directly_shared_levels.append(get_shared_level(level, attempts))
