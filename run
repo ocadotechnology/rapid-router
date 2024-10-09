@@ -30,4 +30,5 @@ if [ "$translation" = "1" ]; then
 fi
 
 ./example_project/manage.py collectstatic --noinput --clear
+./example_project/manage.py createstatic_reversejs
 ./example_project/manage.py runserver "$@"
