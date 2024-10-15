@@ -160,7 +160,6 @@ class Level(models.Model):
     )
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
-    direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey(
         "self",
         null=True,

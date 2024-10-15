@@ -52,7 +52,6 @@ class TestCowCrashes(BaseGameTest):
             cows='[{"minCows":"7","maxCows":"7","potentialCoordinates":[{"x":4,"y":4},{"x":2,"y":4},{"x":3,"y":7},{"x":4,"y":6},{"x":2,"y":6},{"x":3,"y":1},{"x":4,"y":2}],"type":"WHITE"}]',
             default=False,
             destinations="[[4,5]]",
-            direct_drive=True,
             fuel_gauge=False,
             max_fuel=50,
             model_solution="[1]",

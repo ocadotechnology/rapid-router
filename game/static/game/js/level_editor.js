@@ -2869,7 +2869,7 @@ ocargo.LevelEditor = function(levelId) {
         // you can copy and paste into a Django migration file
         var state = extractState();
 
-        var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
+        var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge'];
         var stringFields =  ['path', 'traffic_lights', 'cows', 'origin', 'destinations'];
         var otherFields = ['max_fuel'];
 
