@@ -113,7 +113,7 @@
                         <td><small>{{level.name}}</small></td>
                         <td><small>{{level.shared_with}}</small></td>
                         <td class="text-center">
-                            <button class="button button--small button--primary play" value={{level.id}}>Play</button>
+                            <a class="button button--small button--primary play" href="{% url 'play_custom_level' level.id %}">Play</a>
                         </td>
                         <td class="text-center">
                             <button class="button button--small button--primary--danger button--icon delete" value={{level.id}}>
