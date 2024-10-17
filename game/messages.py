@@ -16,8 +16,8 @@ def youtube_link(url, border):
 
 def play_button_icon_url():
     return (
-        '<img src="/static/game/image/actions/go.svg" alt="Play button" '
-        'style="width: 4%;">'
+        '<img src="/static/game/image/icons/play.svg" alt="Play icon">'
+        '<b>Play</b>'
     )
 
 
@@ -355,7 +355,7 @@ def description_level13():
         f"Often there is more than one way to get to the house. The route that needs "
         f"the fewest directions is usually best. <br> Help the van find the "
         f"shortest route to the house. <br> You can press the {play_button_icon_url()} "
-        f"or <b>Play</b> buttons to start the van."
+        f"button to start the van."
     )
     return build_description(title_level13(), message)
 
