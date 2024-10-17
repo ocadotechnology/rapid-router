@@ -233,19 +233,6 @@ def levels(request, language):
 
         context["blocklyEpisodes"] = blockly_episodes
 
-        old_python_episodes = fetch_episode_data(
-            app_settings.EARLY_ACCESS_FUNCTION(request), 10, 11
-        )
-
-        for episode in old_python_episodes:
-            for level in episode["levels"]:
-                attach_attempts_to_level(attempts, level)
-                level["locked_for_class"] = Level.objects.get(
-                    id=level["id"]
-                ).locked_for_class
-
-        context["oldPythonEpisodes"] = old_python_episodes
-
     elif language == "python":
         python_episodes = get_python_episodes(request)
 
