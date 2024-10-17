@@ -68,11 +68,11 @@
 
 {% block content %}
 <div class="container background">
-    {% include "portal/partials/popup.html" %}
     <div id="episodes">
         <div class="panel-intro">
             <h4>Blockly levels</h4>
-            The first set of levels use Blockly to slowly introduce you to Python. You can read more about Blockly
+            The first set of levels use Blockly to slowly introduce you to
+            core programming concepts. You can read more about Blockly
             <a href="https://code-for-life.gitbook.io/rapid-router/blockly-guide" target="_blank">here</a>.
         </div>
         {% for episode in blocklyEpisodes %}
@@ -118,52 +118,6 @@
                         </a>
                     </p>
                     {% endif %}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
-        <div class="panel-intro">
-            <h4>Python levels</h4>
-            The next set of levels introduce you to coding directly with Python. You can read more about Python
-            <a href="https://code-for-life.gitbook.io/rapid-router/python-guide" target="_blank">here</a>.
-        </div>
-        {% for episode in oldPythonEpisodes %}
-        <div class="panel">
-            <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
-                    {{episode.name}}
-                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
-                        Levels {{episode.first_level}}-{{episode.last_level}}
-                    </span>
-                    <img class="episode_image coin_image" value="{{episode.id}}">
-                </p>
-            </div>
-
-            <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
-                <div class="panel-body">
-                    {% for level in episode.levels %}
-                    {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
-                    <!-- Mark level as locked -->
-                    <p>
-                        <a class="disabled">{{level.name}}:
-                            {{level.title.strip | safe}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
-                        {% endif %}
-                    </p>
-                    {% else %}
-                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-                    <p>
-                        <a onclick="movedToPythonDenPopup()">{{level.name}}: {{level.title.strip | safe}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
-                        {% endif %}
-                    </p>
-                    {% endif %}
-                    {% endfor %}
                 </div>
             </div>
         </div>
