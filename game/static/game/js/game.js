@@ -73,7 +73,6 @@ ocargo.Game.prototype.setup = function () {
   this._setupConsoleSliderListeners()
   this._setupPythonViewSliderListeners()
   this._setupConsoleLogViewSliderListeners()
-  this._setupDirectDriveListeners()
   this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
   this._setupTabs()
 
@@ -330,44 +329,6 @@ ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {
   }
 }
 
-ocargo.Game.prototype._setupDirectDriveListeners = function () {
-  var manoeuvreCallback = function () {
-    this.drawing.scrollToShowCharacter()
-    this.onStopControls()
-  }.bind(this)
-
-  $('#moveForward').click(
-    function () {
-      if (ocargo.model.reasonForTermination != 'CRASH') {
-        this.onPlayControls()
-        ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards')
-        this.drawing.moveForward(manoeuvreCallback)
-      }
-    }.bind(this)
-  )
-  $('#turnLeft').click(
-    function () {
-      if (ocargo.model.reasonForTermination != 'CRASH') {
-        this.onPlayControls()
-        ocargo.blocklyControl.addBlockToEndOfProgram('turn_left')
-        this.drawing.turnLeft(manoeuvreCallback)
-      }
-    }.bind(this)
-  )
-  $('#turnRight').click(
-    function () {
-      if (ocargo.model.reasonForTermination != 'CRASH') {
-        this.onPlayControls()
-        ocargo.blocklyControl.addBlockToEndOfProgram('turn_right')
-        this.drawing.turnRight(manoeuvreCallback)
-      }
-    }.bind(this)
-  )
-  $('#go').click(function () {
-    $('#play_radio').trigger('click')
-  })
-}
-
 ocargo.Game.prototype._setupConsoleSliderListeners = function () {
   let tabsWidth = $('#tabs').width()
 
@@ -414,7 +375,6 @@ ocargo.Game.prototype._setupConsoleSliderListeners = function () {
     $('#consoleSlider').css('left', consoleSliderPosition + '%')
     $('#paper').css('width', 100 - consoleSliderPosition + '%')
     $('#tab_panes').css('width', consoleSliderPosition + '%')
-    $('#direct_drive').css('left', consoleSliderPosition + '%')
 
     ocargo.blocklyControl.redrawBlockly()
   }
@@ -569,8 +529,6 @@ const buttonTransit = (buttonElementId, state) => {
 ocargo.Game.prototype.onPlayControls = function () {
   this.disallowCodeChanges()
 
-  document.getElementById('direct_drive').style.visibility = 'hidden'
-
   this.tabs.play.transitTo('running')
   buttonTransit("run-code-button", "running")
   this.tabs.step.disable()
@@ -585,8 +543,6 @@ ocargo.Game.prototype.onPlayControls = function () {
 ocargo.Game.prototype.onStepControls = function () {
   this.disallowCodeChanges()
 
-  document.getElementById('direct_drive').style.visibility = 'hidden'
-
   this.tabs.play.transitTo('paused')
   buttonTransit("run-code-button", "paused")
   this.tabs.step.disable()
@@ -599,8 +555,6 @@ ocargo.Game.prototype.onStepControls = function () {
 
 ocargo.Game.prototype.onFastControls = function () {
   this.disallowCodeChanges()
-
-  document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
   buttonTransit("run-code-button", "running")
@@ -615,8 +569,6 @@ ocargo.Game.prototype.onFastControls = function () {
 
 ocargo.Game.prototype.onSlowControls = function () {
   this.disallowCodeChanges()
-
-  document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
   buttonTransit("run-code-button", "running")
@@ -803,9 +755,6 @@ ocargo.Game.prototype.onPauseControls = function () {
 
 ocargo.Game.prototype.onStopControls = function () {
   this.allowCodeChanges()
-
-  // TODO make this hidden unless blocks are clear or something...
-  document.getElementById('direct_drive').style.visibility = 'visible'
 
   this.tabs.play.transitTo('readyToPlay')
   buttonTransit("run-code-button", "readyToPlay")
