@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.6.2 (2024-10-18)
+
+### Fix
+
+* Remove old Python levels redirect ([#1745](https://github.com/ocadotechnology/rapid-router/issues/1745)) ([`6cd8cd0`](https://github.com/ocadotechnology/rapid-router/commit/6cd8cd0aded4dbba4bfb459f6418b4087998ebd1))
+
 ## v6.6.1 (2024-10-17)
 
 ### Fix
