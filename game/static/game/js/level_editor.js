@@ -1061,7 +1061,7 @@ ocargo.LevelEditor = function(levelId) {
         } else {
             closeTrashcan();
         }
-    }
+}
 
     function openTrashcan() {
         $('#trashcanLidOpen').css('display', 'block');
@@ -1226,8 +1226,8 @@ ocargo.LevelEditor = function(levelId) {
         if (cows) {
             for (var i = 0; i < cows.length; i++) {
                 var internalCow = cows[i];
-                if (internalCow.controlledNode) {
-                    mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                if (internalCow.coordinate) {
+                    mark(internalCow.coordinate, internalCow.data.group.color, 0.3, true);
                 }
             }
         }
@@ -1699,33 +1699,32 @@ ocargo.LevelEditor = function(levelId) {
 
             if (trashcanOpen) {
                 cow.destroy();
-            } else if (isValidDraggedCowPlacement(controlledCoord, cow)) {
-                // Add back to the list of cows if on valid nodes
-                var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-                cow.controlledNode = controlledNode;
-                cow.valid = true;
-                drawing.setCowImagePosition(controlledCoord, image, controlledNode);
+                closeTrashcan();
             } else {
-                cow.controlledNode = null;
-                cow.valid = false;
-
-                var cowX = paperX;
-                var cowY = paperY;
-
-                if (paperWidth < paperX + imageWidth) {
-                    cowX = paperWidth - imageWidth
+                cow.coordinate = controlledCoord;
+                cow.valid = isValidDraggedCowPlacement(controlledCoord, cow);
+                if (cow.isOnRoad()) {
+                    const controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                    drawing.setCowImagePosition(controlledCoord, image, controlledNode);
                 }
-
-                if (paperHeight < paperY + imageHeight) {
-                    cowY = paperHeight - imageHeight
+                else {
+                    var cowX = paperX;
+                    var cowY = paperY;
+    
+                    if (paperWidth < paperX + imageWidth) {
+                        cowX = paperWidth - imageWidth
+                    }
+    
+                    if (paperHeight < paperY + imageHeight) {
+                        cowY = paperHeight - imageHeight
+                    }
+    
+                    image.transform('t' + cowX + ',' + cowY);
                 }
-
-                image.transform('t' + cowX + ',' + cowY);
             }
-            adjustCowGroupMinMaxFields(cow);
 
+            adjustCowGroupMinMaxFields(cow);
             image.attr({'cursor':'pointer'});
-            closeTrashcan();
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
@@ -1733,12 +1732,11 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     function isValidDraggedCowPlacement(controlledCoord, cow){
-        var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-        if (!controlledNode || isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
+        if (isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
             return false;
         for (var i=0; i < cows.length; i++) {
             var otherCow = cows[i];
-            if (otherCow.controlledNode == controlledNode && (cow === "undefined" || cow != otherCow))
+            if (cow != otherCow && otherCow.coordinate && otherCow.coordinate.equals(controlledCoord))
                 return false;
         }
         return true;
@@ -1764,14 +1762,6 @@ ocargo.LevelEditor = function(levelId) {
         if (controlledCoord) {
             markAsBackground(controlledCoord);
         }
-        if (cows) {
-            for( let i = 0; i < cows.length; i++){
-                let internalCow = cows[i];
-                if(internalCow !== cow && internalCow.controlledNode) {
-                    mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
-                }
-            }
-        }
         if (originNode) {
             markAsOrigin(originNode.coordinate);
         }
@@ -1783,8 +1773,8 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     function setCowMarkingsOnMouseUp(controlledCoord, cow) {
-        if (cow.controlledNode) {
-            markAsBackground(cow.controlledNode.coordinate);
+        if (cow.isOnRoad()) {
+            markAsBackground(cow.coordinate);
         }
         if (controlledCoord) {
             mark(controlledCoord, cow.data.group.color, 0.3, true);
@@ -1858,15 +1848,13 @@ ocargo.LevelEditor = function(levelId) {
         function handleDraggableCowMouseUp(e){
             let internalCow = new InternalCow({group: cowGroups["group1"]});
             let image = internalCow.image;
+            internalCow.coordinate = controlledCoord;
+            internalCow.valid = isValidDraggedCowPlacement(controlledCoord, internalCow);
 
-            if (isValidDraggedCowPlacement(controlledCoord)) {
-                internalCow.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-                internalCow.valid = true;
-                drawing.setCowImagePosition(controlledCoord, image, internalCow.controlledNode);
+            if (internalCow.isOnRoad()) {
+                const controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                drawing.setCowImagePosition(controlledCoord, image, controlledNode);
             } else {
-                internalCow.controlledNode = null;
-                internalCow.valid = false;
-
                 const cowX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_cow.width / 2;
                 const cowY = e.pageY + paper.scrollTop() - dragged_cow.height / 2;
 
@@ -2488,7 +2476,7 @@ ocargo.LevelEditor = function(levelId) {
                         type: cowGroups[groupId].type}; //editor can only add white cow for now
                 }
 
-                var coordinates = cows[i].controlledNode.coordinate;
+                var coordinates = cows[i].coordinate;
                 var strCoordinates = {'x':coordinates.x, 'y':coordinates.y};
                 cowGroupData[groupId].potentialCoordinates.push(strCoordinates);
             }
@@ -2920,9 +2908,8 @@ ocargo.LevelEditor = function(levelId) {
             if (!this.valid) {
                 throw "Error: cannot create actual cow from invalid internal cow!";
             }
-
             // Where the cow is placed.
-            var coordinates = this.controlledNode.coordinate;
+            var coordinates = this.coordinate;
             var strCoordinates= {'x':coordinates.x, 'y':coordinates.y};
 
             return { "coordinates": [strCoordinates],
@@ -2944,6 +2931,10 @@ ocargo.LevelEditor = function(levelId) {
 
         };
 
+        this.isOnRoad = function() {
+            return this.coordinate && ocargo.Node.findNodeByCoordinate(this.coordinate, nodes);
+        }
+
         this.updateTheme = function() {
             let newType = currentTheme == THEMES.city ? ocargo.Cow.PIGEON : ocargo.Cow.WHITE;
             let transformDimensions = this["image"]["_"]["transform"][0]
@@ -2958,10 +2949,9 @@ ocargo.LevelEditor = function(levelId) {
             this.image.remove();
 
             this.image = drawing.createCowImage(newType);
-            if (this.controlledNode !== null) {
-                let controlledNode = this.controlledNode;
-                let coordinates = controlledNode.coordinate;
-                drawing.setCowImagePosition(coordinates, this.image, controlledNode);
+            if (this.isOnRoad()) {
+                let controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
+                drawing.setCowImagePosition(this.coordinate, this.image, controlledNode);
             } else {
                 this.image.transform("t" + x + "," + y + " r" + r);
             }
@@ -2972,14 +2962,15 @@ ocargo.LevelEditor = function(levelId) {
         this.image = drawing.createCowImage(data.group.type);
         this.valid = false;
 
-
         if ( data.coordinates && data.coordinates.length > 0 ) {
-            var coordinates = new ocargo.Coordinate(data.coordinates[0].x, data.coordinates[0].y);
-            this.controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
-
-            if (this.controlledNode) {
-                this.valid = true;
-                drawing.setCowImagePosition(coordinates, this.image, this.controlledNode);
+            this.coordinate = new ocargo.Coordinate(data.coordinates[0].x, data.coordinates[0].y);
+            this.valid = isValidDraggedCowPlacement(this.coordinate, this);
+            
+            if (this.isOnRoad()) {
+                const controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
+                drawing.setCowImagePosition(this.coordinate, this.image, controlledNode);
+            } else {
+                this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
             }
         } else {
             this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
