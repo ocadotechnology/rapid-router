@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.7.0 (2024-10-22)
+
+### Feature
+
+* Remove direct drive arrows ([#1743](https://github.com/ocadotechnology/rapid-router/issues/1743)) ([`203cf5a`](https://github.com/ocadotechnology/rapid-router/commit/203cf5a8cd0e4135d38e5ea58a4701c6dc48aa1c))
+
 ## v6.6.2 (2024-10-18)
 
 ### Fix
