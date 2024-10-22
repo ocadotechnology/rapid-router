@@ -321,21 +321,11 @@ div > .navigation_button_kurono {
     cursor: col-resize;
 }
 
-/******************/
-/** Direct drive **/
-/******************/
+/**************/
+/** Zoom pan **/
+/**************/
 
-#direct_drive {
-    width: 200px;
-    height: 95px;
-    position: absolute;
-    z-index: 7;
-    left: 50%;
-    bottom: 20px;
-    margin-left: 35px;
-}
-
-.direct_drive_button {
+.zoom_pan_button {
     display: inline;
     cursor: pointer;
     background-repeat: no-repeat;
@@ -349,37 +339,13 @@ div > .navigation_button_kurono {
     transition: background-size 0.3s;
 }
 
-.direct_drive_button:hover,
-.direct_drive_button:focus
+.zoom_pan_button:hover,
+.zoom_pan_button:focus
 {
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
     background-color: transparent;
     outline: none;
-}
-
-#go  {
-    left: 60px;
-    bottom: 0px;
-    background-image : url('/static/game/image/actions/go.svg');
-}
-
-#turnLeft {
-    left: 10px;
-    bottom: 0px;
-    background-image : url('/static/game/image/actions/left.svg');
-}
-
-#turnRight {
-    left: 110px;
-    bottom: 0px;
-    background-image : url('/static/game/image/actions/right.svg');
-}
-
-#moveForward {
-    left: 60px;
-    bottom: 50px;
-    background-image : url('/static/game/image/actions/forward.svg');
 }
 
 .blocklyWidgetDiv {

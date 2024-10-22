@@ -50,7 +50,6 @@ class TestPythonLevels(BaseGameTest):
             cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":4}],"type":"WHITE"}]',
             default=False,
             destinations="[[4,4]]",
-            direct_drive=False,
             fuel_gauge=False,
             max_fuel=50,
             model_solution="",
