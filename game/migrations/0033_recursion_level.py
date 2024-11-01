@@ -1,5 +1,5 @@
 from django.db import migrations
-from game.level_management import set_decor_inner, set_blocks_inner
+from game.level_management import set_blocks_inner
 import json
 
 
@@ -15,7 +15,18 @@ def new_level(apps, schema_editor):
     Block = apps.get_model("game", "Block")
 
     def set_decor(level, decor):
-        set_decor_inner(level, decor, LevelDecor)
+        """Helper method creating LevelDecor objects given a list of decor in dictionary form."""
+        LevelDecor.objects.filter(level=level).delete()
+
+        level_decors = []
+        for data in decor:
+            level_decors.append(
+                LevelDecor(
+                    level_id=level.id, x=data["x"], y=data["y"], decorName=data[
+                        "decorName"]
+                )
+            )
+        LevelDecor.objects.bulk_create(level_decors)
 
     def set_blocks(level, blocks):
         set_blocks_inner(level, blocks, LevelBlock, Block)

@@ -3,7 +3,7 @@ import json
 from django.apps.registry import Apps
 from django.db import migrations
 
-from game.level_management import set_decor_inner, set_blocks_inner
+from game.level_management import set_blocks_inner
 
 
 def add_loop_levels(apps: Apps, *args):
@@ -365,7 +365,18 @@ def add_loop_levels(apps: Apps, *args):
     )
 
     def set_decor(level, decor):
-        set_decor_inner(level, decor, LevelDecor)
+        """Helper method creating LevelDecor objects given a list of decor in dictionary form."""
+        LevelDecor.objects.filter(level=level).delete()
+
+        level_decors = []
+        for data in decor:
+            level_decors.append(
+                LevelDecor(
+                    level_id=level.id, x=data["x"], y=data["y"], decorName=data[
+                        "decorName"]
+                )
+            )
+        LevelDecor.objects.bulk_create(level_decors)
 
     set_decor(
         level_110,
