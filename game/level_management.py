@@ -81,7 +81,10 @@ def set_decor_inner(level, decor, LevelDecor):
     for data in decor:
         level_decors.append(
             LevelDecor(
-                level_id=level.id, x=data["x"], y=data["y"], decor_name=data["decor_name"]
+                level_id=level.id,
+                x=data["x"],
+                y=data["y"],
+                decor_name=data["decorName"],
             )
         )
     LevelDecor.objects.bulk_create(level_decors)
@@ -203,6 +206,6 @@ def email_new_custom_level(
             "STUDENT_NAME": student_name,
             "CLASS_NAME": class_name,
             "LEVEL_URL": level_url,
-            "MODERATE_URL": moderate_url
-        }
+            "MODERATE_URL": moderate_url,
+        },
     )
