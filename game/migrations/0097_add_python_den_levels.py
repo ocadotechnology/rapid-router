@@ -2,7 +2,7 @@ import json
 
 from django.db import migrations
 
-from game.level_management import set_decor_inner, set_blocks_inner
+from game.level_management import set_blocks_inner
 
 
 def add_python_den_levels(apps, schema_editor):
@@ -931,7 +931,18 @@ def add_python_den_decor(apps, schema_editor):
     LevelDecor = apps.get_model("game", "LevelDecor")
 
     def set_decor(level, decor):
-        set_decor_inner(level, decor, LevelDecor)
+        """Helper method creating LevelDecor objects given a list of decor in dictionary form."""
+        LevelDecor.objects.filter(level=level).delete()
+
+        level_decors = []
+        for data in decor:
+            level_decors.append(
+                LevelDecor(
+                    level_id=level.id, x=data["x"], y=data["y"], decorName=data[
+                        "decorName"]
+                )
+            )
+        LevelDecor.objects.bulk_create(level_decors)
 
     def bulk_copy_decor(old_level_name, new_level_name):
         old_level = Level.objects.get(name=old_level_name, default=True)

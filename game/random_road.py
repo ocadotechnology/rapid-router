@@ -58,7 +58,7 @@ def create(episode=None):
     loopiness = episode.r_loopiness if episode else DEFAULT_LOOPINESS
     curviness = episode.r_curviness if episode else DEFAULT_CURVINESS
     blocks = episode.r_blocks.all() if episode else Block.objects.all()
-    traffic_lights = episode.r_trafficLights if episode else DEFAULT_TRAFFIC_LIGHTS
+    traffic_lights = episode.r_traffic_lights if episode else DEFAULT_TRAFFIC_LIGHTS
     cows = episode.r_cows if episode else DEFAULT_TRAFFIC_LIGHTS
     decor = DEFAULT_DECOR
 
@@ -68,8 +68,8 @@ def create(episode=None):
     level_data["theme"] = 1
     level_data["name"] = ("Random level for " + episode.name) if episode else "Default random level"
     level_data["character"] = 1
-    level_data["blocklyEnabled"] = episode.r_blocklyEnabled if episode else True
-    level_data["pythonEnabled"] = episode.r_pythonEnabled if episode else False
+    level_data["blockly_enabled"] = episode.r_blockly_enabled if episode else True
+    level_data["python_enabled"] = episode.r_python_enabled if episode else False
     level_data["blocks"] = [{"type": block.type} for block in blocks]
 
     level = Level(default=False, anonymous=True)
@@ -276,7 +276,7 @@ def generate_traffic_lights(path):
     random.shuffle(candidateNodes)
     nodesSelected = candidateNodes[:numberOfJunctions]
 
-    trafficLights = []
+    traffic_lights = []
     for node in nodesSelected:
 
         controlledNeighbours = []
@@ -291,7 +291,7 @@ def generate_traffic_lights(path):
 
             direction = get_direction(node, neighbour)
 
-            trafficLights.append(
+            traffic_lights.append(
                 {
                     "sourceCoordinate": {"x": neighbour["coordinate"].x, "y": neighbour["coordinate"].y},
                     "direction": direction,
@@ -303,7 +303,7 @@ def generate_traffic_lights(path):
             )
             counter += 1
 
-    return trafficLights
+    return traffic_lights
 
 
 def generate_cows(path):
@@ -346,7 +346,7 @@ def generate_decor(path, num_tiles):
                     elem == "pond"
                     and (coord["x"] // GRID_SIZE == x + 1 and coord["y"] // GRID_SIZE == y or x + 1 < WIDTH)
                 )
-                or (dec["decorName"] == "pond" and coord["x"] // GRID_SIZE + 1 == x and coord["y"] // GRID_SIZE == y)
+                or (dec["decor_name"] == "pond" and coord["x"] // GRID_SIZE + 1 == x and coord["y"] // GRID_SIZE == y)
             ):
                 return True
 
@@ -368,7 +368,7 @@ def generate_decor(path, num_tiles):
         x = x * GRID_SIZE + int((GRID_SIZE - decor_object.width) * 0.5 * (1 - dx))
         y = y * GRID_SIZE + int((GRID_SIZE - decor_object.height) * 0.5 * (1 - dy))
 
-        decor.append({"coordinate": {"x": x, "y": y}, "decorName": dec, "height": decor_object.height})
+        decor.append({"coordinate": {"x": x, "y": y}, "decor_name": dec, "height": decor_object.height})
 
     def place_near_road(elem, decor, path):
         for i in range(1, len(path) - 1):
@@ -389,7 +389,7 @@ def generate_decor(path, num_tiles):
     def place_bush(elem, decor, nodes):
         bush_exists = False
         for dec in decor:
-            if dec["decorName"] == elem:
+            if dec["decor_name"] == elem:
                 bush_exists = True
                 for (dx, dy) in DIRECTIONS:
                     x = dec["coordinate"]["x"] // GRID_SIZE + dx

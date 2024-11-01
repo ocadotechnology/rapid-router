@@ -57,16 +57,16 @@ class LevelSelectionTestCase(TestCase):
     def level_data(self, levelID):
         data = {
             "origin": '{"coordinate":[3,5],"direction":"S"}',
-            "pythonEnabled": False,
+            "python_enabled": False,
             "decor": [],
-            "blocklyEnabled": True,
+            "blockly_enabled": True,
             "blocks": [
                 {"type": "move_forwards"},
                 {"type": "turn_left"},
                 {"type": "turn_right"},
             ],
             "max_fuel": "50",
-            "pythonViewEnabled": False,
+            "python_view_enabled": False,
             "character": "3",
             "name": f"level{levelID}",
             "theme": 1,

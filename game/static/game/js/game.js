@@ -1152,7 +1152,7 @@ ocargo.Game.prototype._setupSaveTab = function () {
         python_contents: ocargo.pythonControl.getCode(),
         blockly_enabled: BLOCKLY_ENABLED,
         python_enabled: PYTHON_ENABLED,
-        pythonViewEnabled: PYTHON_VIEW_ENABLED
+        python_view_enabled: PYTHON_VIEW_ENABLED
       }
 
       this.saving.saveWorkspace(

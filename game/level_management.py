@@ -52,13 +52,13 @@ def get_decor(level):
     """Helper method parsing decor into a dictionary format 'sendable' to javascript."""
     decorData = []
     for ld in LevelDecor.objects.filter(level=level):
-        decor = get_decor_element(name=ld.decorName, theme=level.theme)
+        decor = get_decor_element(name=ld.decor_name, theme=level.theme)
         decorData.append(
             {
                 "x": int(ld.x),
                 "y": int(ld.y),
                 "z": int(decor.z_index),
-                "decorName": str(ld.decorName),
+                "decorName": str(ld.decor_name),
                 "width": int(decor.width),
                 "height": int(decor.height),
                 "url": str(decor.url),
@@ -81,7 +81,10 @@ def set_decor_inner(level, decor, LevelDecor):
     for data in decor:
         level_decors.append(
             LevelDecor(
-                level_id=level.id, x=data["x"], y=data["y"], decorName=data["decorName"]
+                level_id=level.id,
+                x=data["x"],
+                y=data["y"],
+                decor_name=data["decorName"],
             )
         )
     LevelDecor.objects.bulk_create(level_decors)
@@ -160,9 +163,9 @@ def save_level(level, data):
     level.max_fuel = data["max_fuel"]
     level.traffic_lights = data["traffic_lights"]
     level.cows = data["cows"]
-    level.blocklyEnabled = data.get("blocklyEnabled", True)
-    level.pythonEnabled = data.get("pythonEnabled", False)
-    level.pythonViewEnabled = data.get("pythonViewEnabled", False)
+    level.blockly_enabled = data.get("blockly_enabled", True)
+    level.python_enabled = data.get("python_enabled", False)
+    level.python_view_enabled = data.get("python_view_enabled", False)
     level.theme = get_theme_by_pk(pk=data["theme"])
     level.character = get_character_by_pk(pk=data["character"])
     level.disable_algorithm_score = data.get("disable_algorithm_score", False)
@@ -203,6 +206,6 @@ def email_new_custom_level(
             "STUDENT_NAME": student_name,
             "CLASS_NAME": class_name,
             "LEVEL_URL": level_url,
-            "MODERATE_URL": moderate_url
-        }
+            "MODERATE_URL": moderate_url,
+        },
     )

@@ -73,9 +73,9 @@
     var MAX_FUEL = {{level.max_fuel}}
     var NEXT_EPISODE = {% if level.episode.next_episode == None %}null{% else %}"{{level.episode.next_episode.id}}"{% endif %}
     var WORKSPACE = {% if workspace == None %}null{% else %}"{{workspace}}"{% endif %}
-    var BLOCKLY_ENABLED = {{level.blocklyEnabled|booltojs}}
-    var PYTHON_ENABLED = {{level.pythonEnabled|booltojs}}
-    var PYTHON_VIEW_ENABLED = {{level.pythonViewEnabled|booltojs}}
+    var BLOCKLY_ENABLED = {{level.blockly_enabled|booltojs}}
+    var PYTHON_ENABLED = {{level.python_enabled|booltojs}}
+    var PYTHON_VIEW_ENABLED = {{level.python_view_enabled|booltojs}}
     var RETURN_URL = "{{return_url}}"
     var PYTHON_WORKSPACE = {% if python_workspace == None %}null{% else %}"{{python_workspace|linebreaksbr}}"{% endif %}
   </script>
@@ -151,7 +151,7 @@
 </div>
 
 <div id="wrapper" class="unselectable">
-  {% if level.pythonViewEnabled or level.pythonEnabled %}
+  {% if level.python_view_enabled or level.python_enabled %}
     <img src="{% static 'game/image/python_den_header.svg' %}" class="game-header">
   {% endif %}
   <span id="game_page"></span>
@@ -159,7 +159,7 @@
   <div id="tabs" class='no-print bg--{{ level.difficulty }}'>
 
     <div id="blockly_tab"
-         class="tab selectable {% if not level.blocklyEnabled and not level.pythonViewEnabled %}hidden{% endif %}">
+         class="tab selectable {% if not level.blockly_enabled and not level.python_view_enabled %}hidden{% endif %}">
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">
         <img src="{% static 'game/image/icons/blockly.svg' %}">
@@ -167,7 +167,7 @@
       </label>
     </div>
 
-    <div id="python_tab" class="tab selectable {% if not level.pythonEnabled %}hidden{% endif %}">
+    <div id="python_tab" class="tab selectable {% if not level.python_enabled %}hidden{% endif %}">
       <input type="radio" name="tabs" id="python_radio">
       <label for="python_radio">
         <img src="{% static 'game/image/icons/python.svg' %}">
@@ -176,7 +176,7 @@
     </div>
 
     <div id="language_tab" class="tab">
-      <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}} {% if level.pythonEnabled %}hidden{% endif %}" id="language_dropdown" onchange="gameUpdateBlockLanguageAndCookie(this.value)">
+      <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}} {% if level.python_enabled %}hidden{% endif %}" id="language_dropdown" onchange="gameUpdateBlockLanguageAndCookie(this.value)">
         {% for language_code, language in available_language_dict.items %}
           <option id="language_dropdown_{{language_code}}" value="{{language_code}}">{{language}}</option>
         {% endfor %}
@@ -319,24 +319,24 @@
       <div id="blockly_pane" class="tab_pane">
         <div id="blockCountDiv"></div>
 
-        <div id="blockly_holder" style='width: calc(100%); {% if level.pythonViewEnabled %} height: 50%; {% endif %}'></div>
+        <div id="blockly_holder" style='width: calc(100%); {% if level.python_view_enabled %} height: 50%; {% endif %}'></div>
 
-        {% if level.pythonViewEnabled %}
+        {% if level.python_view_enabled %}
           <div id="pythonViewSlider" class="no-print"></div>
         {% endif %}
 
-        <div id="pythonView_holder" {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
+        <div id="pythonView_holder" {% if not level.python_view_enabled %} style="visibility: hidden" {% endif %}>
           <p>{% trans "This is what your program would look like in Python:" %}</p>
           <textarea id="pythonView" cols="85" rows="25"></textarea>
         </div>
       </div>
 
       <div id="python_pane" class="tab_pane">
-        <div id="pythonCode" {% if not level.pythonEnabled %} style="visibility: hidden" {% endif %}>
+        <div id="pythonCode" {% if not level.python_enabled %} style="visibility: hidden" {% endif %}>
           <div id="editor">
             <div class="description">
               <h3>{% trans "Python Program" %}
-                {% if level.blocklyEnabled %}
+                {% if level.blockly_enabled %}
                 <button class="navigation_button long_button" id="convert_from_blockly">
                   <span>{% trans "Convert from Blockly" %}</span>
                 </button>

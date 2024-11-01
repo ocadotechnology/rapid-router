@@ -26,8 +26,8 @@ class LevelListSerializer(serializers.HyperlinkedModelSerializer):
             "name",
             "title",
             "default",
-            "blocklyEnabled",
-            "pythonEnabled",
+            "blockly_enabled",
+            "python_enabled",
         )
 
     def get_title(self, obj):
@@ -67,9 +67,9 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
             "levelblock_set",
             "map",
             "mode",
-            "blocklyEnabled",
-            "pythonEnabled",
-            "pythonViewEnabled",
+            "blockly_enabled",
+            "python_enabled",
+            "python_view_enabled",
         )
 
     def get_title(self, obj):
@@ -101,7 +101,7 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
 class LevelModeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta(object):
         model = Level
-        fields = ("blocklyEnabled", "pythonEnabled", "pythonViewEnabled")
+        fields = ("blockly_enabled", "python_enabled", "python_view_enabled")
 
 
 class LevelMapListSerializer(serializers.HyperlinkedModelSerializer):
