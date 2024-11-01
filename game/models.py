@@ -57,7 +57,7 @@ class Episode(models.Model):
     r_blocks = models.ManyToManyField(Block, related_name="episodes")
     r_blockly_enabled = models.BooleanField(default=True)
     r_python_enabled = models.BooleanField(default=False)
-    r_trafficLights = models.BooleanField(default=False)
+    r_traffic_lights = models.BooleanField(default=False)
     r_cows = models.BooleanField(default=False)
 
     lesson_plan_link = models.CharField(

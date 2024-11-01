@@ -58,7 +58,7 @@ def create(episode=None):
     loopiness = episode.r_loopiness if episode else DEFAULT_LOOPINESS
     curviness = episode.r_curviness if episode else DEFAULT_CURVINESS
     blocks = episode.r_blocks.all() if episode else Block.objects.all()
-    traffic_lights = episode.r_trafficLights if episode else DEFAULT_TRAFFIC_LIGHTS
+    traffic_lights = episode.r_traffic_lights if episode else DEFAULT_TRAFFIC_LIGHTS
     cows = episode.r_cows if episode else DEFAULT_TRAFFIC_LIGHTS
     decor = DEFAULT_DECOR
 
@@ -276,7 +276,7 @@ def generate_traffic_lights(path):
     random.shuffle(candidateNodes)
     nodesSelected = candidateNodes[:numberOfJunctions]
 
-    trafficLights = []
+    traffic_lights = []
     for node in nodesSelected:
 
         controlledNeighbours = []
@@ -291,7 +291,7 @@ def generate_traffic_lights(path):
 
             direction = get_direction(node, neighbour)
 
-            trafficLights.append(
+            traffic_lights.append(
                 {
                     "sourceCoordinate": {"x": neighbour["coordinate"].x, "y": neighbour["coordinate"].y},
                     "direction": direction,
@@ -303,7 +303,7 @@ def generate_traffic_lights(path):
             )
             counter += 1
 
-    return trafficLights
+    return traffic_lights
 
 
 def generate_cows(path):
