@@ -55,8 +55,8 @@ class Episode(models.Model):
     r_curviness = models.FloatField(default=0, null=True)
     r_num_tiles = models.IntegerField(default=5, null=True)
     r_blocks = models.ManyToManyField(Block, related_name="episodes")
-    r_blocklyEnabled = models.BooleanField(default=True)
-    r_pythonEnabled = models.BooleanField(default=False)
+    r_blockly_enabled = models.BooleanField(default=True)
+    r_python_enabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
     r_cows = models.BooleanField(default=False)
 
@@ -175,9 +175,9 @@ class Level(models.Model):
     disable_route_score = models.BooleanField(default=False)
     disable_algorithm_score = models.BooleanField(default=False)
     threads = models.IntegerField(blank=False, default=1)
-    blocklyEnabled = models.BooleanField(default=True)
-    pythonEnabled = models.BooleanField(default=True)
-    pythonViewEnabled = models.BooleanField(default=False)
+    blockly_enabled = models.BooleanField(default=True)
+    python_enabled = models.BooleanField(default=True)
+    python_view_enabled = models.BooleanField(default=False)
     theme_name = models.CharField(
         max_length=10,
         choices=theme_choices(),

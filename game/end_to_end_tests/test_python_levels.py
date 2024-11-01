@@ -45,7 +45,7 @@ class TestPythonLevels(BaseGameTest):
         animal_level = Level(
             name="Animal commands",
             anonymous=False,
-            blocklyEnabled=False,
+            blockly_enabled=False,
             character=van,
             cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":4}],"type":"WHITE"}]',
             default=False,
@@ -55,7 +55,7 @@ class TestPythonLevels(BaseGameTest):
             model_solution="",
             origin='{"coordinate":[2,4],"direction":"E"}',
             path='[{"coordinate":[2,4],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0,2]},{"coordinate":[4,4],"connectedNodes":[1]}]',
-            pythonEnabled=True,
+            python_enabled=True,
             theme=grass,
             threads=1,
             traffic_lights="[]",

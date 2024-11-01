@@ -4,16 +4,16 @@ from game.models import Level
 
 multiple_house_data = {
     "origin": '{"coordinate":[3,5],"direction":"S"}',
-    "pythonEnabled": False,
+    "python_enabled": False,
     "decor": [],
-    "blocklyEnabled": True,
+    "blockly_enabled": True,
     "blocks": [
         {"type": "move_forwards"},
         {"type": "turn_left"},
         {"type": "turn_right"},
     ],
     "max_fuel": "50",
-    "pythonViewEnabled": False,
+    "python_view_enabled": False,
     "character": "3",
     "name": "2",
     "theme": 1,
@@ -28,16 +28,16 @@ multiple_house_data = {
 def create_save_level(teacher_or_student, level_name="1", shared_with=None):
     data = {
         "origin": '{"coordinate":[3,5],"direction":"S"}',
-        "pythonEnabled": False,
+        "python_enabled": False,
         "decor": [],
-        "blocklyEnabled": True,
+        "blockly_enabled": True,
         "blocks": [
             {"type": "move_forwards"},
             {"type": "turn_left"},
             {"type": "turn_right"},
         ],
         "max_fuel": "50",
-        "pythonViewEnabled": False,
+        "python_view_enabled": False,
         "character": "3",
         "name": level_name,
         "theme": 1,

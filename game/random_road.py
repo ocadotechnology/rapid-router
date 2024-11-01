@@ -68,8 +68,8 @@ def create(episode=None):
     level_data["theme"] = 1
     level_data["name"] = ("Random level for " + episode.name) if episode else "Default random level"
     level_data["character"] = 1
-    level_data["blocklyEnabled"] = episode.r_blocklyEnabled if episode else True
-    level_data["pythonEnabled"] = episode.r_pythonEnabled if episode else False
+    level_data["blockly_enabled"] = episode.r_blockly_enabled if episode else True
+    level_data["python_enabled"] = episode.r_python_enabled if episode else False
     level_data["blocks"] = [{"type": block.type} for block in blocks]
 
     level = Level(default=False, anonymous=True)
