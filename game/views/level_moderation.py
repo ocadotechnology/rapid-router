@@ -8,7 +8,7 @@ from portal.templatetags import app_tags
 import game.messages as messages
 import game.permissions as permissions
 from game.forms import LevelModerationForm
-from game.models import Level, Attempt
+from game.models import Level
 from .helper import renderError
 
 
@@ -134,9 +134,6 @@ def level_moderation(request):
                     "shared_with": shared_str,
                 }
             )
-
-    wrong_attempts = Attempt.objects.filter(start_time__isnull=True)
-    print(wrong_attempts)
 
     return render(
         request,
