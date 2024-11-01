@@ -52,13 +52,13 @@ def get_decor(level):
     """Helper method parsing decor into a dictionary format 'sendable' to javascript."""
     decorData = []
     for ld in LevelDecor.objects.filter(level=level):
-        decor = get_decor_element(name=ld.decorName, theme=level.theme)
+        decor = get_decor_element(name=ld.decor_name, theme=level.theme)
         decorData.append(
             {
                 "x": int(ld.x),
                 "y": int(ld.y),
                 "z": int(decor.z_index),
-                "decorName": str(ld.decorName),
+                "decorName": str(ld.decor_name),
                 "width": int(decor.width),
                 "height": int(decor.height),
                 "url": str(decor.url),
@@ -81,7 +81,7 @@ def set_decor_inner(level, decor, LevelDecor):
     for data in decor:
         level_decors.append(
             LevelDecor(
-                level_id=level.id, x=data["x"], y=data["y"], decorName=data["decorName"]
+                level_id=level.id, x=data["x"], y=data["y"], decor_name=data["decor_name"]
             )
         )
     LevelDecor.objects.bulk_create(level_decors)

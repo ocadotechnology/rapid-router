@@ -43,7 +43,7 @@ class AttemptAdmin(admin.ModelAdmin):
 
 class LevelDecorAdmin(admin.ModelAdmin):
     search_fields = ["level__name"]
-    list_display = ["id", "level", "x", "y", "decorName"]
+    list_display = ["id", "level", "x", "y", "decor_name"]
 
 
 admin.site.register(Level, LevelAdmin)

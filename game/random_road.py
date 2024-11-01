@@ -346,7 +346,7 @@ def generate_decor(path, num_tiles):
                     elem == "pond"
                     and (coord["x"] // GRID_SIZE == x + 1 and coord["y"] // GRID_SIZE == y or x + 1 < WIDTH)
                 )
-                or (dec["decorName"] == "pond" and coord["x"] // GRID_SIZE + 1 == x and coord["y"] // GRID_SIZE == y)
+                or (dec["decor_name"] == "pond" and coord["x"] // GRID_SIZE + 1 == x and coord["y"] // GRID_SIZE == y)
             ):
                 return True
 
@@ -368,7 +368,7 @@ def generate_decor(path, num_tiles):
         x = x * GRID_SIZE + int((GRID_SIZE - decor_object.width) * 0.5 * (1 - dx))
         y = y * GRID_SIZE + int((GRID_SIZE - decor_object.height) * 0.5 * (1 - dy))
 
-        decor.append({"coordinate": {"x": x, "y": y}, "decorName": dec, "height": decor_object.height})
+        decor.append({"coordinate": {"x": x, "y": y}, "decor_name": dec, "height": decor_object.height})
 
     def place_near_road(elem, decor, path):
         for i in range(1, len(path) - 1):
@@ -389,7 +389,7 @@ def generate_decor(path, num_tiles):
     def place_bush(elem, decor, nodes):
         bush_exists = False
         for dec in decor:
-            if dec["decorName"] == elem:
+            if dec["decor_name"] == elem:
                 bush_exists = True
                 for (dx, dy) in DIRECTIONS:
                     x = dec["coordinate"]["x"] // GRID_SIZE + dx

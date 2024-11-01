@@ -286,7 +286,7 @@ class LevelDecor(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    decorName = models.CharField(max_length=100, default="tree1")
+    decor_name = models.CharField(max_length=100, default="tree1")
 
 
 class Workspace(models.Model):
