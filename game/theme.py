@@ -4,7 +4,7 @@
 
 from builtins import object
 from rest_framework.reverse import reverse
-from django.utils.translation import ugettext
+from django.utils.translation import gettext
 
 
 class Theme(object):
@@ -20,7 +20,7 @@ class Theme(object):
 THEME_DATA = {
     "grass": Theme(
         name="grass",
-        text=ugettext("Grass"),
+        text=gettext("Grass"),
         selected="#bce369",
         background="#a0c53a",
         border="#70961f",
@@ -28,7 +28,7 @@ THEME_DATA = {
     ),
     "snow": Theme(
         name="snow",
-        text=ugettext("Snow"),
+        text=gettext("Snow"),
         selected="#b3deff",
         background="#eef7ff",
         border="#83c9fe",
@@ -36,7 +36,7 @@ THEME_DATA = {
     ),
     "farm": Theme(
         name="farm",
-        text=ugettext("Farm"),
+        text=gettext("Farm"),
         selected="#bce369",
         background="#a0c53a",
         border="#70961f",
@@ -44,7 +44,7 @@ THEME_DATA = {
     ),
     "city": Theme(
         name="city",
-        text=ugettext("City"),
+        text=gettext("City"),
         selected="#C1C1C1",
         background="#969696",
         border="#686868",

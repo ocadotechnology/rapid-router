@@ -171,22 +171,22 @@
                 </tr>
                 </thead>
                 {% for student in student_data %}
-                    {% ifnotequal student.name user.first_name %}
+                    {% if student.name != user.first_name %}
                     <tr>
                     {% else %}
                     <tr class="current-student">
-                    {% endifnotequal %}
+                    {% endif %}
                         <td class="fixed-width">{{ student.class_field }}</td>
                         <td class="fixed-width">{{ student.name }}</td>
                         <td>{{ student.completed }}</td>
                         <td>{{ student.total_time }}</td>
                         {% for level_id, level_score in student.level_scores.items %}
                             {% if level_score.full_score %}
-                                {% ifnotequal student.name user.first_name %}
+                                {% if student.name != user.first_name %}
                                 <td class="text-center scoreboard--completed">
                                 {% else %}
                                 <td class="text-center scoreboard--completed-secondary">
-                                {% endifnotequal %}
+                                {% endif %}
                                     <div title="{{ level_score.score }}" class="d-flex justify-content-center">
                                         <span class="iconify" data-icon="mdi:star"></span>
                                     </div>
@@ -246,20 +246,20 @@
                     </tr>
                     </thead>
                     {% for student in shared_student_data %}
-                        {% ifnotequal student.name user.first_name %}
+                        {% if student.name != user.first_name %}
                         <tr>
                         {% else %}
                         <tr class="current-student">
-                        {% endifnotequal %}
+                        {% endif %}
                             <td class="fixed-width">{{ student.class_field }}</td>
                             <td class="fixed-width">{{ student.name }}</td>
                             {% for level_id, level_score in student.level_scores.items %}
                                 {% if level_score.full_score %}
-                                    {% ifnotequal student.name user.first_name %}
+                                    {% if student.name != user.first_name %}
                                         <td class="text-center scoreboard--completed">
                                     {% else %}
                                         <td class="text-center scoreboard--completed-secondary">
-                                    {% endifnotequal %}
+                                    {% endif %}
                                             <div title="{{ level_score.score }}" class="d-flex justify-content-center">
                                                 <span class="iconify" data-icon="mdi:star"></span>
                                             </div>
