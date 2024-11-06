@@ -8,12 +8,15 @@ ocargo.Cow = function(id, data, nodes) {
     this.type = data.type;
     this.potentialNodes = [];    // Potential nodes at which a cow could appear
     this.activeNodes = {};       // Actual nodes at which cows will appear during a run.
+    this.coordinates = [];       // coordinates of the cows, some cows may have null nodes that denotes they are outside of road
+
     for(var i = 0; i < data.potentialCoordinates.length; i++) {
         var coordinate = new ocargo.Coordinate(data.potentialCoordinates[i].x, data.potentialCoordinates[i].y);
-        var node = ocargo.Node.findNodeByCoordinate(coordinate, nodes)
-        this.potentialNodes.push(ocargo.Node.findNodeByCoordinate(coordinate, nodes));
-        var coordinate_str = JSON.stringify(node.coordinate)
-        this.activeNodes[coordinate_str] = ocargo.Cow.ACTIVE
+        var node = ocargo.Node.findNodeByCoordinate(coordinate, nodes);
+        this.potentialNodes.push(node);
+        var coordinate_str = JSON.stringify(coordinate);
+        this.activeNodes[coordinate_str] = ocargo.Cow.ACTIVE;
+        this.coordinates.push(coordinate);
     }
 };
 ocargo.Cow.prototype.reset = function() {
