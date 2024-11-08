@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v7.0.0 (2024-11-08)
+
+### Feature
+
+* Django 4 ([#1748](https://github.com/ocadotechnology/rapid-router/issues/1748)) ([`4b7608a`](https://github.com/ocadotechnology/rapid-router/commit/4b7608ad57186813cddfd90f24d74b3e874492f6))
+
+### Breaking
+
+* Django 4 ([#1748](https://github.com/ocadotechnology/rapid-router/issues/1748)) ([`4b7608a`](https://github.com/ocadotechnology/rapid-router/commit/4b7608ad57186813cddfd90f24d74b3e874492f6))
+
 ## v6.7.1 (2024-11-01)
 
 ### Fix
