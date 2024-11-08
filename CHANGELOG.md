@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.0.1 (2024-11-08)
+
+### Fix
+
+* Allow cows to be placed on a non-road square ([#1746](https://github.com/ocadotechnology/rapid-router/issues/1746)) ([`94b9fe0`](https://github.com/ocadotechnology/rapid-router/commit/94b9fe0beb6f4a9a4fdf9b46f7087cbc160018ac))
+
 ## v7.0.0 (2024-11-08)
 
 ### Feature
