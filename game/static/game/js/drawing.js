@@ -753,8 +753,11 @@ ocargo.Drawing = function (startingPosition) {
     let xOffset = 0
     let yOffset = 0
     let rotation = 0
-
-    if (node.connectedNodes.length === 1) {
+    if (node == null) { 
+      // the cow is outside of road
+      rotation = 0
+    }
+    else if (node.connectedNodes.length === 1) {
       // Deadends
       let previousNode = node.connectedNodes[0]
       let nextNode = {}

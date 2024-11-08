@@ -38,11 +38,11 @@ ocargo.Animation.prototype.isFinished = function() {
 
 ocargo.Animation.prototype.addCows = function() {
 	let cows = this.model.cows;
-
+	
 	for (let i = 0 ; i < cows.length ; i++){
 		let cow = cows[i];
-		for (let j = 0; j < cow.potentialNodes.length; j++) {
-			const cowImage = this.drawing.renderCow(cow.id, cow.potentialNodes[j].coordinate, cow.potentialNodes[j], 0, cow.type);
+		for (let j = 0; j < cow.coordinates.length; j++) {
+			const cowImage = this.drawing.renderCow(cow.id, cow.coordinates[j], cow.potentialNodes[j], 0, cow.type);
 			this.numberOfCowsOnMap++;
 			this.activeCows.push(cowImage);
 		}
@@ -385,9 +385,9 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			this.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
 			break;
         case 'cow_leave':
-            this.numberOfCowsOnMap--;
-			var cow = this._extractCowAt(animation.coordinate);
-            this.drawing.removeCow(cow, duration);  // remove it from drawing
+					this.numberOfCowsOnMap--;
+					var cow = this._extractCowAt(animation.coordinate);
+					this.drawing.removeCow(cow, duration);  // remove it from drawing
 			break;
 		case 'console':
 			ocargo.pythonControl.appendToConsole(animation.text);
@@ -399,7 +399,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 ocargo.Animation.prototype._extractCowAt = function(coordinate) {
     for (var i = 0; i < this.activeCows.length; i++) {
         var cow = this.activeCows[i];
-        if (cow.coordinate == coordinate) {
+        if (coordinate.equals(cow.coordinate)) {
             this.activeCows.splice(i, 1);   // remove cow from array
             return cow;
         }
