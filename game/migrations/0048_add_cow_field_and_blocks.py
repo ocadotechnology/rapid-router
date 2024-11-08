@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import json
 
 from django.db import models, migrations
-from game.level_management import set_blocks_inner, set_decor_inner
 
 
 def add_cows_block(apps, schema_editor):

@@ -21,12 +21,12 @@ from game.tests.utils.teacher import add_teacher_to_school, create_school
 class LevelEditorTestCase(TestCase):
     LEVEL_DATA1 = {
         "origin": '{"coordinate":[3,5],"direction":"S"}',
-        "pythonEnabled": False,
+        "python_enabled": False,
         "decor": [],
-        "blocklyEnabled": True,
+        "blockly_enabled": True,
         "blocks": [{"type": "move_forwards"}, {"type": "turn_left"}, {"type": "turn_right"}],
         "max_fuel": "50",
-        "pythonViewEnabled": False,
+        "python_view_enabled": False,
         "character": "3",
         "name": "abc",
         "theme": 1,
@@ -103,12 +103,12 @@ class LevelEditorTestCase(TestCase):
         url = reverse("save_level_for_editor")
         data1 = {
             "origin": '{"coordinate":[3,5],"direction":"S"}',
-            "pythonEnabled": False,
+            "python_enabled": False,
             "decor": [],
-            "blocklyEnabled": True,
+            "blockly_enabled": True,
             "blocks": [{"type": "move_forwards"}, {"type": "turn_left"}, {"type": "turn_right"}],
             "max_fuel": "50",
-            "pythonViewEnabled": False,
+            "python_view_enabled": False,
             "character": "3",
             "name": "abc",
             "theme": 1,
@@ -277,12 +277,12 @@ class LevelEditorTestCase(TestCase):
         url = reverse("save_level_for_editor")
         data_with_no_character = {
             "origin": '{"coordinate":[3,5],"direction":"S"}',
-            "pythonEnabled": False,
+            "python_enabled": False,
             "decor": [],
-            "blocklyEnabled": True,
+            "blockly_enabled": True,
             "blocks": [{"type": "move_forwards"}, {"type": "turn_left"}, {"type": "turn_right"}],
             "max_fuel": "50",
-            "pythonViewEnabled": False,
+            "python_view_enabled": False,
             "name": "abc",
             "theme": 1,
             "anonymous": True,
@@ -308,16 +308,16 @@ class LevelEditorTestCase(TestCase):
         url = reverse("save_level_for_editor")
         data_with_split_language = {
             "origin": '{"coordinate":[3,5],"direction":"S"}',
-            "pythonEnabled": False,
+            "python_enabled": False,
             "decor": [],
-            "blocklyEnabled": True,
+            "blockly_enabled": True,
             "blocks": [
                 {"type": "move_forwards"},
                 {"type": "turn_left"},
                 {"type": "turn_right"},
             ],
             "max_fuel": "50",
-            "pythonViewEnabled": True,
+            "python_view_enabled": True,
             "name": "abc",
             "theme": 1,
             "anonymous": True,
@@ -332,9 +332,9 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
         new_level = Level.objects.get(name="abc")
 
-        assert new_level.pythonViewEnabled
-        assert not new_level.pythonEnabled
-        assert new_level.blocklyEnabled
+        assert new_level.python_view_enabled
+        assert not new_level.python_enabled
+        assert new_level.blockly_enabled
 
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
@@ -358,12 +358,12 @@ class LevelEditorTestCase(TestCase):
         url = reverse("save_level_for_editor")
         data_with_multiple_houses = {
             "origin": '{"coordinate":[3,5],"direction":"S"}',
-            "pythonEnabled": False,
+            "python_enabled": False,
             "decor": [],
-            "blocklyEnabled": True,
+            "blockly_enabled": True,
             "blocks": [{"type": "move_forwards"}, {"type": "turn_left"}, {"type": "turn_right"}],
             "max_fuel": "50",
-            "pythonViewEnabled": False,
+            "python_view_enabled": False,
             "name": "multiple_houses",
             "theme": 1,
             "anonymous": True,

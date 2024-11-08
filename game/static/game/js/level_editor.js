@@ -2528,9 +2528,9 @@ ocargo.LevelEditor = function(levelId) {
 
         // Language data
         var language = $('#language_select').val();
-        state.blocklyEnabled = language === 'blockly' || language === 'both' || language === 'blocklyWithPythonView';
-        state.pythonViewEnabled = language === 'blocklyWithPythonView';
-        state.pythonEnabled = language === 'python' || language === 'both';
+        state.blockly_enabled = language === 'blockly' || language === 'both' || language === 'blocklyWithPythonView';
+        state.python_view_enabled = language === 'blocklyWithPythonView';
+        state.python_enabled = language === 'python' || language === 'both';
 
         // Description and hint data
         if ($('#subtitle').val().length > 0) {
@@ -2663,11 +2663,11 @@ ocargo.LevelEditor = function(levelId) {
 
         // Load in language data
         var languageSelect = $('#language_select');
-        if (state.blocklyEnabled && state.pythonViewEnabled){
+        if (state.blockly_enabled && state.python_view_enabled){
             languageSelect.val('blocklyWithPythonView');
-        } else if(state.blocklyEnabled && state.pythonEnabled) {
+        } else if(state.blockly_enabled && state.python_enabled) {
             languageSelect.val('both');
-        } else if(state.pythonEnabled) {
+        } else if(state.python_enabled) {
             languageSelect.val('python');
         } else {
             languageSelect.val('blockly');
@@ -2857,7 +2857,7 @@ ocargo.LevelEditor = function(levelId) {
         // you can copy and paste into a Django migration file
         var state = extractState();
 
-        var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge'];
+        var boolFields = ["python_enabled", "blockly_enabled", 'fuel_gauge'];
         var stringFields =  ['path', 'traffic_lights', 'cows', 'origin', 'destinations'];
         var otherFields = ['max_fuel'];
 

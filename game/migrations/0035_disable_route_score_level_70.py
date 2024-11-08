@@ -1,6 +1,4 @@
 from django.db import migrations
-from game.level_management import set_decor_inner, set_blocks_inner
-import json
 
 
 def disable_route_score(apps, schema_editor):

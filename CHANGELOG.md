@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v7.0.0 (2024-11-08)
+
+### Feature
+
+* Django 4 ([#1748](https://github.com/ocadotechnology/rapid-router/issues/1748)) ([`4b7608a`](https://github.com/ocadotechnology/rapid-router/commit/4b7608ad57186813cddfd90f24d74b3e874492f6))
+
+### Breaking
+
+* Django 4 ([#1748](https://github.com/ocadotechnology/rapid-router/issues/1748)) ([`4b7608a`](https://github.com/ocadotechnology/rapid-router/commit/4b7608ad57186813cddfd90f24d74b3e874492f6))
+
+## v6.7.1 (2024-11-01)
+
+### Fix
+
+* Fix data for PSQL transfer ([#1747](https://github.com/ocadotechnology/rapid-router/issues/1747)) ([`0c25ab9`](https://github.com/ocadotechnology/rapid-router/commit/0c25ab9eb68c797d74a0d75445e06806260c5796))
+
 ## v6.7.0 (2024-10-22)
 
 ### Feature

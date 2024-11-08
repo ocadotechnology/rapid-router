@@ -47,7 +47,7 @@ class TestCowCrashes(BaseGameTest):
         TestCowCrashes.cow_level = Level(
             name="Cow crashing",
             anonymous=False,
-            blocklyEnabled=True,
+            blockly_enabled=True,
             character=van,
             cows='[{"minCows":"7","maxCows":"7","potentialCoordinates":[{"x":4,"y":4},{"x":2,"y":4},{"x":3,"y":7},{"x":4,"y":6},{"x":2,"y":6},{"x":3,"y":1},{"x":4,"y":2}],"type":"WHITE"}]',
             default=False,
@@ -57,7 +57,7 @@ class TestCowCrashes(BaseGameTest):
             model_solution="[1]",
             origin='{"coordinate":[2,5],"direction":"E"}',
             path='[{"coordinate":[2,5],"connectedNodes":[1]},{"coordinate":[3,5],"connectedNodes":[0,4,2,5]},{"coordinate":[4,5],"connectedNodes":[1]},{"coordinate":[3,7],"connectedNodes":[4]},{"coordinate":[3,6],"connectedNodes":[8,3,6,1]},{"coordinate":[3,4],"connectedNodes":[10,1,11,16]},{"coordinate":[4,6],"connectedNodes":[4,7]},{"coordinate":[4,7],"connectedNodes":[6]},{"coordinate":[2,6],"connectedNodes":[9,4]},{"coordinate":[2,7],"connectedNodes":[8]},{"coordinate":[2,4],"connectedNodes":[13,5,12]},{"coordinate":[4,4],"connectedNodes":[5,14,15]},{"coordinate":[2,3],"connectedNodes":[10]},{"coordinate":[1,4],"connectedNodes":[10]},{"coordinate":[5,4],"connectedNodes":[11]},{"coordinate":[4,3],"connectedNodes":[11,19]},{"coordinate":[3,3],"connectedNodes":[5,17]},{"coordinate":[3,2],"connectedNodes":[18,16,19,20]},{"coordinate":[2,2],"connectedNodes":[17]},{"coordinate":[4,2],"connectedNodes":[17,15,23,22]},{"coordinate":[3,1],"connectedNodes":[21,17,22]},{"coordinate":[2,1],"connectedNodes":[20]},{"coordinate":[4,1],"connectedNodes":[20,19]},{"coordinate":[5,2],"connectedNodes":[19]}]',
-            pythonEnabled=False,
+            python_enabled=False,
             theme=grass,
             threads=1,
             traffic_lights="[]",

@@ -443,7 +443,7 @@ def save_workspace(request, workspaceID=None):
         "python_contents",
         "blockly_enabled",
         "python_enabled",
-        "pythonViewEnabled",
+        "python_view_enabled",
     ]
     missing_params = [
         param for param in request_params if param not in request.POST
@@ -457,7 +457,7 @@ def save_workspace(request, workspaceID=None):
     python_contents = request.POST.get("python_contents")
     blockly_enabled = json.loads(request.POST.get("blockly_enabled"))
     python_enabled = json.loads(request.POST.get("python_enabled"))
-    python_view_enabled = json.loads(request.POST.get("pythonViewEnabled"))
+    python_view_enabled = json.loads(request.POST.get("python_view_enabled"))
 
     workspace = None
     if workspaceID:
@@ -487,7 +487,7 @@ def load_workspace_solution(request, level_name):
 
         level = Level.objects.get(name=level_name, default=True)
 
-        if level.blocklyEnabled:
+        if level.blockly_enabled:
             workspace.contents = solutions[level_name]
             workspace.blockly_enabled = True
             workspace.python_enabled = False

@@ -1,6 +1,4 @@
 from django.db import migrations
-from game.level_management import set_decor_inner, set_blocks_inner
-import json
 
 
 def update_level(apps, schema_editor):
