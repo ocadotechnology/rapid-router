@@ -21,15 +21,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django==3.2.25",
-        "django-csp==3.7",
         "django-reverse-js==0.1.7",
-        "django-pipeline==2.0.8",
-        "djangorestframework==3.13.1",
-        "more-itertools==8.7.0",
         "pyhamcrest==2.0.2",
-        "libsass==0.23.0",
-        "cfl-common",
     ],
     classifiers=[
         "Programming Language :: Python",
