@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+cfl-common = ">=8.0.0"
 ipython = "*"
 rapid-router = {path = ".", editable = true}
 
 [dev-packages]
 black = "*"
-codeforlife-portal = {ref = "django_4", git = "https://github.com/ocadotechnology/codeforlife-portal.git"}
+codeforlife-portal = ">=8.0.0"
 django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
 importlib-metadata = "<5" # Using version 5 causes an issue when trying to run pytest. Not sure why, linked to: https://stackoverflow.com/questions/73929564/entrypoints-object-has-no-attribute-get-digital-ocean
