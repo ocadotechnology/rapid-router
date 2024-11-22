@@ -2556,6 +2556,17 @@ ocargo.LevelEditor = function(levelId) {
     function restoreState(state) {
         console.log("restoring state");
 
+        // Get character id from saved character name
+        var characterName = state.character_name;
+        if (characterName) {
+            var characterId = null;
+            for (var id in CHARACTERS) {
+                if (characterName == CHARACTERS[id].name) {
+                    characterId = id;
+                    break;
+                }
+            }
+        }
         clear();
 
         // Load node data
@@ -2585,7 +2596,7 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         // Load in character
-        $('#character_select').val(state.character);
+        $('#character_select').val(characterId);
         $('#character_select').change();
 
         drawAll();
