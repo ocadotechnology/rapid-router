@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.0.2 (2024-11-22)
+
+### Fix
+
+* Character change does not persist after save. ([#1749](https://github.com/ocadotechnology/rapid-router/issues/1749)) ([`f9f16e4`](https://github.com/ocadotechnology/rapid-router/commit/f9f16e48af0b34155d0fc296d9560210c62605d3))
+
 ## v7.0.1 (2024-11-08)
 
 ### Fix
