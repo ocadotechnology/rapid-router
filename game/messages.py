@@ -3339,6 +3339,8 @@ def get_episode_title(episode_id):
         20: "String Manipulation",
         21: "Lists",
         22: "Procedures",
+        23: "2D Lists",
+        24: "Procedures and Functions"
     }
 
     return episode_titles[episode_id]
