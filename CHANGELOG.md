@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.1.0 (2024-11-27)
+
+### Feature
+
+* New python den episodes and fix links ([#1750](https://github.com/ocadotechnology/rapid-router/issues/1750)) ([`c8d672c`](https://github.com/ocadotechnology/rapid-router/commit/c8d672cbc8a17b6346b5729de581d2c97b63a4b3))
+
 ## v7.0.2 (2024-11-22)
 
 ### Fix
