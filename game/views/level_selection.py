@@ -60,7 +60,8 @@ def fetch_episode_data_from_database(early_access, start, end):
             "difficulty": episode.difficulty,
             "lesson_plan_link": episode.lesson_plan_link,
             "slides_link": episode.slides_link,
-            "worksheet_link": episode.worksheet_link,
+            "student_worksheet_link": episode.student_worksheet_link,
+            "indy_worksheet_link": episode.indy_worksheet_link,
             "video_link": episode.video_link,
         }
 

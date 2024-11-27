@@ -66,7 +66,10 @@ class Episode(models.Model):
     slides_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
-    worksheet_link = models.CharField(
+    student_worksheet_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
+    indy_worksheet_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
     video_link = models.CharField(
