@@ -146,46 +146,50 @@
 
                     <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
                         <div class="panel-body">
-                            {% if user|is_logged_in %}
-                                <div class="col-sm-7 python-den-level">
-                                    <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}</a>
-                                </div>
-                                {% if user|is_logged_in_as_teacher %}
-                                    <div class="col-sm-3 python-den-level">
-                                        <a href="{{episode.lesson_plan_link}}" class="button button--level button--icon" target="_blank">
-                                            Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                    </div>
-                                    <div class="col-sm-2 python-den-level">
-                                        <a href="{{episode.slides_link}}" class="button button--level button--icon" target="_blank">
-                                            Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
-                                    </div>
-                                {% elif user|is_independent_student %}
-                                    <div class="col-sm-3 python-den-level">
-                                        <a href="{{episode.indy_worksheet_link}}" class="button button--level button--icon" target="_blank">
-                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                    </div>
-                                    <div class="col-sm-2 python-den-level">
-                                        <a href="{{episode.video_link}}" class="button button--level button--icon" target="_blank">
-                                            Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                    </div>
-                                {% else %}
-                                    <div class="col-sm-3"></div>
-                                    <div class="col-sm-2 python-den-level">
-                                        <a href="{{episode.student_worksheet_link}}" class="button button--level button--icon" target="_blank">
-                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                    </div>
-                                {% endif %}
-                            {% else %}
-                                <p class="text--warning">In order to access the full content for this course, please log in.</p>
-                                <div class="col-sm-10 python-den-level">
-                                    <a class="disabled">{{episode.name}}</a>
-                                </div>
-                                <div class="col-sm-2 python-den-level">
-                                    <a class="button button--level button--icon disabled">
-                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                </div>
-                            {% endif %}
                             {% for level in episode.levels %}
+                                {% for worksheet in episode.worksheets %}
+                                    {% if worksheet.before_level == level.id %}
+                                        {% if user|is_logged_in %}
+                                            <div class="col-sm-7 python-den-level">
+                                                <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}</a>
+                                            </div>
+                                            {% if user|is_logged_in_as_teacher %}
+                                                <div class="col-sm-3 python-den-level">
+                                                    <a href="{{episode.lesson_plan_link}}" class="button button--level button--icon" target="_blank">
+                                                        Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                                <div class="col-sm-2 python-den-level">
+                                                    <a href="{{episode.slides_link}}" class="button button--level button--icon" target="_blank">
+                                                        Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                                </div>
+                                            {% elif user|is_independent_student %}
+                                                <div class="col-sm-3 python-den-level">
+                                                    <a href="{{episode.indy_worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                                <div class="col-sm-2 python-den-level">
+                                                    <a href="{{episode.video_link}}" class="button button--level button--icon" target="_blank">
+                                                        Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                            {% else %}
+                                                <div class="col-sm-3"></div>
+                                                <div class="col-sm-2 python-den-level">
+                                                    <a href="{{episode.student_worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                            {% endif %}
+                                        {% else %}
+                                            <p class="text--warning">In order to access the full content for this course, please log in.</p>
+                                            <div class="col-sm-10 python-den-level">
+                                                <a class="disabled">{{episode.name}}</a>
+                                            </div>
+                                            <div class="col-sm-2 python-den-level">
+                                                <a class="button button--level button--icon disabled">
+                                                    Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
                                 {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
                                     <!-- Mark level as locked -->
                                     <p>
@@ -214,46 +218,49 @@
                                     </p>
                                 {% endif %}
                             {% endfor %}
-                            {% if episode.id == 12 %}
-                                {% if user|is_logged_in %}
-                                    <div class="col-sm-7 python-den-level">
-                                        <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}} pt. 2</a>
-                                    </div>
-                                    {% if user|is_logged_in_as_teacher %}
-                                        <div class="col-sm-3 python-den-level">
-                                            <a href="https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-6-iteration-part-2" class="button button--level button--icon" target="_blank">
-                                                Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                            {% for worksheet in episode.worksheets %}
+                                {% if not worksheet.before_level %}
+                                    {% if user|is_logged_in %}
+                                        <div class="col-sm-7 python-den-level">
+                                            <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}</a>
                                         </div>
-                                        <div class="col-sm-2 python-den-level">
-                                            <a href="https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FcEO90C76g4N17ss2K5PN%2FPython%206%20-%20Iteration%202.pptx?alt=media&token=df237a62-21ad-44a8-a4fe-bc9eed24092b" class="button button--level button--icon" target="_blank">
-                                                Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
-                                        </div>
-                                    {% elif user|is_independent_student %}
-                                        <div class="col-sm-3 python-den-level">
-                                            <a href="https://code-for-life.gitbook.io/independent-student-resources/python-den-resources-beta/session-6-iteration-part-2" class="button button--level button--icon" target="_blank">
-                                                Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                        </div>
-                                        <div class="col-sm-2 python-den-level">
-                                            <a href="https://youtu.be/kf-EavpnBNg" class="button button--level button--icon" target="_blank">
-                                                Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                        </div>
+                                        {% if user|is_logged_in_as_teacher %}
+                                            <div class="col-sm-3 python-den-level">
+                                                <a href="{{episode.lesson_plan_link}}" class="button button--level button--icon" target="_blank">
+                                                    Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                            <div class="col-sm-2 python-den-level">
+                                                <a href="{{episode.slides_link}}" class="button button--level button--icon" target="_blank">
+                                                    Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                            </div>
+                                        {% elif user|is_independent_student %}
+                                            <div class="col-sm-3 python-den-level">
+                                                <a href="{{episode.indy_worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                                    Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                            <div class="col-sm-2 python-den-level">
+                                                <a href="{{episode.video_link}}" class="button button--level button--icon" target="_blank">
+                                                    Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-2 python-den-level">
+                                                <a href="{{episode.student_worksheet_link}}" class="button button--level button--icon" target="_blank">
+                                                    Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                        {% endif %}
                                     {% else %}
-                                        <div class="col-sm-3"></div>
+                                        <p class="text--warning">In order to access the full content for this course, please log in.</p>
+                                        <div class="col-sm-10 python-den-level">
+                                            <a class="disabled">{{episode.name}}</a>
+                                        </div>
                                         <div class="col-sm-2 python-den-level">
-                                            <a href="https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-6-iteration-part-2" class="button button--level button--icon" target="_blank">
+                                            <a class="button button--level button--icon disabled">
                                                 Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
                                         </div>
                                     {% endif %}
-                                {% else %}
-                                    <div class="col-sm-10 python-den-level">
-                                        <a class="disabled">{{episode.name}} pt. 2</a>
-                                    </div>
-                                    <div class="col-sm-2 python-den-level">
-                                        <a class="button button--level button--icon disabled">
-                                            Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                    </div>
                                 {% endif %}
-                            {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
