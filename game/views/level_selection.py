@@ -97,7 +97,7 @@ def fetch_episode_data(early_access, start=1, end=12):
                     "indy_worksheet_link": worksheet.indy_worksheet_link,
                     "video_link": worksheet.video_link,
                 }
-                for worksheet in Worksheet.objects.filter(episode=episode["id"])
+                for worksheet in Worksheet.objects.filter(episode=episode["id"]).order_by("-before_level")
             ],
         )
         for episode in data
