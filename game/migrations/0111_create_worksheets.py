@@ -74,7 +74,7 @@ def create_worksheets(apps: Apps, *args):
             ),
             Worksheet(
                 episode=Episode.objects.get(pk=14),
-                before_level=Level.objects.get(pk=66),
+                before_level=Level.objects.get(pk=169),
                 lesson_plan_link="https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-8-indeterminate-loops",
                 slides_link="https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FkxewOibLrvKLpJpuDBRH%2FPython%208%20-%20Indeterminate%20Loops.pptx?alt=media&token=ddf212d5-f0a7-47b2-8a6b-420ca2cccc12",
                 student_worksheet_link="https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-8-indeterminate-loops",
@@ -101,7 +101,7 @@ def create_worksheets(apps: Apps, *args):
             ),
             Worksheet(
                 episode=Episode.objects.get(pk=15),
-                before_level=Level.objects.get(pk=65),
+                before_level=Level.objects.get(pk=184),
                 lesson_plan_link="https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-11-using-for-loops",
                 slides_link="https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2F8AjR4b5mO4yOzEIVNI4V%2FPython%2011%20-%20For%20loops.pptx?alt=media&token=5eaa671c-a5eb-43a3-9f13-3478349027e5",
                 student_worksheet_link="https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-11-for-loops",
