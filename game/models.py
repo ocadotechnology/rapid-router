@@ -356,3 +356,6 @@ class Worksheet(models.Model):
     video_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
+    locked_classes = models.ManyToManyField(
+        Class, blank=True, related_name="locked_worksheets"
+    )
