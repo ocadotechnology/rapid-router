@@ -90,6 +90,7 @@ def fetch_episode_data(early_access, start=1, end=12):
             ],
             worksheets=[
                 {
+                    "id": worksheet.id,
                     "before_level": worksheet.before_level_id,
                     "lesson_plan_link": worksheet.lesson_plan_link,
                     "slides_link": worksheet.slides_link,
