@@ -138,7 +138,7 @@ def get_blockly_episodes(request):
 
 def get_python_episodes(request):
     return fetch_episode_data(
-        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 22
+        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 24
     )
 
 
