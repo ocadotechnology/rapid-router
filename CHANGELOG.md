@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.0 (2024-12-03)
+
+### Feature
+
+* Worksheet control ([#1751](https://github.com/ocadotechnology/rapid-router/issues/1751)) ([`60bb4b2`](https://github.com/ocadotechnology/rapid-router/commit/60bb4b232365d90d2efad0f6e57e28e7db156efd))
+
 ## v7.1.0 (2024-11-27)
 
 ### Feature
