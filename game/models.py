@@ -1,8 +1,10 @@
+import typing as t
 from builtins import str
 
 from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.query import QuerySet
 
 
 def theme_choices():
@@ -42,6 +44,8 @@ class Block(models.Model):
 
 class Episode(models.Model):
     """Variables prefixed with r_ signify they are parameters for random level generation"""
+    
+    worksheets: QuerySet["Worksheet"]
 
     name = models.CharField(max_length=200)
     next_episode = models.ForeignKey(
@@ -59,22 +63,6 @@ class Episode(models.Model):
     r_python_enabled = models.BooleanField(default=False)
     r_traffic_lights = models.BooleanField(default=False)
     r_cows = models.BooleanField(default=False)
-
-    lesson_plan_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
-    slides_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
-    student_worksheet_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
-    indy_worksheet_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
-    video_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
 
     @property
     def first_level(self):
@@ -144,6 +132,8 @@ def sort_levels(levels):
 
 
 class Level(models.Model):
+    after_worksheet: t.Optional["Worksheet"]
+
     name = models.CharField(max_length=100)
     episode = models.ForeignKey(
         Episode, blank=True, null=True, default=None, on_delete=models.PROTECT
@@ -332,3 +322,40 @@ class Attempt(models.Model):
 
     def elapsed_time(self):
         return self.finish_time - self.start_time
+
+
+class Worksheet(models.Model):
+    episode = models.ForeignKey(
+        Episode,
+        blank=True,
+        null=True,
+        default=None,
+        on_delete=models.PROTECT,
+        related_name="worksheets",
+    )
+    before_level = models.OneToOneField(
+        Level,
+        blank=True,
+        null=True,
+        default=None,
+        on_delete=models.PROTECT,
+        related_name="after_worksheet",
+    )
+    lesson_plan_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
+    slides_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
+    student_worksheet_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
+    indy_worksheet_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
+    video_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
+    locked_classes = models.ManyToManyField(
+        Class, blank=True, related_name="locked_worksheets"
+    )

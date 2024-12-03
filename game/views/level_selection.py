@@ -2,16 +2,16 @@ from __future__ import absolute_import, division
 
 from builtins import str
 
+import game.level_management as level_management
+import game.messages as messages
 from django.core.cache import cache
 from django.db.models import Max
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
-
-import game.level_management as level_management
-import game.messages as messages
 from game import app_settings, random_road
 from game.cache import cached_episode
-from game.models import Attempt, Episode, Level
+from game.models import Attempt, Episode, Level, Worksheet
+
 from .level_editor import play_anonymous_level
 
 
@@ -58,11 +58,6 @@ def fetch_episode_data_from_database(early_access, start, end):
             "last_level": maxName,
             "random_levels_enabled": episode.r_random_levels_enabled,
             "difficulty": episode.difficulty,
-            "lesson_plan_link": episode.lesson_plan_link,
-            "slides_link": episode.slides_link,
-            "student_worksheet_link": episode.student_worksheet_link,
-            "indy_worksheet_link": episode.indy_worksheet_link,
-            "video_link": episode.video_link,
         }
 
         episode_data.append(e)
@@ -92,6 +87,18 @@ def fetch_episode_data(early_access, start=1, end=12):
             levels=[
                 dict(level, title=get_level_title(level["name"]))
                 for level in episode["levels"]
+            ],
+            worksheets=[
+                {
+                    "id": worksheet.id,
+                    "before_level": worksheet.before_level_id,
+                    "lesson_plan_link": worksheet.lesson_plan_link,
+                    "slides_link": worksheet.slides_link,
+                    "student_worksheet_link": worksheet.student_worksheet_link,
+                    "indy_worksheet_link": worksheet.indy_worksheet_link,
+                    "video_link": worksheet.video_link,
+                }
+                for worksheet in Worksheet.objects.filter(episode=episode["id"]).order_by("-before_level")
             ],
         )
         for episode in data
@@ -132,7 +139,7 @@ def get_blockly_episodes(request):
 
 def get_python_episodes(request):
     return fetch_episode_data(
-        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 22
+        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 24
     )
 
 
@@ -243,6 +250,11 @@ def levels(request, language):
                 level["locked_for_class"] = Level.objects.get(
                     id=level["id"]
                 ).locked_for_class
+
+            for worksheet in episode["worksheets"]:
+                worksheet["locked_classes"] = Worksheet.objects.get(
+                    id=worksheet["id"]
+                ).locked_classes
 
         context["pythonEpisodes"] = python_episodes
 
