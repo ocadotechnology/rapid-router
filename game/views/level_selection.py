@@ -251,6 +251,11 @@ def levels(request, language):
                     id=level["id"]
                 ).locked_for_class
 
+            for worksheet in episode["worksheets"]:
+                worksheet["locked_classes"] = Worksheet.objects.get(
+                    id=worksheet["id"]
+                ).locked_classes
+
         context["pythonEpisodes"] = python_episodes
 
     return context
