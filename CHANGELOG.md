@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.2 (2024-12-04)
+
+### Fix
+
+* Get default levels ([`d9c0fd6`](https://github.com/ocadotechnology/rapid-router/commit/d9c0fd612e2bed97a94230bbda8c63c73c496ae5))
+
 ## v7.2.1 (2024-12-04)
 
 ### Fix
