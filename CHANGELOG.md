@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.1 (2024-12-04)
+
+### Fix
+
+* Get level by name ([`bfbc598`](https://github.com/ocadotechnology/rapid-router/commit/bfbc59819ad9451cf32a07f63929468156b3f409))
+
 ## v7.2.0 (2024-12-03)
 
 ### Feature
