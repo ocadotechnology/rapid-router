@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.3 (2024-12-05)
+
+### Fix
+
+* Level selection ([`da51da0`](https://github.com/ocadotechnology/rapid-router/commit/da51da068b3078359e98b2cb5ca9d4a674ac5e83))
+
 ## v7.2.2 (2024-12-04)
 
 ### Fix
