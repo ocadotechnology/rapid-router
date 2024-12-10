@@ -1680,6 +1680,8 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function onDragStart(x, y) {
+            // cow shouldn't be in the cow group during dragging
+            removeCowFromCowList(cow);
             var bBox = image.getBBox();
             imageWidth = bBox.width;
             imageHeight = bBox.height;
@@ -1695,12 +1697,14 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function onDragEnd() {
-            setCowMarkingsOnMouseUp(controlledCoord, cow);
-
+            
             if (trashcanOpen) {
                 cow.destroy();
+                unmarkOldCowSquare(controlledCoord, cow);
                 closeTrashcan();
             } else {
+                setCowMarkingsOnMouseUp(controlledCoord, cow);
+                cows.push(cow);
                 cow.coordinate = controlledCoord;
                 cow.valid = isValidDraggedCowPlacement(controlledCoord, cow);
                 if (cow.isOnRoad()) {
@@ -1729,6 +1733,13 @@ ocargo.LevelEditor = function(levelId) {
 
         image.drag(onDragMove, onDragStart, onDragEnd);
         addReleaseListeners(image.node);
+    }
+
+    function removeCowFromCowList(cow) {
+        var index = cows.indexOf(cow);
+        if (index > -1) {
+            cows.splice(index, 1);
+        }
     }
 
     function isValidDraggedCowPlacement(controlledCoord, cow){
@@ -1864,10 +1875,12 @@ ocargo.LevelEditor = function(levelId) {
                     internalCow.destroy();
                 }
             }
-
-            setCowMarkingsOnMouseUp(controlledCoord, internalCow);
-            adjustCowGroupMinMaxFields(internalCow);
-
+            
+            if (!trashcanOpen) {
+                setCowMarkingsOnMouseUp(controlledCoord, internalCow);
+                adjustCowGroupMinMaxFields(internalCow);
+            }
+            
             $(document)
             .off('mousemove', handleDraggableCowDragging)
             .off('mouseup mouseleave', handleDraggableCowMouseUp);
