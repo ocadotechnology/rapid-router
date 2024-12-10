@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.4 (2024-12-10)
+
+### Fix
+
+* Remove cow from cow group during dragging to fix the bug ([#1752](https://github.com/ocadotechnology/rapid-router/issues/1752)) ([`a436679`](https://github.com/ocadotechnology/rapid-router/commit/a436679fc7828753bfcf25a99d4a04fb1af4f839))
+
 ## v7.2.3 (2024-12-05)
 
 ### Fix
