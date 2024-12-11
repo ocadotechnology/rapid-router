@@ -643,7 +643,7 @@ ocargo.LevelEditor = function(levelId) {
                     return;
                 }
 
-                const regex = /^(\w?[ ]?)*$/;
+                const regex = /^[\w ]*$/;
                 const validString = regex.exec(nameInput.val());
                 if (!validString) {
                     ocargo.Drawing.startPopup(
@@ -1685,7 +1685,7 @@ ocargo.LevelEditor = function(levelId) {
             var bBox = image.getBBox();
             imageWidth = bBox.width;
             imageHeight = bBox.height;
-            
+
             var paperPosition = paper.position();
             originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
             originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
@@ -1697,7 +1697,7 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function onDragEnd() {
-            
+
             if (trashcanOpen) {
                 cow.destroy();
                 unmarkOldCowSquare(controlledCoord, cow);
@@ -1714,15 +1714,15 @@ ocargo.LevelEditor = function(levelId) {
                 else {
                     var cowX = paperX;
                     var cowY = paperY;
-    
+
                     if (paperWidth < paperX + imageWidth) {
                         cowX = paperWidth - imageWidth
                     }
-    
+
                     if (paperHeight < paperY + imageHeight) {
                         cowY = paperHeight - imageHeight
                     }
-    
+
                     image.transform('t' + cowX + ',' + cowY);
                 }
             }
@@ -1875,12 +1875,12 @@ ocargo.LevelEditor = function(levelId) {
                     internalCow.destroy();
                 }
             }
-            
+
             if (!trashcanOpen) {
                 setCowMarkingsOnMouseUp(controlledCoord, internalCow);
                 adjustCowGroupMinMaxFields(internalCow);
             }
-            
+
             $(document)
             .off('mousemove', handleDraggableCowDragging)
             .off('mouseup mouseleave', handleDraggableCowMouseUp);
@@ -2416,7 +2416,7 @@ ocargo.LevelEditor = function(levelId) {
                             "><path class="blocklyPath" stroke="none" fill="#5b80a5" d="m 0,0 H 111.34375 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
                             "></path><path class="blocklyPathLight" stroke="#8ca6c0" d="m 0.5,0.5 H 110.84375 M 110.84375,0.5 M 0.5,29.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1
                             "></path><text class="blocklyText" y="12.5" transform="translate(10,5)">pigeons</text><g transform="translate(71.34375,5)"><image height="20px" width="30px" xlink:href="/static/game/image/pigeon.svg" alt=""></image></g></g></svg>`;
-        
+
         const cowHTML = `<svg class="block_image"><g transform="translate(10,0)" <path="" class="blocklyPathDark" fill="#496684" d="m 0,0 H 93.40625 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
                             "><path class="blocklyPath" stroke="none" fill="#5b80a5" d="m 0,0 H 93.40625 v 30 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z
                             "></path><path class="blocklyPathLight" stroke="#8ca6c0" d="m 0.5,0.5 H 92.90625 M 92.90625,0.5 M 0.5,29.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1
@@ -2545,17 +2545,55 @@ ocargo.LevelEditor = function(levelId) {
         state.python_view_enabled = language === 'blocklyWithPythonView';
         state.python_enabled = language === 'python' || language === 'both';
 
+        const regex = /^[\w.?!', ]*$/;
+        const subtitleValue = $('#subtitle').val();
+        const descriptionValue = $('#description').val();
+        const hintValue = $('#hint').val();
+
         // Description and hint data
-        if ($('#subtitle').val().length > 0) {
-            state.subtitle = $('#subtitle').val();
+        if (subtitleValue.length > 0) {
+            if (regex.exec(subtitleValue)) {
+                state.subtitle = subtitleValue;
+            }
+            else {
+                ocargo.Drawing.startPopup(
+                    "Oh no!",
+                    "You used some invalid characters for your level subtitle.",
+                    "Try saving your level again using only" +
+                    " letters, numbers and standard punctuation."
+                );
+                return
+            }
         }
 
-        if ($('#description').val().length > 0) {
-            state.lesson = $('#description').val();
+        if (descriptionValue.length > 0) {
+            if (regex.exec(descriptionValue)) {
+                state.lesson = descriptionValue;
+            }
+            else {
+                ocargo.Drawing.startPopup(
+                    "Oh no!",
+                    "You used some invalid characters for your level description.",
+                    "Try saving your level again using only" +
+                    " letters and numbers and standard punctuation."
+                );
+                return
+            }
         }
 
-        if ($('#hint').val().length > 0) {
-            state.hint = $('#hint').val();
+        if (hintValue.length > 0) {
+            if (regex.exec(hintValue)) {
+                state.hint = hintValue;
+            }
+            else {
+                ocargo.Drawing.startPopup(
+                    "Oh no!",
+                    "You used some invalid characters for your level hint.",
+                    "Try saving your level again using only" +
+                    " letters and numbers and standard punctuation."
+                );
+                return
+            }
         }
 
         // Other data
