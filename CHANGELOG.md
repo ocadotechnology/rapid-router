@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.5 (2024-12-13)
+
+### Fix
+
+* Disallow special characters for custom level fields ([#1755](https://github.com/ocadotechnology/rapid-router/issues/1755)) ([`ba8de56`](https://github.com/ocadotechnology/rapid-router/commit/ba8de561f839ce2691075d3e45d16c2585d48a2c))
+
 ## v7.2.4 (2024-12-10)
 
 ### Fix
