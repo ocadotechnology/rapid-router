@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.6 (2025-01-14)
+
+### Fix
+
+* Worksheet counter and accordion arrows ([#1759](https://github.com/ocadotechnology/rapid-router/issues/1759)) ([`0494803`](https://github.com/ocadotechnology/rapid-router/commit/04948030f74811f3c08f0d7a7befdfa09d43c831))
+
 ## v7.2.5 (2024-12-13)
 
 ### Fix
