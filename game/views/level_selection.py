@@ -80,29 +80,55 @@ def fetch_episode_data(early_access, start=1, end=12):
         data = fetch_episode_data_from_database(early_access, start, end)
         cache.set(key, data)
 
-    return [
-        dict(
-            episode,
-            name=messages.get_episode_title(episode["id"]),
-            levels=[
-                dict(level, title=get_level_title(level["name"]))
-                for level in episode["levels"]
-            ],
-            worksheets=[
-                {
-                    "id": worksheet.id,
-                    "before_level": worksheet.before_level_id,
-                    "lesson_plan_link": worksheet.lesson_plan_link,
-                    "slides_link": worksheet.slides_link,
-                    "student_worksheet_link": worksheet.student_worksheet_link,
-                    "indy_worksheet_link": worksheet.indy_worksheet_link,
-                    "video_link": worksheet.video_link,
-                }
-                for worksheet in Worksheet.objects.filter(episode=episode["id"]).order_by("-before_level")
-            ],
+    def worksheet_to_dict(index, worksheet):
+        return {
+            "id": worksheet.id,
+            "index": index,
+            "before_level": worksheet.before_level_id,
+            "lesson_plan_link": worksheet.lesson_plan_link,
+            "slides_link": worksheet.slides_link,
+            "student_worksheet_link": worksheet.student_worksheet_link,
+            "indy_worksheet_link": worksheet.indy_worksheet_link,
+            "video_link": worksheet.video_link,
+        }
+
+    episodes = []
+    for episode in data:
+        worksheets = [
+            worksheet_to_dict(index, worksheet)
+            for index, worksheet in enumerate(
+                Worksheet.objects.filter(
+                    episode=episode["id"],
+                    before_level__isnull=False,
+                ).order_by("before_level"),
+                start=1,
+            )
+        ]
+        
+        worksheets += [
+            worksheet_to_dict(index, worksheet)
+            for index, worksheet in enumerate(
+                Worksheet.objects.filter(
+                    episode=episode["id"],
+                    before_level__isnull=True,
+                ),
+                start=1 + len(worksheets),
+            )
+        ]
+        
+        episodes.append(
+            dict(
+                episode,
+                name=messages.get_episode_title(episode["id"]),
+                levels=[
+                    dict(level, title=get_level_title(level["name"]))
+                    for level in episode["levels"]
+                ],
+                worksheets=worksheets,
+            )
         )
-        for episode in data
-    ]
+    
+    return episodes
 
 
 def get_level_title(i):
