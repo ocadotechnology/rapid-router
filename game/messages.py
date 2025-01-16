@@ -228,12 +228,23 @@ def title_level7():
 
 
 def description_level7():
-    message = (
+    message = youtube_link(
+        "https://www.youtube.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q", 0
+    )
+    
+    message += (
+        "<div class='popup_message'>"
+        f"This video introduces variable-type blocks in Blockly. " 
+        f"These blocks let you store numbers and use them in your code to make it more efficient. "
         f"Practise your new skills on this road by helping the driver to arrive at "
         f"the house. <br> When you are happy with your sequence, press "
         f"{play_button_icon_url()}!"
+        "</div>"
     )
-    return build_description(title_level7(), message)
+    
+    return build_description(
+        title_level7(), f"<div class='main_popup_container'>{message}</div>"
+    )
 
 
 def hint_level7():
