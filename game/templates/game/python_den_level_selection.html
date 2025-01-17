@@ -77,7 +77,7 @@
                                         <p class="text--warning">In order to access the full content for this course, please log in.</p>
                                     {% endif %}
                                     <div class="col-sm-10 python-den-level">
-                                        <a class="disabled">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ forloop.counter }}{% endif %}</a>
+                                        <a class="disabled">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                     </div>
                                     <div class="col-sm-2 python-den-level">
                                         <a class="button button--level button--icon disabled">
@@ -85,7 +85,7 @@
                                     </div>
                                 {% else %}
                                     <div class="col-sm-7 python-den-level">
-                                        <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ forloop.counter }}{% endif %}</a>
+                                        <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                     </div>
                                     {% if user|is_logged_in_as_teacher %}
                                         <div class="col-sm-3 python-den-level">
@@ -161,7 +161,7 @@
                                                 <p class="text--warning">In order to access the full content for this course, please log in.</p>
                                             {% endif %}
                                             <div class="col-sm-10 python-den-level">
-                                                <a class="disabled">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ forloop.counter }}{% endif %}</a>
+                                                <a class="disabled">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                             </div>
                                             <div class="col-sm-2 python-den-level">
                                                 <a class="button button--level button--icon disabled">
@@ -169,7 +169,7 @@
                                             </div>
                                         {% else %}
                                             <div class="col-sm-7 python-den-level">
-                                                <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ forloop.counter }}{% endif %}</a>
+                                                <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                             </div>
                                             {% if user|is_logged_in_as_teacher %}
                                                 <div class="col-sm-3 python-den-level">
@@ -234,7 +234,7 @@
                                             <p class="text--warning">In order to access the full content for this course, please log in.</p>
                                         {% endif %}
                                         <div class="col-sm-10 python-den-level">
-                                            <a class="disabled">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ forloop.counter }}{% endif %}</a>
+                                            <a class="disabled">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                         </div>
                                         <div class="col-sm-2 python-den-level">
                                             <a class="button button--level button--icon disabled">
@@ -242,7 +242,7 @@
                                         </div>
                                     {% else %}
                                         <div class="col-sm-7 python-den-level">
-                                            <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ forloop.counter }}{% endif %}</a>
+                                            <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                         </div>
                                         {% if user|is_logged_in_as_teacher %}
                                             <div class="col-sm-3 python-den-level">
