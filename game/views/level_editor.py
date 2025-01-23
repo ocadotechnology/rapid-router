@@ -263,13 +263,14 @@ def save_level_for_editor(request, levelId=None):
 
             # share with all admins of the school if user is in a school
             if not is_user_independent:
-                school_admins = teacher.school.admins()
+                if not teacher.school is None:
+                    school_admins = teacher.school.admins()
 
-                [
-                    level.shared_with.add(school_admin.new_user)
-                    for school_admin in school_admins
-                    if school_admin.new_user != request.user
-                ]
+                    [
+                        level.shared_with.add(school_admin.new_user)
+                        for school_admin in school_admins
+                        if school_admin.new_user != request.user
+                    ]
 
             level.save()
         response = {"id": level.id}
