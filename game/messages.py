@@ -248,7 +248,11 @@ def description_level7():
 
 
 def hint_level7():
+    message = youtube_link(
+        "https://www.youtube.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q", 0
+    )
     return (
+        f"{message}<br>"
         "This road is more complicated but you can do this! Start with just a few "
         "blocks and try that, then add more blocks and check it again."
     )
