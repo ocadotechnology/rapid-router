@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.8 (2025-01-28)
+
+### Fix
+
+* Non school teachers can now save levels ([#1767](https://github.com/ocadotechnology/rapid-router/issues/1767)) ([`7a110df`](https://github.com/ocadotechnology/rapid-router/commit/7a110dfaec19f649ea5e3f4c5e893bfd8ff22e69))
+
 ## v7.2.7 (2025-01-17)
 
 ### Fix
