@@ -228,8 +228,10 @@ def title_level7():
 
 
 def description_level7():
-    message = youtube_link(
-        "https://www.youtube.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q", 0
+    message = (
+       "<div class='video_wrapper'>"
+        f"{youtube_link('https://www.youtube.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q', 0)}"
+        "</div>"
     )
     
     message += (
@@ -248,14 +250,20 @@ def description_level7():
 
 
 def hint_level7():
-    message = youtube_link(
-        "https://www.youtube.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q", 0
+    message = (
+        "<div class='video_wrapper'>"
+        f"{youtube_link('https://www.youtube.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q', 0)}"
+        "</div>"
     )
-    return (
-        f"{message}<br>"
-        "This road is more complicated but you can do this! Start with just a few "
-        "blocks and try that, then add more blocks and check it again."
+
+    message += (
+        "<div class='popup_message'>"
+        f"This road is more complicated but you can do this! Start with just a few "
+        f"blocks and try that, then add more blocks and check it again."
+        "</div>"
     )
+        
+    return message
 
 
 def title_level8():
