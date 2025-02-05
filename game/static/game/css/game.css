@@ -181,6 +181,9 @@ div > .navigation_button_kurono {
     margin:0;
     border: none;
     resize: none;
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
 }
 
 #editor {
