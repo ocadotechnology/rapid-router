@@ -129,9 +129,22 @@ ocargo.PythonControl = function () {
     }
 
     function outf(outputText) {
+        /** @type {string} */
+        let text = outputText
+
+        if (text.startsWith("ParseError: ")) {
+            text += "\nThis may be because your code has not been formatted correctly or you have not indented your code correctly."
+        } else if (text.startsWith("AttributeError: ")) {
+            text += "\nEnsure that the object has the method or property. Review the PY commands for help.\nYou may also be trying to import something that doesn't exist."
+        } else if (text.startsWith("NameError: ")) {
+            text += "\nName errors usually happen because you have misspelt a variable name. Double check your spelling."
+        } else if (text.startsWith("TypeError: ")) {
+            text += "\nType errors usually happen because you are trying to perform an illegal action on an object."
+        }
+
         ocargo.animation.appendAnimation({
             type: 'console',
-            text: outputText
+            text
         });
     }
 
