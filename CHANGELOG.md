@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.2.7 (2025-01-17)
+
+### Fix
+
+* Worksheet index ([#1763](https://github.com/ocadotechnology/rapid-router/issues/1763)) ([`8fc40cb`](https://github.com/ocadotechnology/rapid-router/commit/8fc40cbfcaf93d174b6afe9a54295893536908a9))
+
 ## v7.2.6 (2025-01-14)
 
 ### Fix
