@@ -132,7 +132,6 @@ class CanShareLevel(permissions.BasePermission):
         elif hasattr(request.user.userprofile, "teacher") and obj.shared_with.filter(id=request.user.id).exists():
             return True
         else:
-            print(obj.needs_approval)
             return obj.owner == request.user.userprofile and not obj.needs_approval
 
 
