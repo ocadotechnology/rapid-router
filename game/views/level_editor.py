@@ -2,8 +2,7 @@ from __future__ import division
 
 import json
 import re
-from builtins import map
-from builtins import str
+from builtins import map, str
 
 from common.models import Student, Teacher
 from django.contrib.auth.models import User
@@ -11,7 +10,6 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST
 from portal.templatetags import app_tags
 from rest_framework.authentication import SessionAuthentication
@@ -20,8 +18,7 @@ from rest_framework.views import APIView
 import game.level_management as level_management
 import game.messages as messages
 import game.permissions as permissions
-from game import app_settings
-from game import random_road
+from game import app_settings, random_road
 from game.cache import cached_level_decor, cached_level_blocks
 from game.character import get_all_character
 from game.decor import get_all_decor, get_decor_element
@@ -229,17 +226,18 @@ def save_level_for_editor(request, levelId=None):
     if pattern.match(data["name"]):
         level_management.save_level(level, data)
 
-        if levelId is None:
-            teacher = None
-
-            is_user_school_student = (
+        is_user_school_student = (
                 hasattr(level.owner, "student")
                 and not level.owner.student.is_independent()
-            )
-            is_user_independent = (
+        )
+        is_user_independent = (
                 hasattr(level.owner, "student") and level.owner.student.is_independent()
-            )
-            is_user_teacher = hasattr(level.owner, "teacher")
+        )
+        is_user_teacher = hasattr(level.owner, "teacher")
+
+        # when level is created
+        if levelId is None:
+            teacher = None
 
             # if level owner is a school student, share with teacher automatically if they aren't an admin
             if is_user_school_student:
@@ -247,17 +245,6 @@ def save_level_for_editor(request, levelId=None):
                 if not teacher.is_admin:
                     level.shared_with.add(teacher.new_user)
 
-                if not data["anonymous"]:
-                    level_management.email_new_custom_level(
-                        level.owner.student.class_field.teacher.new_user.email,
-                        request.build_absolute_uri(reverse("level_moderation")),
-                        request.build_absolute_uri(
-                            reverse("play_custom_level", kwargs={"levelId": level.id})
-                        ),
-                        request.build_absolute_uri(reverse("home")),
-                        str(level.owner.student),
-                        level.owner.student.class_field.name,
-                    )
             elif is_user_teacher:
                 teacher = level.owner.teacher
 
@@ -272,7 +259,22 @@ def save_level_for_editor(request, levelId=None):
                         if school_admin.new_user != request.user
                     ]
 
-            level.save()
+        # anytime a student edits their level
+        if is_user_school_student and not level.needs_approval:
+            level.needs_approval = True
+
+            if not data["anonymous"]:
+                level_management.email_new_custom_level(
+                    level.owner.student.class_field.teacher.new_user.email,
+                    request.build_absolute_uri(reverse("level_moderation")),
+                    request.build_absolute_uri(
+                        reverse("play_custom_level", kwargs={"levelId": level.id})
+                    ),
+                    str(level.owner.student),
+                    level.owner.student.class_field.name,
+                )
+
+        level.save()
         response = {"id": level.id}
         return HttpResponse(json.dumps(response), content_type="application/json")
     else:

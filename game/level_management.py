@@ -195,9 +195,9 @@ def unshare_level(level, *users):
 
 
 def email_new_custom_level(
-    teacher_email, moderate_url, level_url, home_url, student_name, class_name
+    teacher_email, moderate_url, level_url, student_name, class_name
 ):
-    # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
+    # email teacher when a new custom level is created by a pupil, so it can be moderated
 
     send_dotdigital_email(
         campaign_ids["level_creation"],

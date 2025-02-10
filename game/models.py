@@ -229,6 +229,7 @@ class Level(models.Model):
     locked_for_class = models.ManyToManyField(
         Class, blank=True, related_name="locked_levels"
     )
+    needs_approval = models.BooleanField(default=False)
     objects = LevelManager()
 
     def __str__(self):

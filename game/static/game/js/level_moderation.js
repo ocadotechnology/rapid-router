@@ -1,7 +1,6 @@
 /* global showPopupConfirmation */
 
 var levelID;
-var classID;
 var students;
 
 var saving = new ocargo.Saving();
@@ -57,6 +56,27 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
   },
 });
 
+approveLevel = function (id, callback, errorCallback) {
+  csrftoken = Cookies.get('csrftoken');
+  $.ajax({
+    url: Urls.approve_level(id),
+    type: 'POST',
+    dataType: 'json',
+    data: {csrfmiddlewaretoken: Cookies.get('csrftoken')},
+    beforeSend: function (xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    },
+    success: function (json) {
+      callback();
+    },
+    error: function (xhr, errmsg, err) {
+      errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+    }
+  });
+};
+
 $(document).ready(function () {
   $(".delete").click(function () {
     levelID = this.getAttribute("value");
@@ -65,6 +85,11 @@ $(document).ready(function () {
 
   $(".play").click(function () {
     window.location.href = Urls.play_custom_level(this.getAttribute("value"));
+  });
+
+  $(".approve").click(function () {
+    levelID = this.getAttribute("value");
+    approveLevel(levelID)
   });
 
   $("#clear-classes").on("click", () => {
@@ -105,7 +130,7 @@ $(document).ready(function () {
       {
         orderable: false,
         searchable: false,
-        targets: [-1, -2], // Play and Delete columns
+        targets: [-1, -2, -3], // Play, Approve and Delete columns
       },
       {
         type: "student-with-teacher",

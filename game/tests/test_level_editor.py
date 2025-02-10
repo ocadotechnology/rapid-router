@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch
 
-from common.models import Teacher
+from common.models import Teacher, User
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
@@ -88,9 +88,14 @@ class LevelEditorTestCase(TestCase):
         url = reverse("save_level_for_editor")
         response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
 
-        assert_that(response.status_code, equal_to(200))
-        sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)["id"]).getvalue())
-        assert sharing_info1["teacher"]["shared"]
+        assert response.status_code == 200
+
+        level = Level.objects.all().last()
+        teacher_user = User.objects.get(email=email)
+
+        assert level.needs_approval == True
+        assert level.shared_with.count() == 1
+        assert level.shared_with.filter(id=teacher_user.id).exists()
         assert len(mail.outbox) == 1
 
     def test_anonymous_level_saving_school_student(self):
@@ -211,7 +216,7 @@ class LevelEditorTestCase(TestCase):
         response = self.client.get(load_level_url)
         assert response.status_code == 200
 
-        # Login as the first student
+        # Log in as the first student
         self.logout()
         self.student_login(student_name1, access_code2, student_password1)
 
@@ -223,7 +228,7 @@ class LevelEditorTestCase(TestCase):
         response = self.client.get(reverse("play_custom_level", args=[level.id]))
         assert response.status_code == 200
 
-        # Login as first teacher again
+        # Log in as first teacher again
         self.logout()
         self.login(email1, password1)
 
@@ -231,7 +236,7 @@ class LevelEditorTestCase(TestCase):
         response = self.client.post(share_url, {"recipientIDs[]": [student2.new_user.id], "action": ["share"]})
         assert response.status_code == 200
 
-        # Login as the second student
+        # Log in as the second student
         self.logout()
         self.student_login(student_name2, access_code2, student_password2)
 
