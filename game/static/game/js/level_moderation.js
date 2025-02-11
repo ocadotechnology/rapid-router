@@ -90,6 +90,7 @@ $(document).ready(function () {
   $(".approve").click(function () {
     levelID = this.getAttribute("value");
     approveLevel(levelID)
+    window.location.href = Urls.level_moderation();
   });
 
   $("#clear-classes").on("click", () => {
