@@ -98,6 +98,12 @@ class LevelEditorTestCase(TestCase):
         assert level.shared_with.filter(id=teacher_user.id).exists()
         assert len(mail.outbox) == 1
 
+        level.needs_approval = False
+        level.save()
+
+        sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)["id"]).getvalue())
+        assert sharing_info1["teacher"]["shared"]
+
     def test_anonymous_level_saving_school_student(self):
         email, password = signup_teacher_directly()
         create_organisation_directly(email)
@@ -124,6 +130,10 @@ class LevelEditorTestCase(TestCase):
             "destinations": "[[3,4]]",
         }
         response = self.client.post(url, {"data": json.dumps(data1)})
+
+        level = Level.objects.all().last()
+        level.needs_approval = False
+        level.save()
 
         assert response.status_code == 200
         sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)["id"]).getvalue())
