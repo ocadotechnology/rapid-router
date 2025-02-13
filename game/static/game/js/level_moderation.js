@@ -62,7 +62,7 @@ approveLevel = function (id, callback, errorCallback) {
     url: Urls.approve_level(id),
     type: 'POST',
     dataType: 'json',
-    data: {csrfmiddlewaretoken: Cookies.get('csrftoken')},
+    data: {csrfmiddlewaretoken: csrftoken},
     beforeSend: function (xhr, settings) {
       if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
         xhr.setRequestHeader("X-CSRFToken", csrftoken);
