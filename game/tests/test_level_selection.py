@@ -128,7 +128,7 @@ class LevelSelectionTestCase(TestCase):
 
         save_url = "save_level_for_editor"
 
-        # Login as the second teacher
+        # Log in as the second teacher
         self.login(email2, password2)
         teacher2_level = create_save_level(teacher2)
         save_level_url = reverse(save_url)
@@ -139,7 +139,7 @@ class LevelSelectionTestCase(TestCase):
 
         assert response.status_code == 200
 
-        # Login as the first student
+        # Log in as the first student
         self.logout()
         self.student_login(student_name1, access_code1, student_password1)
 
@@ -151,7 +151,7 @@ class LevelSelectionTestCase(TestCase):
 
         assert response.status_code == 200
 
-        # Login as the second student
+        # Log in as the second student
         self.logout()
         self.student_login(student_name2, access_code2, student_password2)
 
@@ -163,7 +163,7 @@ class LevelSelectionTestCase(TestCase):
 
         assert response.status_code == 200
 
-        # Login as first teacher again and check they have access to all the levels created above
+        # Log in as first teacher again and check they have access to all the levels created above
         self.logout()
         self.login(email1, password1)
 
@@ -194,7 +194,7 @@ class LevelSelectionTestCase(TestCase):
             == student2.new_user
         )
 
-        # Login as second teacher again and check they have access to only their student's level
+        # Log in as second teacher again and check they have access to only their student's level
         self.logout()
         self.login(email2, password2)
 

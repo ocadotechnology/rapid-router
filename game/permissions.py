@@ -61,7 +61,7 @@ def can_approve_level(user, level):
 def can_play_level(user, level, early_access):
     if not user.is_anonymous and hasattr(user.userprofile, "student") and user.userprofile.student.class_field:
         # If the user is a student, check that the level isn't locked for their class
-        return user.userprofile.student.class_field not in level.locked_for_class.all()
+        return user.userprofile.student.class_field not in level.locked_for_class.all() and not level.needs_approval
     elif level.default and not level.episode.in_development:
         return True
     elif level.anonymous:

@@ -35,8 +35,12 @@ def levels_shared_with(user):
         return []
 
     shared_levels = user.shared
+    shared_levels = add_related_fields(shared_levels)
 
-    return add_related_fields(shared_levels)
+    if hasattr(user.userprofile, "student"):
+        shared_levels = shared_levels.filter(needs_approval=False)
+
+    return shared_levels
 
 
 def levels_owned_by(user):
