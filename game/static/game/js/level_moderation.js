@@ -90,7 +90,12 @@ $(document).ready(function () {
   $(".approve").click(function () {
     levelID = this.getAttribute("value");
     approveLevel(levelID)
-    window.location.href = Urls.level_moderation();
+    // Waiting half a second before redirecting because otherwise the Approve button doesn't become disabled
+    setTimeout(
+        function(){
+          window.location.href = Urls.level_moderation();
+          },
+        500);
   });
 
   $("#clear-classes").on("click", () => {

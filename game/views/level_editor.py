@@ -267,7 +267,7 @@ def save_level_for_editor(request, levelId=None):
         if is_user_school_student:
             if not level.needs_approval:
                 level.needs_approval = True
-            else:
+
                 if not data["anonymous"]:
                     level_management.email_new_custom_level(
                         level.owner.student.class_field.teacher.new_user.email,
