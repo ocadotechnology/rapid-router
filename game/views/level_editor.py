@@ -248,6 +248,10 @@ def save_level_for_editor(request, levelId=None):
             elif is_user_teacher:
                 teacher = level.owner.teacher
 
+            # if level owner is a teacher or an indy user, approval isn't needed
+            if not is_user_school_student:
+                level.needs_approval = False
+
             # share with all admins of the school if user is in a school
             if not is_user_independent:
                 if not teacher.school is None:
@@ -260,19 +264,20 @@ def save_level_for_editor(request, levelId=None):
                     ]
 
         # anytime a student edits their level
-        if is_user_school_student and not level.needs_approval:
-            level.needs_approval = True
-
-            if not data["anonymous"]:
-                level_management.email_new_custom_level(
-                    level.owner.student.class_field.teacher.new_user.email,
-                    request.build_absolute_uri(reverse("level_moderation")),
-                    request.build_absolute_uri(
-                        reverse("play_custom_level", kwargs={"levelId": level.id})
-                    ),
-                    str(level.owner.student),
-                    level.owner.student.class_field.name,
-                )
+        if is_user_school_student:
+            if not level.needs_approval:
+                level.needs_approval = True
+            else:
+                if not data["anonymous"]:
+                    level_management.email_new_custom_level(
+                        level.owner.student.class_field.teacher.new_user.email,
+                        request.build_absolute_uri(reverse("level_moderation")),
+                        request.build_absolute_uri(
+                            reverse("play_custom_level", kwargs={"levelId": level.id})
+                        ),
+                        str(level.owner.student),
+                        level.owner.student.class_field.name,
+                    )
 
         level.save()
         response = {"id": level.id}

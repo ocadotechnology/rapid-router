@@ -11,7 +11,6 @@ from django.core import mail
 from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
-from hamcrest import assert_that, equal_to
 
 from game.models import Level
 from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses, multiple_house_data
