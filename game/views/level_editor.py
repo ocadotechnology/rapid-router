@@ -245,6 +245,17 @@ def save_level_for_editor(request, levelId=None):
                 if not teacher.is_admin:
                     level.shared_with.add(teacher.new_user)
 
+                if not data["anonymous"]:
+                    level_management.email_new_custom_level(
+                        teacher.new_user.email,
+                        request.build_absolute_uri(reverse("level_moderation")),
+                        request.build_absolute_uri(
+                            reverse("play_custom_level", kwargs={"levelId": level.id})
+                        ),
+                        str(level.owner.student),
+                        level.owner.student.class_field.name,
+                    )
+
             elif is_user_teacher:
                 teacher = level.owner.teacher
 
