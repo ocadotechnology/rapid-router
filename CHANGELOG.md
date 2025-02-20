@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.3.0 (2025-02-20)
+
+### Feature
+
+* Make level moderation proactive ([#1773](https://github.com/ocadotechnology/rapid-router/issues/1773)) ([`42196e2`](https://github.com/ocadotechnology/rapid-router/commit/42196e287aef3b7e119c7ca62af12140c4bcfed7))
+
 ## v7.2.9 (2025-02-05)
 
 ### Fix
