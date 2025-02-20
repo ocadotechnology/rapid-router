@@ -50,7 +50,7 @@ from game.views.level_editor import (
     owned_levels,
     shared_levels,
 )
-from game.views.level_moderation import level_moderation
+from game.views.level_moderation import level_moderation, approve_level
 from game.views.level_selection import blockly_levels, random_level_for_episode
 from game.views.scoreboard import blockly_scoreboard
 
@@ -118,6 +118,11 @@ urlpatterns = [
                     r"^delete/(?P<levelID>[0-9]+)/$",
                     delete_level,
                     name="delete_level",
+                ),
+                re_path(
+                    r"^approve/(?P<levelID>[0-9]+)/$",
+                    approve_level,
+                    name="approve_level",
                 ),
             ]
         ),

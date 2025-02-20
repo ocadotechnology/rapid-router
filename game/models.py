@@ -16,9 +16,7 @@ def theme_choices():
 def character_choices():
     from game.character import get_all_character
 
-    return [
-        (character.name, character.name) for character in get_all_character()
-    ]
+    return [(character.name, character.name) for character in get_all_character()]
 
 
 class Block(models.Model):
@@ -44,7 +42,7 @@ class Block(models.Model):
 
 class Episode(models.Model):
     """Variables prefixed with r_ signify they are parameters for random level generation"""
-    
+
     worksheets: QuerySet["Worksheet"]
 
     name = models.CharField(max_length=200)
@@ -161,9 +159,7 @@ class Level(models.Model):
         on_delete=models.SET_NULL,
         related_name="prev_level",
     )
-    shared_with = models.ManyToManyField(
-        User, related_name="shared", blank=True
-    )
+    shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
     model_solution = models.CharField(blank=True, max_length=20, default="[]")
     disable_route_score = models.BooleanField(default=False)
     disable_algorithm_score = models.BooleanField(default=False)
@@ -229,7 +225,19 @@ class Level(models.Model):
     locked_for_class = models.ManyToManyField(
         Class, blank=True, related_name="locked_levels"
     )
+    needs_approval = models.BooleanField(default=True)
     objects = LevelManager()
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=~models.Q(
+                    default=True,
+                    needs_approval=True,
+                ),
+                name="level__default_does_not_need_approval",
+            ),
+        ]
 
     def __str__(self):
         return f"Level {self.name}"
@@ -303,9 +311,7 @@ class Workspace(models.Model):
 
 class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
-    level = models.ForeignKey(
-        Level, related_name="attempts", on_delete=models.CASCADE
-    )
+    level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
     student = models.ForeignKey(
         Student,
         related_name="attempts",
@@ -344,18 +350,14 @@ class Worksheet(models.Model):
     lesson_plan_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
-    slides_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
+    slides_link = models.CharField(max_length=500, null=True, blank=True, default=None)
     student_worksheet_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
     indy_worksheet_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
-    video_link = models.CharField(
-        max_length=500, null=True, blank=True, default=None
-    )
+    video_link = models.CharField(max_length=500, null=True, blank=True, default=None)
     locked_classes = models.ManyToManyField(
         Class, blank=True, related_name="locked_worksheets"
     )

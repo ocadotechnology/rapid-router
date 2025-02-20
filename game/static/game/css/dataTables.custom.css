@@ -1,5 +1,6 @@
-.tableWrapper {
-  width: 100%;
+.tableWrapper,
+#moderateTable {
+  width: 100% !important;
 }
 
 div.DTFC_LeftBodyLiner,

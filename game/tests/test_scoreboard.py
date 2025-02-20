@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 from common.models import Class, Teacher, Student
 from common.tests.utils.classes import create_class_directly
-from common.tests.utils.organisation import create_organisation_directly
+from common.tests.utils.organisation import create_organisation_directly, join_teacher_to_organisation
 from common.tests.utils.student import (
     create_school_student_directly,
     create_independent_student_directly,
@@ -210,15 +210,18 @@ class ScoreboardTestCase(TestCase):
 
     def test_admin_teacher_can_see_all_classes(self):
         """An admin should be able to see all classes, not just the ones they teach"""
+        teacher_email = "normal@school.edu"
+        admin_email = "admin@school.edu"
+
         normal_teacher = Teacher.objects.factory(
-            "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
+            "Normal", "Teacher", teacher_email, "secretpa$sword"
         )
         admin_teacher = Teacher.objects.factory(
-            "Admin", "Admin", "admin@school.edu", "secretpa$sword2"
+            "Admin", "Admin", admin_email, "secretpa$sword2"
         )
 
-        admin_teacher.is_admin = True
-        admin_teacher.save()
+        school = create_organisation_directly(admin_email)
+        join_teacher_to_organisation(teacher_email, school.name)
 
         _, name1, _ = create_class_directly(
             admin_teacher.user.user.email, class_name="Class 1"

@@ -54,10 +54,14 @@ def can_play_or_delete_level(user, level):
         return user.userprofile.teacher.teaches(level.owner)
 
 
+def can_approve_level(user, level):
+    return hasattr(user.userprofile, "teacher") and level.shared_with.filter(id=user.id).exists()
+
+
 def can_play_level(user, level, early_access):
     if not user.is_anonymous and hasattr(user.userprofile, "student") and user.userprofile.student.class_field:
         # If the user is a student, check that the level isn't locked for their class
-        return user.userprofile.student.class_field not in level.locked_for_class.all()
+        return user.userprofile.student.class_field not in level.locked_for_class.all() and not level.needs_approval
     elif level.default and not level.episode.in_development:
         return True
     elif level.anonymous:
@@ -112,8 +116,8 @@ def can_delete_level(user, level):
 class CanShareLevel(permissions.BasePermission):
     """
     Used to verify that an incoming request is made by a user who is authorised to share
-    the level - that is, that they are the owner of the level as a student, or if they're a teacher that the level was
-    shared with them.
+    the level - that is, that they are the owner of the level as a student and the level has been approved by a teacher,
+    or if they're a teacher that the level was shared with them.
     """
 
     def has_permission(self, request, view):
@@ -128,7 +132,7 @@ class CanShareLevel(permissions.BasePermission):
         elif hasattr(request.user.userprofile, "teacher") and obj.shared_with.filter(id=request.user.id).exists():
             return True
         else:
-            return obj.owner == request.user.userprofile
+            return obj.owner == request.user.userprofile and not obj.needs_approval
 
 
 class CanShareLevelWith(permissions.BasePermission):
