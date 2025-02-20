@@ -2,7 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 from common.models import Student, Class
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
 from portal.templatetags import app_tags
 
 import game.messages as messages
@@ -132,6 +135,7 @@ def level_moderation(request):
                     "id": level.id,
                     "name": level.name,
                     "shared_with": shared_str,
+                    "needs_approval": level.needs_approval,
                 }
             )
 
@@ -144,3 +148,22 @@ def level_moderation(request):
             "thead": table_headers,
         },
     )
+
+
+@require_POST
+def approve_level(request, levelID):
+    level = Level.objects.get(id=levelID)
+    if permissions.can_approve_level(request.user, level):
+        level.needs_approval = False
+        level.save()
+
+        return HttpResponseRedirect(reverse_lazy("level_moderation"))
+    else:
+        return HttpResponseUnauthorized()
+
+
+class HttpResponseUnauthorized(HttpResponse):
+    def __init__(self):
+        super(HttpResponseUnauthorized, self).__init__(
+            content="Unauthorized", status=401
+        )

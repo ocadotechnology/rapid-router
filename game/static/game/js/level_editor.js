@@ -87,6 +87,7 @@ ocargo.LevelEditor = function(levelId) {
     var originNode = null;
     var houseNodes = [];
     var currentTheme = THEMES.grass;
+    var needsApproval = false;
 
     // Reference to the Raphael elements for each square
     var grid;
@@ -731,7 +732,7 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function setupShareTab() {
-            // Setup the behaviour for when the tab is selected
+            // Set up the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
                 if (!isIndependentStudent() ||  !isLoggedIn("share") || !canShare() || !isLevelOwned()) {
                     restorePreviousTab();
@@ -2745,6 +2746,8 @@ ocargo.LevelEditor = function(levelId) {
         if(state.max_fuel) {
             $('#max_fuel').val(state.max_fuel);
         }
+
+        needsApproval = state.needs_approval;
     }
 
     function loadLevel(levelID) {
@@ -2853,10 +2856,13 @@ ocargo.LevelEditor = function(levelId) {
 
     function canShare() {
         if (!saveState.isSaved()) {
-            ocargo.Drawing.startPopup(gettext('Sharing'), '', gettext('Please save your level before continuing!'));
+            ocargo.Drawing.startPopup("Sharing", "", "Please save your level before continuing!");
             return false;
         } else if (hasLevelChangedSinceSave()) {
-            ocargo.Drawing.startPopup(gettext('Sharing'), '', gettext('Please save your latest changes!'));
+            ocargo.Drawing.startPopup("Sharing", "", "Please save your latest changes!");
+            return false;
+        } else if (needsApproval) {
+            ocargo.Drawing.startPopup("Sharing", "", "Your teacher hasn't approved your level so you can't share it yet. Please let your teacher know they need to approve it first.")
             return false;
         }
         return true;
@@ -3174,7 +3180,7 @@ ocargo.LevelEditor = function(levelId) {
 /******************/
 
 $(function() {
-    var editor = new ocargo.LevelEditor(LEVEL); // This seems unused but removing it breaks the editor page.
+    new ocargo.LevelEditor(LEVEL);
     var subtitle = interpolate(
         gettext('Click %(help_icon)s%(help_label)s for clues on getting started.'), {
             help_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp'),
