@@ -234,14 +234,12 @@ def description_level7():
         f"{play_button_icon_url()}!"
     )
     return build_description(title_level7(), message)
-
-
+    
 def hint_level7():
     return (
         "This road is more complicated but you can do this! Start with just a few "
         "blocks and try that, then add more blocks and check it again."
     )
-
 
 def title_level8():
     return "The warehouse is not always in the same place"
@@ -2671,9 +2669,18 @@ def hint_level109():
     lambda: "In a <b>while</b>, crocodile!",
     lambda: build_description(
         title_level1007(),
-        "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully.",
+        "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."
+        "<br><br>Watch this video for more details: <br>"
+        "<div style='position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;'>"
+        "<iframe width='280' height='315' src='https://www.youtube-nocookie.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q' "
+        "allowfullscreen style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;'></iframe>"
+        "</div>",
     ),
-    lambda: "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values. Watch the video if you are unsure.",
+    lambda: "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values. Watch the video here if you are unsure."
+            "<div style='position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;'>"
+            "<iframe width='560' height='315' src='https://www.youtube-nocookie.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q' "
+            "allowfullscreen style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;'></iframe>"
+            "</div>",
 )
 
 (title_level1008, description_level1008, hint_level1008,) = (
