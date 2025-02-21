@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v7.3.1 (2025-02-21)
+
+### Fix
+
+* I added the Youtube link for Level 7 ([#1762](https://github.com/ocadotechnology/rapid-router/issues/1762)) ([`8ebae14`](https://github.com/ocadotechnology/rapid-router/commit/8ebae1467866221691a29168bcceae58c59849a8))
+
 ## v7.3.0 (2025-02-20)
 
 ### Feature
