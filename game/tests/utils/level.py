@@ -50,6 +50,10 @@ def create_save_level(teacher_or_student, level_name="1", shared_with=None):
     level = Level(default=False, anonymous=data["anonymous"])
     level.owner = teacher_or_student.user
     level_management.save_level(level, data)
+
+    if hasattr(level.owner, "teacher"):
+        level.needs_approval = False
+
     level.save()
 
     if shared_with is not None:

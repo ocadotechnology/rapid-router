@@ -2,6 +2,24 @@
 
 <!--next-version-placeholder-->
 
+## v7.3.0 (2025-02-20)
+
+### Feature
+
+* Make level moderation proactive ([#1773](https://github.com/ocadotechnology/rapid-router/issues/1773)) ([`42196e2`](https://github.com/ocadotechnology/rapid-router/commit/42196e287aef3b7e119c7ca62af12140c4bcfed7))
+
+## v7.2.9 (2025-02-05)
+
+### Fix
+
+* Error messages ([#1769](https://github.com/ocadotechnology/rapid-router/issues/1769)) ([`245d426`](https://github.com/ocadotechnology/rapid-router/commit/245d426e4d47819bd9cf4b3473214f3c80b8a91d))
+
+## v7.2.8 (2025-01-28)
+
+### Fix
+
+* Non school teachers can now save levels ([#1767](https://github.com/ocadotechnology/rapid-router/issues/1767)) ([`7a110df`](https://github.com/ocadotechnology/rapid-router/commit/7a110dfaec19f649ea5e3f4c5e893bfd8ff22e69))
+
 ## v7.2.7 (2025-01-17)
 
 ### Fix

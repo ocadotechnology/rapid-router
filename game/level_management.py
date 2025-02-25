@@ -35,8 +35,12 @@ def levels_shared_with(user):
         return []
 
     shared_levels = user.shared
+    shared_levels = add_related_fields(shared_levels)
 
-    return add_related_fields(shared_levels)
+    if hasattr(user.userprofile, "student"):
+        shared_levels = shared_levels.filter(needs_approval=False)
+
+    return shared_levels
 
 
 def levels_owned_by(user):
@@ -195,9 +199,9 @@ def unshare_level(level, *users):
 
 
 def email_new_custom_level(
-    teacher_email, moderate_url, level_url, home_url, student_name, class_name
+    teacher_email, moderate_url, level_url, student_name, class_name
 ):
-    # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
+    # email teacher when a new custom level is created by a pupil, so it can be moderated
 
     send_dotdigital_email(
         campaign_ids["level_creation"],
