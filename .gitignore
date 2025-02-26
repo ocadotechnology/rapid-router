@@ -26,4 +26,4 @@ db.sqlite3
 build/**
 coverage.xml
 pep8.txt
-pyproject.toml
+# pyproject.toml
