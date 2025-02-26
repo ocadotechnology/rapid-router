@@ -568,29 +568,29 @@ function initCustomBlocksPython() {
     };
 
 
-  Blockly.Python["road_exists"] = function (block) {
-    if (block.inputList[0].fieldRow[1].value_ === "FORWARD") {
-      var python = "my_van.is_road('FORWARD')";
-    } else if (block.inputList[0].fieldRow[1].value_ === "LEFT") {
-      var python = "my_van.is_road('LEFT')";
-    } else {
-      var python = "my_van.is_road('RIGHT')";
-    }
-
-    return [python, Blockly.Python.ORDER_NONE];
-    // TODO: figure out what this ordering relates to
-  };
-
-  Blockly.Python["traffic_light"] = function (block) {
-    var python;
-    if (block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED) {
-      python = "my_van.at_traffic_light('RED')";
-    } else {
-      python = "my_van.at_traffic_light('GREEN')";
-    }
-
-    return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
-  };
+    Blockly.Python["road_exists"] = function (block) {
+      if (block.inputList[0].fieldRow[1].value_ === "FORWARD") {
+        var python = "my_van.is_road_forward()";
+      } else if (block.inputList[0].fieldRow[1].value_ === "LEFT") {
+        var python = "my_van.is_road_left()";
+      } else {
+        var python = "my_van.is_road_right()";
+      }
+  
+      return [python, Blockly.Python.ORDER_NONE];
+      // TODO: figure out what this ordering relates to
+    };
+  
+    Blockly.Python["traffic_light"] = function (block) {
+      var python;
+      if (block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED) {
+        python = "my_van.is_red_traffic_light()";
+      } else {
+        python = "my_van.is_green_traffic_light()";
+      }
+  
+      return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+    };
 
   Blockly.Python["dead_end"] = function (block) {
     return ["my_van.at_dead_end()", Blockly.Python.ORDER_NONE];
@@ -628,6 +628,9 @@ function initCustomBlocksPython() {
       "condition",
       Blockly.Python.ORDER_ATOMIC
     );
+
+    condition = condition.replace(/^\((.*)\)$/, '$1');
+    
     var subBlock = Blockly.Python.statementToCode(block, "body");
     var code = "while " + condition + ":\n" + subBlock;
     return code;
