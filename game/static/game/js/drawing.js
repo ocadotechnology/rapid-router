@@ -1064,8 +1064,8 @@ ocargo.Drawing.startPopup = function (
     }
   }
 
-  const youtubeVideo = $("iframe")
-  if (youtubeVideo[0]) {
+  const videoFrame = $("iframe")
+  if (videoFrame[0]) {
     mascot.hide()
   }
 

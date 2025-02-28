@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from game.models import Level, Block, Episode, Workspace, LevelDecor, Attempt
+from game.models import Level, Block, Episode, Workspace, LevelDecor, Attempt, Worksheet
 
 
 class LevelAdmin(admin.ModelAdmin):
@@ -46,9 +46,14 @@ class LevelDecorAdmin(admin.ModelAdmin):
     list_display = ["id", "level", "x", "y", "decor_name"]
 
 
+class WorksheetAdmin(admin.ModelAdmin):
+    list_display = ["id", "episode"]
+
+
 admin.site.register(Level, LevelAdmin)
 admin.site.register(Episode, EpisodeAdmin)
 admin.site.register(Workspace, WorkspaceAdmin)
 admin.site.register(Block)
 admin.site.register(Attempt, AttemptAdmin)
 admin.site.register(LevelDecor, LevelDecorAdmin)
+admin.site.register(Worksheet, WorksheetAdmin)
