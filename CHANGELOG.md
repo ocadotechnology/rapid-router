@@ -1,6 +1,36 @@
 # CHANGELOG
 
 
+## v7.3.4 (2025-03-05)
+
+### Bug Fixes
+
+- I have changed the formatting of the generated Python syntax and removed the parentheses from the
+  generated while loops ([#1777](https://github.com/ocadotechnology/rapid-router/pull/1777),
+  [`5fa2b24`](https://github.com/ocadotechnology/rapid-router/commit/5fa2b24263b80146bbca476fb843ccabbbb928f5))
+
+* I added the Youtube link for Level 7
+
+* fix: I have added the link in the hint
+
+* fix: I fixed the layout of the videos
+
+* I have added the video into level 7 of Python Den
+
+* fix: I added the clown horn, sleigh bells, and sleigh crash sounds to only play during December
+
+* fix: I have changed the formatting of the generated Python syntax and removed the parentheses from
+  the generated while loops
+
+* minor tweaks
+
+---------
+
+Co-authored-by: Stefan Kairinos <skairinos@gmail.com>
+
+Co-authored-by: SKairinos <stefan.kairinos@ocado.com>
+
+
 ## v7.3.3 (2025-03-05)
 
 ### Bug Fixes
