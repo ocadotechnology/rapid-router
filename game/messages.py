@@ -1,7 +1,7 @@
 from builtins import str
 
 
-def youtube_link(url, border):
+def video_link(url, border):
     return (
         "<div class='popup_video'>"
         "<iframe "
@@ -15,10 +15,7 @@ def youtube_link(url, border):
 
 
 def play_button_icon_url():
-    return (
-        '<img src="/static/game/image/icons/play.svg" alt="Play icon">'
-        '<b>Play</b>'
-    )
+    return '<img src="/static/game/image/icons/play.svg" alt="Play icon">' "<b>Play</b>"
 
 
 def step_button_icon_url():
@@ -97,6 +94,9 @@ def title_night_mode():
 
 def build_description(title, message):
     return f"<b>{title}</b><br><br>{message}"
+
+
+# RAPID ROUTER
 
 
 def title_level1():
@@ -234,12 +234,14 @@ def description_level7():
         f"{play_button_icon_url()}!"
     )
     return build_description(title_level7(), message)
-    
+
+
 def hint_level7():
     return (
         "This road is more complicated but you can do this! Start with just a few "
         "blocks and try that, then add more blocks and check it again."
     )
+
 
 def title_level8():
     return "The warehouse is not always in the same place"
@@ -277,9 +279,7 @@ def description_level9():
 
 
 def hint_level9():
-    return (
-        "Try counting the blocks before the turn. Which way do you need to go?"
-    )
+    return "Try counting the blocks before the turn. Which way do you need to go?"
 
 
 def title_level10():
@@ -477,8 +477,9 @@ def title_level19():
 
 
 def description_level19():
-    message = youtube_link(
-        "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
+    message = video_link(
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FPucDWuRfzuTxeLI6IHRx%2FMahana%20explains%20repeat%20functions.mp4?alt=media&token=361c8495-dc7d-4e18-9a7f-4c07c3fd303d",
+        0,
     )
     message += (
         "<div class='popup_message'>"
@@ -504,9 +505,7 @@ def hint_level19():
 
 
 def title_level20():
-    return (
-        "Use the <b>repeat</b> block to make your sequence shorter and simpler"
-    )
+    return "Use the <b>repeat</b> block to make your sequence shorter and simpler"
 
 
 def description_level20():
@@ -610,9 +609,7 @@ def title_level25():
 
 
 def description_level25():
-    message = (
-        "Since you did so well with the repeat loops, have a go at this level."
-    )
+    message = "Since you did so well with the repeat loops, have a go at this level."
     return build_description(title_level25(), message)
 
 
@@ -692,8 +689,9 @@ def title_level29():
 
 
 def description_level29():
-    message = youtube_link(
-        "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+    message = video_link(
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FmUm2VB4N62Opk2CezOFR%2FAna%20discusses%20repeat%20until%20and%20repeat%20while%20functions.mp4?alt=media&token=1add73b1-9e21-4cdb-876d-31495012bb50",
+        0,
     )
     message += (
         "<div class='popup_message'>"
@@ -777,8 +775,9 @@ def title_level33():
 
 
 def description_level33():
-    message = youtube_link(
-        "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0
+    message = video_link(
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F8A63G0OQlNdxMpvLuK9j%2FChris%20and%20Matt%20introduce%20if%20statements.mp4?alt=media&token=6fc94e71-a8b1-43a4-aadd-63fcf3b5788c",
+        0,
     )
     message += (
         "<div class='popup_message'>"
@@ -857,8 +856,9 @@ def title_level36():
 
 
 def description_level36():
-    message = youtube_link(
-        "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0
+    message = video_link(
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FsxMatN6zCvgFag8YDvK4%2FHelen%20explains%20if_else%20statements.mp4?alt=media&token=1051ab04-b02d-4b75-8278-2b63216b2985",
+        0,
     )
     message += (
         f"<div class='popup_message'>"
@@ -1041,8 +1041,9 @@ def title_level44():
 
 
 def description_level44():
-    message = youtube_link(
-        "https://www.youtube-nocookie.com/embed/UFpsEjaB_DI", 0
+    message = video_link(
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FVDmgFe1LBpTpWI2b9EVN%2FWill%20discusses%20variables.mp4?alt=media&token=3fb3c5ca-f0d7-4f98-9274-5c4db8f64eac",
+        0,
     )
     message += (
         "<div class='popup_message'>"
@@ -1716,6 +1717,7 @@ def hint_level79():
     )
 
 
+# Legacy RR levels, still referenced in some Python Den levels
 # --- Introduction to Python levels ---
 
 INTRO_HINT = (
@@ -1731,8 +1733,9 @@ def title_level80():
 
 
 def description_level80():
-    message = youtube_link(
-        "https://www.youtube-nocookie.com/embed/5atj2caRjyA", 0
+    message = video_link(
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FhwOkHWSHqONf5lm7vbc4%2FCode%20for%20Life_%20Python.mp4?alt=media&token=8b47268c-91ea-4315-80e8-05c40d84372c",
+        0,
     )
     message += (
         "As you create your program using Blockly, see what it looks like in the Python "
@@ -2092,11 +2095,7 @@ def description_level96():
 
 
 def commands_level96():
-    return (
-        "<b>Movement</b>"
-        + "<br>my_van.move_forwards()"
-        + "<br>my_van.turn_left()"
-    )
+    return "<b>Movement</b>" + "<br>my_van.move_forwards()" + "<br>my_van.turn_left()"
 
 
 def hint_level96():
@@ -2581,8 +2580,14 @@ def hint_level109():
     )
 
 
+# PYTHON DEN
+
 # Episode 12, Levels 110 - 122
-(title_level1001, description_level1001, hint_level1001,) = (
+(
+    title_level1001,
+    description_level1001,
+    hint_level1001,
+) = (
     lambda: "Here's Python",
     lambda: build_description(
         title_level1001(),
@@ -2591,7 +2596,11 @@ def hint_level109():
     lambda: "This is a deliberately simple level. What you need to focus on is the Python code that is being generated for the blocks you join.",
 )
 
-(title_level1002, description_level1002, hint_level1002,) = (
+(
+    title_level1002,
+    description_level1002,
+    hint_level1002,
+) = (
     lambda: "Matching Blockly",
     lambda: build_description(
         title_level1002(),
@@ -2600,7 +2609,11 @@ def hint_level109():
     lambda: "This is a deliberately simple level. What you need to focus on is the Python code that is being generated for the blocks you join.",
 )
 
-(title_level1003, description_level1003, hint_level1003,) = (
+(
+    title_level1003,
+    description_level1003,
+    hint_level1003,
+) = (
     lambda: "Don't forget to find the shortest route",
     lambda: build_description(
         title_level1003(),
@@ -2665,25 +2678,36 @@ def hint_level109():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1007, description_level1007, hint_level1007,) = (
+(
+    title_level1007,
+    description_level1007,
+    hint_level1007,
+) = (
     lambda: "In a <b>while</b>, crocodile!",
     lambda: build_description(
         title_level1007(),
+        "<div class='main_popup_container'>"
+        "<div class='popup_message'>"
         "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."
-        "<br><br>Watch this video for more details: <br>"
-        "<div style='position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;'>"
-        "<iframe width='280' height='315' src='https://www.youtube-nocookie.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q' "
-        "allowfullscreen style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;'></iframe>"
+        "<br><br><br><br><br><br><br><br>Watch this video for more details: <br>"
+        "</div>"
+        f"{video_link("https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F3ojsv3EPh8qREqYMJBqo%2FPython%20Den%20Variable%20blocks%20demo.mp4?alt=media&token=192e4448-f16b-497f-b0d3-18163fd7d1d7", 0)}"
         "</div>",
     ),
-    lambda: "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values. Watch the video here if you are unsure."
-            "<div style='position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;'>"
-            "<iframe width='560' height='315' src='https://www.youtube-nocookie.com/embed/Lw-MMIlGU1Y?si=afJ-mzDFsUTizE1Q' "
-            "allowfullscreen style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;'></iframe>"
-            "</div>",
+    lambda: "<div class='main_popup_container'>"
+    "<div class='popup_message'>"
+    "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values."
+    "<br><br><br><br><br><br><br><br>Watch the video here if you are unsure.<br>"
+    "</div>"
+    f"{video_link("https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F3ojsv3EPh8qREqYMJBqo%2FPython%20Den%20Variable%20blocks%20demo.mp4?alt=media&token=192e4448-f16b-497f-b0d3-18163fd7d1d7", 0)}"
+    "</div>",
 )
 
-(title_level1008, description_level1008, hint_level1008,) = (
+(
+    title_level1008,
+    description_level1008,
+    hint_level1008,
+) = (
     lambda: "Wiggle <b>while</b> you work",
     lambda: build_description(
         title_level1008(),
@@ -2692,7 +2716,11 @@ def hint_level109():
     lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
 )
 
-(title_level1009, description_level1009, hint_level1009,) = (
+(
+    title_level1009,
+    description_level1009,
+    hint_level1009,
+) = (
     lambda: "This way, that way, forwards...",
     lambda: build_description(
         title_level1009(),
@@ -2773,7 +2801,11 @@ def hint_level109():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1014, description_level1014, hint_level1014,) = (
+(
+    title_level1014,
+    description_level1014,
+    hint_level1014,
+) = (
     lambda: "Too many cows",
     lambda: build_description(
         title_level1014(),
@@ -2782,7 +2814,11 @@ def hint_level109():
     lambda: "Make sure you sound the horn to get the cows off the road.",
 )
 
-(title_level1015, description_level1015, hint_level1015,) = (
+(
+    title_level1015,
+    description_level1015,
+    hint_level1015,
+) = (
     lambda: "Stepping it up",
     lambda: build_description(
         title_level1015(), "There are some bends in this road. Be careful!"
@@ -2832,9 +2868,7 @@ def hint_level109():
 
 (title_level1018, description_level1018, hint_level1018, commands_level1018) = (
     lambda: "A long and winding road",
-    lambda: build_description(
-        title_level1018(), "Oh dear, you might get a bit dizzy!"
-    ),
+    lambda: build_description(title_level1018(), "Oh dear, you might get a bit dizzy!"),
     lambda: "What are you counting here, straight roads or bends?",
     lambda: '<div class="row">'
     + '<div class="large-4 columns">'
@@ -2847,7 +2881,11 @@ def hint_level109():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1019, description_level1019, hint_level1019,) = (
+(
+    title_level1019,
+    description_level1019,
+    hint_level1019,
+) = (
     lambda: "Try this level... or <b>else</b>!",
     lambda: build_description(
         title_level1019(),
@@ -2893,7 +2931,11 @@ def hint_level109():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1022, description_level1022, hint_level1022,) = (
+(
+    title_level1022,
+    description_level1022,
+    hint_level1022,
+) = (
     lambda: "Count and check",
     lambda: build_description(
         title_level1022(), "There are lots of turns here, don't get distracted."
@@ -2901,11 +2943,13 @@ def hint_level109():
     lambda: "Think about the order of the questions you ask using your if and elif statements.",
 )
 
-(title_level1023, description_level1023, hint_level1023,) = (
+(
+    title_level1023,
+    description_level1023,
+    hint_level1023,
+) = (
     lambda: "Another twisty trip",
-    lambda: build_description(
-        title_level1023(), "Don't go the long way around!"
-    ),
+    lambda: build_description(title_level1023(), "Don't go the long way around!"),
     lambda: "Think carefully about the order in which you ask questions in your if..else if block",
 )
 
@@ -2949,13 +2993,21 @@ def hint_level109():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1026, description_level1026, hint_level1026,) = (
+(
+    title_level1026,
+    description_level1026,
+    hint_level1026,
+) = (
     lambda: title_level85(),
     lambda: description_level85(),
     lambda: hint_level85(),
 )
 
-(title_level1027, description_level1027, hint_level1027,) = (
+(
+    title_level1027,
+    description_level1027,
+    hint_level1027,
+) = (
     lambda: "Full steam ahead",
     lambda: build_description(
         title_level1027(), "Just keep going until you get there..."
@@ -2963,7 +3015,11 @@ def hint_level109():
     lambda: "You might find that the solution to this level is quite familiar...",
 )
 
-(title_level1028, description_level1028, hint_level1028,) = (
+(
+    title_level1028,
+    description_level1028,
+    hint_level1028,
+) = (
     lambda: "Another staircase...",
     lambda: build_description(
         title_level1028(),
@@ -2972,7 +3028,11 @@ def hint_level109():
     lambda: "This is another route you have seen before. Last time you counted how many times your instructions were repeated. This time, your program is going to repeat your commands until you reach the destination. What do you need to repeat?",
 )
 
-(title_level1029, description_level1029, hint_level1029,) = (
+(
+    title_level1029,
+    description_level1029,
+    hint_level1029,
+) = (
     lambda: title_level1010(),
     lambda: description_level1010(),
     lambda: hint_level1010(),
@@ -2982,7 +3042,7 @@ def hint_level109():
     lambda: title_level84(),
     lambda: build_description(
         title_level1030(),
-        "Well done, you did it! Now have a go at coding with Repeats in Python only."
+        "Well done, you did it! Now have a go at coding with Repeats in Python only.",
     ),
     lambda: hint_level84(),
     lambda: '<div class="row">'
@@ -2996,13 +3056,21 @@ def hint_level109():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1031, description_level1031, hint_level1031,) = (
+(
+    title_level1031,
+    description_level1031,
+    hint_level1031,
+) = (
     lambda: title_level34(),
     lambda: description_level34(),
     lambda: hint_level34(),
 )
 
-(title_level1032, description_level1032, hint_level1032,) = (
+(
+    title_level1032,
+    description_level1032,
+    hint_level1032,
+) = (
     lambda: "Something isn't <b>right</b>",
     lambda: build_description(
         title_level1032(),
@@ -3013,9 +3081,7 @@ def hint_level109():
 
 (title_level1033, description_level1033, hint_level1033, commands_level1033) = (
     lambda: "Looking both ways",
-    lambda: build_description(
-        title_level1033(), "Can you find the shortest route?"
-    ),
+    lambda: build_description(title_level1033(), "Can you find the shortest route?"),
     lambda: "In this level, you want to check for a left turn first. If there is no left turn, turn right. Keep in mind what that looks like in Python.",
     lambda: '<div class="row">'
     + '<div class="large-4 columns">'
@@ -3048,16 +3114,24 @@ def hint_level109():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1035, description_level1035, hint_level1035,) = (
+(
+    title_level1035,
+    description_level1035,
+    hint_level1035,
+) = (
     lambda: title_level99(),
     lambda: build_description(
         title_level99(),
-        "Now try using what you have just learnt to solve this level. You could also try using the if, elif and else statements."
+        "Now try using what you have just learnt to solve this level. You could also try using the if, elif and else statements.",
     ),
     lambda: hint_level99(),
 )
 
-(title_level1036, description_level1036, hint_level1036,) = (
+(
+    title_level1036,
+    description_level1036,
+    hint_level1036,
+) = (
     lambda: title_level38(),
     lambda: description_level38(),
     lambda: hint_level38(),
@@ -3067,7 +3141,7 @@ def hint_level109():
     lambda: title_level100(),
     lambda: build_description(
         title_level100(),
-        "Practice your new Python skills on this road to get the van to the destination."
+        "Practice your new Python skills on this road to get the van to the destination.",
     ),
     lambda: hint_level100(),
     lambda: commands_level100(),
@@ -3101,7 +3175,7 @@ def hint_level109():
     lambda: title_level47(),
     lambda: build_description(
         title_level47(),
-        "Put your knowledge to test. Create an algorithm to lead the van to the house. Don't forget to turn and avoid the cows."
+        "Put your knowledge to test. Create an algorithm to lead the van to the house. Don't forget to turn and avoid the cows.",
     ),
     lambda: hint_level47(),
     lambda: '<div class="row">'
@@ -3145,7 +3219,11 @@ def hint_level109():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1041, description_level1041, hint_level1041,) = (
+(
+    title_level1041,
+    description_level1041,
+    hint_level1041,
+) = (
     lambda: title_level83(),
     lambda: description_level83(),
     lambda: hint_level83(),
@@ -3155,7 +3233,7 @@ def hint_level109():
     lambda: title_level95(),
     lambda: build_description(
         title_level95(),
-        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 41 to see what this could look like in Python."
+        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 41 to see what this could look like in Python.",
     ),
     lambda: hint_level95(),
     lambda: commands_level95(),
@@ -3165,13 +3243,17 @@ def hint_level109():
     lambda: title_level96(),
     lambda: build_description(
         title_level96(),
-        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 41  to see what this could look like in Python. This time you could use 2 loops, 1 for each straight piece of road."
+        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 41  to see what this could look like in Python. This time you could use 2 loops, 1 for each straight piece of road.",
     ),
     lambda: hint_level96(),
     lambda: commands_level96(),
 )
 
-(title_level1044, description_level1044, hint_level1044,) = (
+(
+    title_level1044,
+    description_level1044,
+    hint_level1044,
+) = (
     lambda: title_level84(),
     lambda: description_level84(),
     lambda: hint_level84(),
@@ -3181,7 +3263,7 @@ def hint_level109():
     lambda: title_level97(),
     lambda: build_description(
         title_level97(),
-        "Now try to use a loop within a loop, known as a 'nested loop'. Look back at level 44 to see what this could look like in Python."
+        "Now try to use a loop within a loop, known as a 'nested loop'. Look back at level 44 to see what this could look like in Python.",
     ),
     lambda: hint_level97(),
     lambda: commands_level97(),
@@ -3215,13 +3297,21 @@ def hint_level109():
     lambda: commands_level109(),
 )
 
-(title_level1050, description_level1050, hint_level1050,) = (
+(
+    title_level1050,
+    description_level1050,
+    hint_level1050,
+) = (
     lambda: title_level61(),
     lambda: description_level61(),
     lambda: hint_level61(),
 )
 
-(title_level1051, description_level1051, hint_level1051,) = (
+(
+    title_level1051,
+    description_level1051,
+    hint_level1051,
+) = (
     lambda: title_level62(),
     lambda: description_level62(),
     lambda: hint_level62(),
@@ -3307,7 +3397,7 @@ def hint_level109():
     lambda: title_level101(),
     lambda: build_description(
         title_level101(),
-        "Try defining your own procedure to solve this level. In Python procedures are generally called functions. Look back at the previous levels for examples of how to define a function in Python."
+        "Try defining your own procedure to solve this level. In Python procedures are generally called functions. Look back at the previous levels for examples of how to define a function in Python.",
     ),
     lambda: hint_level101(),
     lambda: commands_level101(),
@@ -3347,7 +3437,7 @@ def get_episode_title(episode_id):
         21: "Lists",
         22: "Procedures",
         23: "2D Lists",
-        24: "Procedures and Functions"
+        24: "Procedures and Functions",
     }
 
     return episode_titles[episode_id]

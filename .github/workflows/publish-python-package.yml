@@ -11,23 +11,28 @@ jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
     runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           architecture: "x64"
+
       - name: Install pip requirements
         run: |
-          pip install pipenv
+          pip install pipenv wheel python-semantic-release==9.*
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           sudo apt-get install gettext
+
       # TODO: Restore action once we figure out how to use bot token properly (if still needed)
       #      - name: Prepare files for Crowdin
       #        run: |
@@ -51,11 +56,25 @@ jobs:
       #          pushd game
       #          django-admin compilemessages
       #          popd
-      - name: Release rapid-router
-        uses: relekang/python-semantic-release@v7.34.6
+
+      - name: 📜 Detect Semantic Version
+        env:
+          GH_TOKEN: ${{ secrets.CFL_BOT_GITHUB_TOKEN }}
+        run: semantic-release version
+
+      - name: Build package
+        run: python setup.py sdist bdist_wheel
+
+      - name: 🚀 Publish Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.CFL_BOT_GITHUB_TOKEN }}
+        run: semantic-release publish
+
+      - name: 🚀 Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          github_token: ${{ secrets.CFL_BOT_GITHUB_TOKEN }}
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          skip-existing: true
+
       - name: Trigger staging deployment
         uses: actions/github-script@v6
         with:
