@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v7.3.3 (2025-03-05)
+
+### Bug Fixes
+
+- Use Gitbook videos instead of YouTube links
+  ([#1779](https://github.com/ocadotechnology/rapid-router/pull/1779),
+  [`08fbf5a`](https://github.com/ocadotechnology/rapid-router/commit/08fbf5a7ddc8cdf58ebfc36d8ab768f5140ad297))
+
+
 ## v7.3.2 (2025-02-26)
 
 ### Bug Fixes
