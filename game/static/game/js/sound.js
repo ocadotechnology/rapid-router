@@ -47,6 +47,25 @@ ocargo.sound.pigeonSound = new Howl({
     urls: ['/static/game/sound/pigeon.mp3', '/static/game/sound/pigeon.ogg']
 });
 
+/// festive sounds ///**
+ocargo.sound.clownHornSound = new Howl({
+    urls: ['/static/game/sound/clown_horn.mp3', '/static/game/sound/clown_horn.ogg']
+});
+
+ocargo.sound.sleighBellsSound = new Howl({
+    urls: ['/static/game/sound/sleigh_bells.mp3', '/static/game/sound/sleigh_bells.ogg']
+});
+
+ocargo.sound.sleighCrashSound = new Howl({
+    urls: ['/static/game/sound/sleigh_crash.mp3', '/static/game/sound/sleigh_crash.ogg']
+});
+
+function isDecember()
+{
+    const currentMonth = new Date().getMonth(); 
+    return currentMonth === 11;
+}
+
 function safePlay(sound) {
     try {
         sound.play();
@@ -63,15 +82,19 @@ function safeStop(sound) {
 
 
 ocargo.sound.starting = function() {
-    if (CHARACTER_NAME === 'Van') {
-        safePlay(ocargo.sound.startingSound);
-    } else if (CHARACTER_NAME === "Electric van") {
-        safePlay(ocargo.sound.electricVanStartingSound);
+    if (!isDecember()) {
+        if (CHARACTER_NAME === 'Van') {
+            safePlay(ocargo.sound.startingSound);
+        } else if (CHARACTER_NAME === "Electric van") {
+            safePlay(ocargo.sound.electricVanStartingSound);
+        }
     }
 };
 
 ocargo.sound.start_engine = function() {
-    if (CHARACTER_NAME === 'Van') {
+    if (isDecember()) {
+        safePlay(ocargo.sound.sleighBellsSound);
+    } else if (CHARACTER_NAME === 'Van') {
         safePlay(ocargo.sound.engineSound);
     }
 };
@@ -105,7 +128,11 @@ ocargo.sound.pigeon = function() {
 }
 
 ocargo.sound.sound_horn = function() {
+if (isDecember()) {
+    safePlay(ocargo.sound.clownHornSound);
+} else {
     safePlay(ocargo.sound.hornSound);
+}
 };
 
 ocargo.sound.crash = function (animationDuration) {
@@ -117,11 +144,15 @@ ocargo.sound.crashIntoCow = function (animationDuration) {
 };
 
 ocargo.sound._crashSound = function () {
-    if (CHARACTER_NAME === 'Van') {
-        safePlay(ocargo.sound.crashSound);
+    if (isDecember()) {
+        safePlay(ocargo.sound.sleighCrashSound);
+    } else {
+        if (CHARACTER_NAME === 'Van') {
+            safePlay(ocargo.sound.crashSound);
     } else {
         safePlay(ocargo.sound.failureSound);
     }
+}
 };
 
 ocargo.sound.tension = function() {

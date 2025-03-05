@@ -16,14 +16,15 @@ function initCustomBlocksDescription() {
       this.setColour(50);
       this.appendDummyInput()
         .appendField(Blockly.Msg.START_TITLE)
-        .appendField(new Blockly.FieldImage(
-          new Date().getMonth() === 11 && CHARACTER_NAME === "Van"
-            ? ocargo.Drawing.imageDir + "characters/top_view/Sleigh.svg"
-            : ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
-          ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
-          ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
-        )
-      );
+        .appendField(
+          new Blockly.FieldImage(
+            new Date().getMonth() === 11 && CHARACTER_NAME === "Van"
+              ? ocargo.Drawing.imageDir + "characters/top_view/Sleigh.svg"
+              : ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
+            ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
+            ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
+          )
+        );
       this.setNextStatement(true, "Action");
       this.setTooltip(Blockly.Msg.START_TOOLTIP);
       this.setDeletable(false);
@@ -183,22 +184,30 @@ function initCustomBlocksDescription() {
     },
   };
 
-    Blockly.Blocks['sound_horn'] = {
-        init: function() {
-            this.setColour(160);
-            this.appendDummyInput()
-                .appendField(Blockly.Msg.SOUND_HORN_TITLE)
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                    43,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                    ocargo.BlocklyControl.IMAGE_WIDTH,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true, 'Action');
-            this.setNextStatement(true, 'Action');
-            this.setTooltip(Blockly.Msg.SOUND_HORN_TOOLTIP);
-        }
-    };
+  Blockly.Blocks["sound_horn"] = {
+    init: function () {
+      this.setColour(160);
+      this.appendDummyInput()
+        .appendField(Blockly.Msg.SOUND_HORN_TITLE)
+        .appendField(
+          new Blockly.FieldImage(
+            ocargo.Drawing.imageDir + "empty.svg",
+            43,
+            ocargo.BlocklyControl.BLOCK_HEIGHT
+          )
+        )
+        .appendField(
+          new Blockly.FieldImage(
+            ocargo.Drawing.imageDir + "empty.svg",
+            ocargo.BlocklyControl.IMAGE_WIDTH,
+            ocargo.BlocklyControl.BLOCK_HEIGHT
+          )
+        );
+      this.setPreviousStatement(true, "Action");
+      this.setNextStatement(true, "Action");
+      this.setTooltip(Blockly.Msg.SOUND_HORN_TOOLTIP);
+    },
+  };
 
   /*****************/
   /*   Conditions  */
@@ -277,33 +286,50 @@ function initCustomBlocksDescription() {
     },
   };
 
-    Blockly.Blocks['cow_crossing'] = {
-        init: function() {
-            this.setColour(210);
-            this.setOutput(true, 'Boolean');
-            let imageUrl = ocargo.Drawing.animalType == ocargo.Cow.PIGEON ? ocargo.Drawing.pigeonUrl : ocargo.Drawing.whiteCowUrl
-            this.appendDummyInput()
-                .appendField(ocargo.Drawing.animalType == ocargo.Cow.PIGEON ? Blockly.Msg.PIGEON_CROSSING_TITLE: Blockly.Msg.COW_CROSSING_TITLE)
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + imageUrl,
-                    ocargo.BlocklyControl.COW_WIDTH,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
-        }
-    };
+  Blockly.Blocks["cow_crossing"] = {
+    init: function () {
+      this.setColour(210);
+      this.setOutput(true, "Boolean");
+      let imageUrl =
+        ocargo.Drawing.animalType == ocargo.Cow.PIGEON
+          ? ocargo.Drawing.pigeonUrl
+          : ocargo.Drawing.whiteCowUrl;
+      this.appendDummyInput()
+        .appendField(
+          ocargo.Drawing.animalType == ocargo.Cow.PIGEON
+            ? Blockly.Msg.PIGEON_CROSSING_TITLE
+            : Blockly.Msg.COW_CROSSING_TITLE
+        )
+        .appendField(
+          new Blockly.FieldImage(
+            ocargo.Drawing.imageDir + imageUrl,
+            ocargo.BlocklyControl.COW_WIDTH,
+            ocargo.BlocklyControl.BLOCK_HEIGHT
+          ),
+          "IMAGE"
+        );
+    },
+  };
 
-    Blockly.Blocks['pigeon_crossing_IMAGE_ONLY'] = {
-        init: function() {
-          this.setColour(210);
-          this.setOutput(true, 'Boolean');
-          this.appendDummyInput()
-              .appendField("pigeons")
-              .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.pigeonUrl,
-                ocargo.BlocklyControl.COW_WIDTH,
-                ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
-        }
-    }
-    /****************/
-    /*  Procedures  */
-    /****************/
+  Blockly.Blocks["pigeon_crossing_IMAGE_ONLY"] = {
+    init: function () {
+      this.setColour(210);
+      this.setOutput(true, "Boolean");
+      this.appendDummyInput()
+        .appendField("pigeons")
+        .appendField(
+          new Blockly.FieldImage(
+            ocargo.Drawing.imageDir + ocargo.Drawing.pigeonUrl,
+            ocargo.BlocklyControl.COW_WIDTH,
+            ocargo.BlocklyControl.BLOCK_HEIGHT
+          ),
+          "IMAGE"
+        );
+    },
+  };
+  /****************/
+  /*  Procedures  */
+  /****************/
 
   Blockly.Blocks["call_proc"] = {
     // Block for calling a defined procedure
@@ -559,22 +585,21 @@ function initCustomBlocksPython() {
     return "my_van.wait()\n";
   };
 
-    Blockly.Python['deliver'] = function(block) {
-        return 'my_van.deliver()\n';
-    };
+  Blockly.Python["deliver"] = function (block) {
+    return "my_van.deliver()\n";
+  };
 
-    Blockly.Python['sound_horn'] = function(block) {
-        return 'my_van.sound_horn()\n';
-    };
-
+  Blockly.Python["sound_horn"] = function (block) {
+    return "my_van.sound_horn()\n";
+  };
 
   Blockly.Python["road_exists"] = function (block) {
     if (block.inputList[0].fieldRow[1].value_ === "FORWARD") {
-      var python = "my_van.is_road('FORWARD')";
+      var python = "my_van.is_road_forward()";
     } else if (block.inputList[0].fieldRow[1].value_ === "LEFT") {
-      var python = "my_van.is_road('LEFT')";
+      var python = "my_van.is_road_left()";
     } else {
-      var python = "my_van.is_road('RIGHT')";
+      var python = "my_van.is_road_right()";
     }
 
     return [python, Blockly.Python.ORDER_NONE];
@@ -584,9 +609,9 @@ function initCustomBlocksPython() {
   Blockly.Python["traffic_light"] = function (block) {
     var python;
     if (block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED) {
-      python = "my_van.at_traffic_light('RED')";
+      python = "my_van.is_red_traffic_light()";
     } else {
-      python = "my_van.at_traffic_light('GREEN')";
+      python = "my_van.is_green_traffic_light()";
     }
 
     return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
@@ -628,6 +653,9 @@ function initCustomBlocksPython() {
       "condition",
       Blockly.Python.ORDER_ATOMIC
     );
+
+    condition = condition.replace(/\((.*)\)/, "$1");
+
     var subBlock = Blockly.Python.statementToCode(block, "body");
     var code = "while " + condition + ":\n" + subBlock;
     return code;
