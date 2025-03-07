@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v7.3.5 (2025-03-07)
+
+### Bug Fixes
+
+- Permissions ([#1782](https://github.com/ocadotechnology/rapid-router/pull/1782),
+  [`6cc07f3`](https://github.com/ocadotechnology/rapid-router/commit/6cc07f3b7ed151311b94b416482bd65a45727907))
+
+* fix: permissions
+
+* tweak
+
+
 ## v7.3.4 (2025-03-05)
 
 ### Bug Fixes
