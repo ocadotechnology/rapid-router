@@ -73,9 +73,9 @@ def can_play_level(user, level, early_access):
         and user.userprofile.student.class_field
     ):
         # If the user is a student, check that the level isn't locked for their class
-        return (
+        return user.userprofile.id == level.owner_id or (
             user.userprofile.student.class_field not in level.locked_for_class.all()
-            and (user.userprofile.id == level.owner_id or not level.needs_approval)
+            and not level.needs_approval
         )
     elif level.default and not level.episode.in_development:
         return True
