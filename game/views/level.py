@@ -45,8 +45,11 @@ def play_custom_level(request, levelId, from_editor=False):
 
 
 def play_default_level(request, level_name):
-    if int(level_name) > 79:
+    level_index = int(level_name)
+    if level_index > 79:
         raise Http404
+    if level_index >= 19 and not request.user.is_authenticated:
+        return redirect(reverse("levels"))
 
     level = cached_default_level(level_name)
     return play_level(request, level)

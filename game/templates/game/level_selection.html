@@ -99,6 +99,11 @@
                                     <img class="level_image coin_image" value="{{level.name}}">
                                 {% endif %}
                             </p>
+                        {% elif not user.is_authenticated and level.name >= 19 %}
+                            <!-- Mark level as locked -->
+                            <p>
+                                <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
+                            </p>
                         {% else %}
                             <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                             <p>
@@ -111,7 +116,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    {% if episode.random_levels_enabled %}
+                    {% if not user.is_authenticated and episode.id <= 2 or user.is_authenticated and episode.random_levels_enabled %}
                     <p>
                         <a href="{% url 'random_level_for_episode' episode.id %}">
                         Random: Try your hand at a random level
