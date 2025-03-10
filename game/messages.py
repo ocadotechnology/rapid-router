@@ -3207,7 +3207,8 @@ def hint_level109():
     + "<br>my_van.turn_around()"
     + "<br>my_van.turn_left()"
     + "<br>my_van.turn_right()"
-    + "<br>my_van.wait()</div>"
+    + "<br>my_van.wait()"
+    + "<br>my_van.deliver()</div>"
     + '<div class="large-4 columns">'
     + "<b>Position</b>"
     + "<br>my_van.at_red_traffic_light()"
