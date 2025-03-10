@@ -212,6 +212,15 @@
                                             <img class="level_image coin_image" value="{{level.name}}">
                                         {% endif %}
                                     </p>
+                                {% elif not user.is_authenticated and level.name >= 1026 %}
+                                    <!-- Mark level as locked -->
+                                    <p>
+                                        {% if level.name > 1009 %}
+                                            <a class="disabled">{{level.name|stringformat:"i"|slice:"2:4"}}: {{level.title.strip | safe}}</a>
+                                        {% else %}
+                                            <a class="disabled">{{level.name|stringformat:"i"|slice:"3:4"}}: {{level.title.strip | safe}}</a>
+                                        {% endif %}
+                                    </p>
                                 {% else %}
                                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                                     <p>
