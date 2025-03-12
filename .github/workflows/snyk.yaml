@@ -23,13 +23,3 @@ jobs:
           config-path: "backend/.snyk"
           add-test-args: --command=.venv/bin/python
           remove-repo-name-prefix: ""
-
-      - name: 🐕‍🦺 Monitor Open-Source Vulnerabilities and License Issues
-        uses: ocadotechnology/codeforlife-workspace/.github/actions/snyk/monitor-release@main
-        with:
-          gh-token: ${{ secrets.CFL_BOT_GH_TOKEN }}
-          snyk-token: ${{ secrets.SNYK_TOKEN }}
-          snyk-config-path: "backend/.snyk"
-          snyk-project-environment: backend
-          snyk-add-monitor-args: --command=.venv/bin/python
-          remove-repo-name-prefix: ""
