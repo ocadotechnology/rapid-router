@@ -48,7 +48,11 @@ def play_default_level(request, level_name):
     level_index = int(level_name)
     if level_index > 79:
         raise Http404
-    if level_index >= 19 and not request.user.is_authenticated:
+    if (
+        level_index > 19
+        and not level_index in [29, 33, 44, 51, 61, 68]
+        and not request.user.is_authenticated
+    ):
         return redirect(reverse("levels"))
 
     level = cached_default_level(level_name)
@@ -59,7 +63,11 @@ def play_default_python_level(request, level_name):
     level_index = int(level_name)
     if level_index > 49:
         raise Http404
-    if level_index >= 26 and not request.user.is_authenticated:
+    if (
+        level_index > 26
+        and not level_index in [41]
+        and not request.user.is_authenticated
+    ):
         return redirect(reverse("python_levels"))
 
     levelId = int(level_name) + 1000
