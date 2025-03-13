@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.3.6 (2025-03-11)
+
+### Bug Fixes
+
+- Add command ([#1783](https://github.com/ocadotechnology/rapid-router/pull/1783),
+  [`db49e8f`](https://github.com/ocadotechnology/rapid-router/commit/db49e8f616187949cc21debef24730915d3c7ed5))
+
+
 ## v7.3.5 (2025-03-07)
 
 ### Bug Fixes
