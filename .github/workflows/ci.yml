@@ -25,7 +25,7 @@ jobs:
           pip install pytest-cov
           pipenv install --dev --system
       - name: Collect static
-        run: python example_project/manage.py collectstatic --noinput
+        run: python manage.py collectstatic --noinput
       - name: Run Python tests
         run: pytest -x --cov=. --cov-report=xml -vv -n auto
         env:
