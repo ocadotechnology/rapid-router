@@ -68,7 +68,7 @@ class TestLevelSelection(BaseGameTest):
         levels_page = self.go_to_reverse("python_levels")
         expected_url = levels_page.browser.current_url
 
-        page = self.go_to_level_without_dismissing_dialog(40, True)
+        page = self.go_to_level_without_dismissing_dialog(2, True)
         next_button = self.selenium.find_element(By.ID, "next_button")
         assert WebDriverWait(self.selenium, 10).until(
             EC.element_to_be_clickable(next_button)
