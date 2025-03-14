@@ -39,7 +39,7 @@ jobs:
         run: semantic-release version
 
       - name: Build package
-        run: python setup.py sdist bdist_wheel
+        run: python -m build --sdist --wheel
 
       - name: 🚀 Publish Semantic Release
         env:
