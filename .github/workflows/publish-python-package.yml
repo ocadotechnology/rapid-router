@@ -33,16 +33,6 @@ jobs:
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           sudo apt-get install gettext
 
-      - name: 🐕‍🦺 Monitor Open-Source Vulnerabilities and License Issues
-        uses: ocadotechnology/codeforlife-workspace/.github/actions/snyk/monitor-release@main
-        with:
-          gh-token: ${{ secrets.CFL_BOT_GH_TOKEN }}
-          snyk-token: ${{ secrets.SNYK_TOKEN }}
-          snyk-config-path: "backend/.snyk"
-          snyk-project-environment: backend
-          snyk-add-monitor-args: --command=.venv/bin/python
-          remove-repo-name-prefix: ""
-
       - name: 📜 Detect Semantic Version
         env:
           GH_TOKEN: ${{ secrets.CFL_BOT_GH_TOKEN }}
@@ -61,14 +51,10 @@ jobs:
         with:
           skip-existing: true
 
-      - name: Trigger staging deployment
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.CFL_BOT_GH_TOKEN }}
-          script: |
-            github.rest.actions.createWorkflowDispatch({
-              owner: 'ocadotechnology',
-              repo: 'codeforlife-deploy-appengine',
-              workflow_id: 'deploy_staging.yml',
-              ref: 'master',
-            });
+  monitor:
+    uses: ocadotechnology/codeforlife-workspace/.github/workflows/monitor-python-release.yaml@main
+    secrets: inherit
+    needs: [publish-pypi-packages]
+    with:
+      python-version: 3.12
+      remove-repo-name-prefix: ""
