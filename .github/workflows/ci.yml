@@ -29,7 +29,7 @@ jobs:
       - name: Run Python tests
         run: pytest -x --cov=. --cov-report=xml -vv -n auto
         env:
-          SELENIUM_WEBDRIVER: chrome-headless
+          SELENIUM_WEBDRIVER: firefox-headless
           SELENIUM_HEADLESS: True
       - name: Upload coverage to Codecov
         if: github.repository_owner_id == env.OCADO_TECH_ORG_ID

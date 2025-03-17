@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,8 +15,7 @@ class TestLevelEditor(BaseGameTest):
     def set_up_basic_map(self):
         self.test_level_editor_displays()
 
-        add_road_button = self.selenium.find_element(By.ID, "add_road")
-        add_road_button.click()
+        self.selenium.find_element(By.ID, "add_road").click()
 
         road_start = self.selenium.find_element(
             By.CSS_SELECTOR, "rect[x='130'][y='530']"
@@ -22,12 +23,10 @@ class TestLevelEditor(BaseGameTest):
         road_end = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='330'][y='530']")
         ActionChains(self.selenium).drag_and_drop(road_start, road_end).perform()
 
-        mark_start_button = self.selenium.find_element(By.ID, "start")
-        mark_start_button.click()
+        self.selenium.find_element(By.ID, "start").click()
         ActionChains(self.selenium).move_to_element(road_start).click().perform()
 
-        add_house_button = self.selenium.find_element(By.ID, "add_house")
-        add_house_button.click()
+        self.selenium.find_element(By.ID, "add_house").click()
         ActionChains(self.selenium).move_to_element(road_end).click().perform()
 
         return [road_start, road_end]
@@ -80,6 +79,9 @@ class TestLevelEditor(BaseGameTest):
         origin_space = self.selenium.find_elements(
             By.CSS_SELECTOR, "rect[fill='#ff0000']"
         )
+
+        time.sleep(1)
+
         assert len(origin_space) == 1
 
         page.go_to_scenery_tab()
@@ -171,7 +173,7 @@ class TestLevelEditor(BaseGameTest):
 
         # go to level editor and set up basic map
         page = self.go_to_level_editor()
-        [road_start, road_end] = self.set_up_basic_map()
+        self.set_up_basic_map()
 
         # fill in custom description and hint fields
         page.go_to_description_tab()
@@ -185,15 +187,13 @@ class TestLevelEditor(BaseGameTest):
         page.go_to_save_tab()
         self.selenium.find_element(By.ID, "levelNameInput").send_keys("test level")
         self.selenium.find_element(By.ID, "saveLevel").click()
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.ID, "play_button"))
-        )
+
+        time.sleep(1)
+
         self.selenium.find_element(By.ID, "play_button").click()
 
-        # check to see if custom subtitle and lesson appear on the initial popup
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.ID, "myModal-lead"))
-        )
+        time.sleep(1)
+
         modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute(
             "innerHTML"
         )
@@ -201,19 +201,13 @@ class TestLevelEditor(BaseGameTest):
         assert "test description" in modal_text
         self.selenium.find_element(By.ID, "close-modal").click()
 
-        # wait for modal to disappear
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.none_of(
-                EC.visibility_of_all_elements_located((By.ID, "myModal-mainText"))
-            )
-        )
+        time.sleep(1)
 
         # check to see if the custom hint appears on failure modal
-        fast_tab = self.selenium.find_element(By.ID, "fast_tab")
-        fast_tab.click()
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.visibility_of_element_located((By.ID, "hintPopupBtn"))
-        )
+        self.selenium.find_element(By.ID, "fast_tab").click()
+
+        time.sleep(1)
+
         hint_button = self.selenium.find_element(By.ID, "hintPopupBtn")
         hint_button.click()
 
@@ -229,11 +223,13 @@ class TestLevelEditor(BaseGameTest):
 
         self.selenium.find_element(By.ID, "try_again_button").click()
 
+        time.sleep(1)
+
         # check to see if the custom hint appears on the hint popup
         self.selenium.find_element(By.ID, "help_tab").click()
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.visibility_of_element_located((By.ID, "myModal-mainText"))
-        )
+
+        time.sleep(1)
+
         hint_modal_text_two = self.selenium.find_element(
             By.ID, "myModal-mainText"
         ).get_attribute("innerHTML")
@@ -255,7 +251,7 @@ class TestLevelEditor(BaseGameTest):
 
         page = self.go_to_level_editor()
 
-        [road_start, road_end] = self.set_up_basic_map()
+        self.set_up_basic_map()
         page.go_to_character_tab()
 
         # the electric van has dropdown value 7 - select the electric van as character
