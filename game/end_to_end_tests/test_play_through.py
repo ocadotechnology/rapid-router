@@ -1,5 +1,3 @@
-import time
-
 import pytest
 
 from .base_game_test import BaseGameTest
@@ -19,7 +17,6 @@ class TestPlayThrough(BaseGameTest):
 
     def _complete_level(self, level_number, from_python_den=False, **kwargs):
         page = self.go_to_level(level_number, from_python_den)
-        time.sleep(2)
         self.complete_and_check_level(
             level_number, page, from_python_den, **kwargs
         )

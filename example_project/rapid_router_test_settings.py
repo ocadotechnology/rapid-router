@@ -2,14 +2,14 @@ import os
 
 from selenium import webdriver
 
-headless_firefox_options = webdriver.FirefoxOptions()
-headless_firefox_options.add_argument("--headless")
-headless_firefox_options.add_argument("--no-sandbox")
+headless_chrome_options = webdriver.ChromeOptions()
+headless_chrome_options.add_argument("--headless")
+headless_chrome_options.add_argument("--no-sandbox")
 
 SELENIUM_WEBDRIVERS = {
-    "default": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
-    "chrome": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
-    "firefox-headless": {"callable": webdriver.Firefox, "args": (), "kwargs": {"options": headless_firefox_options}},
+    "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
+    "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
+    "chrome-headless": {"callable": webdriver.Chrome, "args": (), "kwargs": {"options": headless_chrome_options}},
 }
 
 SELENIUM_WIDTHS = [1624]
