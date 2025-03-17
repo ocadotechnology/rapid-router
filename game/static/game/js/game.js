@@ -188,6 +188,16 @@ ocargo.Game.prototype.reset = function () {
 }
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
+  if (window.location.href.includes("/pythonden/")) {
+    gtag("event", "python-den:level:play", {
+      levelId: LEVEL_NAME - 1000,
+    });
+  } else if (window.location.href.includes("/rapidrouter/")) {
+    gtag("event", "rapid-router:level:play", {
+      levelId: LEVEL_NAME,
+    });
+  }
+
   this.reset()
   let code = ocargo.pythonControl.getCode()
   ocargo.event.sendEvent('PlayButtonPressed', {
