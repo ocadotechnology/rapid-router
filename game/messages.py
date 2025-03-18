@@ -1,16 +1,13 @@
 from builtins import str
 
 
-def video_link(url, border):
+def video_link(url):
     return (
         "<div class='popup_video'>"
-        "<iframe "
-        + "src="
+        "<video controls name='media'>"
+        "<source src="
         + str(url)
-        + "?rel=0"
-        + "' frameborder='"
-        + str(border)
-        + "' allowfullscreen class='video'></iframe><br></div>"
+        + "type='video/mp4'></video><br></div>"
     )
 
 
@@ -478,8 +475,7 @@ def title_level19():
 
 def description_level19():
     message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FPucDWuRfzuTxeLI6IHRx%2FMahana%20explains%20repeat%20functions.mp4?alt=media&token=361c8495-dc7d-4e18-9a7f-4c07c3fd303d",
-        0,
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FPucDWuRfzuTxeLI6IHRx%2FMahana%20explains%20repeat%20functions.mp4?alt=media&token=361c8495-dc7d-4e18-9a7f-4c07c3fd303d"
     )
     message += (
         "<div class='popup_message'>"
@@ -690,8 +686,7 @@ def title_level29():
 
 def description_level29():
     message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FmUm2VB4N62Opk2CezOFR%2FAna%20discusses%20repeat%20until%20and%20repeat%20while%20functions.mp4?alt=media&token=1add73b1-9e21-4cdb-876d-31495012bb50",
-        0,
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FmUm2VB4N62Opk2CezOFR%2FAna%20discusses%20repeat%20until%20and%20repeat%20while%20functions.mp4?alt=media&token=1add73b1-9e21-4cdb-876d-31495012bb50"
     )
     message += (
         "<div class='popup_message'>"
@@ -776,8 +771,7 @@ def title_level33():
 
 def description_level33():
     message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F8A63G0OQlNdxMpvLuK9j%2FChris%20and%20Matt%20introduce%20if%20statements.mp4?alt=media&token=6fc94e71-a8b1-43a4-aadd-63fcf3b5788c",
-        0,
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F8A63G0OQlNdxMpvLuK9j%2FChris%20and%20Matt%20introduce%20if%20statements.mp4?alt=media&token=6fc94e71-a8b1-43a4-aadd-63fcf3b5788c"
     )
     message += (
         "<div class='popup_message'>"
@@ -857,8 +851,7 @@ def title_level36():
 
 def description_level36():
     message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FsxMatN6zCvgFag8YDvK4%2FHelen%20explains%20if_else%20statements.mp4?alt=media&token=1051ab04-b02d-4b75-8278-2b63216b2985",
-        0,
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FsxMatN6zCvgFag8YDvK4%2FHelen%20explains%20if_else%20statements.mp4?alt=media&token=1051ab04-b02d-4b75-8278-2b63216b2985"
     )
     message += (
         f"<div class='popup_message'>"
@@ -1042,8 +1035,7 @@ def title_level44():
 
 def description_level44():
     message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FVDmgFe1LBpTpWI2b9EVN%2FWill%20discusses%20variables.mp4?alt=media&token=3fb3c5ca-f0d7-4f98-9274-5c4db8f64eac",
-        0,
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FVDmgFe1LBpTpWI2b9EVN%2FWill%20discusses%20variables.mp4?alt=media&token=3fb3c5ca-f0d7-4f98-9274-5c4db8f64eac"
     )
     message += (
         "<div class='popup_message'>"
@@ -1734,8 +1726,7 @@ def title_level80():
 
 def description_level80():
     message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FhwOkHWSHqONf5lm7vbc4%2FCode%20for%20Life_%20Python.mp4?alt=media&token=8b47268c-91ea-4315-80e8-05c40d84372c",
-        0,
+        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FhwOkHWSHqONf5lm7vbc4%2FCode%20for%20Life_%20Python.mp4?alt=media&token=8b47268c-91ea-4315-80e8-05c40d84372c"
     )
     message += (
         "As you create your program using Blockly, see what it looks like in the Python "
@@ -2691,7 +2682,7 @@ def hint_level109():
         "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."
         "<br><br><br><br><br><br><br><br>Watch this video for more details: <br>"
         "</div>"
-        f"{video_link("https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F3ojsv3EPh8qREqYMJBqo%2FPython%20Den%20Variable%20blocks%20demo.mp4?alt=media&token=192e4448-f16b-497f-b0d3-18163fd7d1d7", 0)}"
+        f"{video_link("https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F3ojsv3EPh8qREqYMJBqo%2FPython%20Den%20Variable%20blocks%20demo.mp4?alt=media&token=192e4448-f16b-497f-b0d3-18163fd7d1d7")}"
         "</div>",
     ),
     lambda: "<div class='main_popup_container'>"
@@ -2699,7 +2690,7 @@ def hint_level109():
     "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values."
     "<br><br><br><br><br><br><br><br>Watch the video here if you are unsure.<br>"
     "</div>"
-    f"{video_link("https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F3ojsv3EPh8qREqYMJBqo%2FPython%20Den%20Variable%20blocks%20demo.mp4?alt=media&token=192e4448-f16b-497f-b0d3-18163fd7d1d7", 0)}"
+    f"{video_link("https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2F3ojsv3EPh8qREqYMJBqo%2FPython%20Den%20Variable%20blocks%20demo.mp4?alt=media&token=192e4448-f16b-497f-b0d3-18163fd7d1d7")}"
     "</div>",
 )
 
