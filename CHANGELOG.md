@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v7.4.2 (2025-03-18)
+
+### Bug Fixes
+
+- Bump up version
+  ([`8f40e0e`](https://github.com/ocadotechnology/rapid-router/commit/8f40e0e4e18193bd2921410c6dc196f1d292813b))
+
+### Build System
+
+- Relock Pipfile
+  ([`c1f4f84`](https://github.com/ocadotechnology/rapid-router/commit/c1f4f84c7ea05be57c48794805b80fb79002c856))
+
+
 ## v7.4.1 (2025-03-18)
 
 ### Bug Fixes
