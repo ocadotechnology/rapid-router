@@ -19,7 +19,7 @@ pytest = "==8.*"
 pytest-django = "==4.8.0"
 pytest-order = "*"
 pytest-xdist = "*"
-selenium = "==4.9.0"
+selenium = "==4.29.0"
 
 [requires]
 python_version = "3.12"
