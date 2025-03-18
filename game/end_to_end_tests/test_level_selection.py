@@ -5,8 +5,6 @@ from common.tests.utils.teacher import signup_teacher_directly
 from hamcrest import assert_that, ends_with, equal_to
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Attempt, Episode
@@ -68,16 +66,12 @@ class TestLevelSelection(BaseGameTest):
         levels_page = self.go_to_reverse("python_levels")
         expected_url = levels_page.browser.current_url
 
-        page = self.go_to_level_without_dismissing_dialog(40, True)
-        next_button = self.selenium.find_element(By.ID, "next_button")
-        assert WebDriverWait(self.selenium, 10).until(
-            EC.element_to_be_clickable(next_button)
-        )
-        next_button.click()
+        page = self.go_to_level_without_dismissing_dialog(26, True)
+        self.selenium.find_element(By.ID, "next_button").click()
 
         current_url = page.browser.current_url
         assert current_url == expected_url
 
         episode_20_header = self.selenium.find_element(By.ID, "collapse-20")
         episode_20_expanded = episode_20_header.get_attribute("class")
-        assert episode_20_expanded == "collapse in"
+        assert episode_20_expanded == "collapse"

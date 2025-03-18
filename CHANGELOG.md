@@ -1,6 +1,64 @@
 # CHANGELOG
 
 
+## v7.4.0 (2025-03-18)
+
+### Continuous Integration
+
+- Build package properly
+  ([`7be5707`](https://github.com/ocadotechnology/rapid-router/commit/7be5707be79687ebb60a7aa2e06f5079f5214d59))
+
+- Implement new Snyk checks ([#1786](https://github.com/ocadotechnology/rapid-router/pull/1786),
+  [`dd61a23`](https://github.com/ocadotechnology/rapid-router/commit/dd61a23dee3c085adfd002e1c47f15391e56b9ee))
+
+* ci: Implement new Snyk solution
+
+* Lock pipfile
+
+* Quick monitor as well
+
+* Remove monitor from Snyk action
+
+- Install build instead of wheel
+  ([`84794a1`](https://github.com/ocadotechnology/rapid-router/commit/84794a1bf0fd17d09f1defcc237b361022a96673))
+
+- Use Snyk monitor properly
+  ([`917819d`](https://github.com/ocadotechnology/rapid-router/commit/917819debba34cf58f4a0426943c9ee59c56e903))
+
+### Features
+
+- Lock levels for anon users ([#1784](https://github.com/ocadotechnology/rapid-router/pull/1784),
+  [`56616b6`](https://github.com/ocadotechnology/rapid-router/commit/56616b6e3decc5f5a97382a460888245c604b17e))
+
+* feat: block python den levels
+
+* lock rr levels
+
+* text
+
+* fix: unlock 1st level of each episode
+
+* potential test fix
+
+* undo
+
+* Test using Firefox
+
+* Revert "Test using Firefox"
+
+This reverts commit 3b0f308bfbcd1388a6c14f0b0fc6273dce6e9c6d.
+
+* Fix test
+
+* Fix last test
+
+* Remove import
+
+---------
+
+Co-authored-by: Florian Aucomte <f.aucomte@hotmail.co.uk>
+
+
 ## v7.3.6 (2025-03-11)
 
 ### Bug Fixes
