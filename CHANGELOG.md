@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.4.1 (2025-03-18)
+
+### Bug Fixes
+
+- Relock Pipfile
+  ([`bb0f38c`](https://github.com/ocadotechnology/rapid-router/commit/bb0f38c86f9bd9895b78f9c05b5b239863b806de))
+
+
 ## v7.4.0 (2025-03-18)
 
 ### Continuous Integration
