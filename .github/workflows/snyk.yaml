@@ -1,33 +1,25 @@
 name: Snyk
+
 on:
   release:
     types: [published]
   pull_request:
+  workflow_dispatch:
+
 jobs:
-  security:
-    name: Run Snyk
+  test:
+    if: github.repository_owner_id == 2088731
     runs-on: ubuntu-22.04
-    env:
-      LANG: C.UTF-8
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: 🐍 Set up Python 3.12 Environment
+        uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@main
         with:
-          fetch-depth: 0
-      - name: Setup python-version
-        uses: actions/setup-python@v5
+          python-version: 3.12
+
+      - name: 🐕‍🦺 Run Snyk Tests
+        uses: ocadotechnology/codeforlife-workspace/.github/actions/snyk/run-tests@main
         with:
-          python-version: "3.8"
-          architecture: "x64"
-      - name: Install Python dependencies
-        run: |
-          pip install pipenv
-          pipenv install --dev --system
-      - name: Generate requirements
-        run: pip freeze > requirements.txt
-      - name: Run Snyk to check for vulnerabilities in Python
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor --file=requirements.txt --package-manager=pip --project-name="rapid router"
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
+          config-path: "backend/.snyk"
+          add-test-args: --command=.venv/bin/python
+          remove-repo-name-prefix: ""

@@ -5,8 +5,9 @@ name = "pypi"
 
 [packages]
 cfl-common = ">=8.0.0"
+django-reverse-js = "==0.1.7"
 ipython = "*"
-rapid-router = {path = ".", editable = true}
+pyhamcrest = "==2.0.2"
 
 [dev-packages]
 black = "*"

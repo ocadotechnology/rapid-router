@@ -15,7 +15,7 @@ while [ "$1" != "" ]; do
   shift
 done
 
-./example_project/manage.py migrate --noinput
+./manage.py migrate --noinput
 
 # Translation/Localisation
 if [ "$translation" = "1" ]; then
@@ -29,5 +29,5 @@ if [ "$translation" = "1" ]; then
   ./.crowdin-get-translations
 fi
 
-./example_project/manage.py collectstatic --noinput --clear
-./example_project/manage.py runserver "$@"
+./manage.py collectstatic --noinput --clear
+./manage.py runserver "$@"
