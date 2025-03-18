@@ -89,6 +89,9 @@
 
             <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
                 <div class="panel-body">
+                    {% if not user.is_authenticated and episode.id > 2 %}
+                        <p class="text--warning">In order to access the full content for this course, please log in.</p>
+                    {% endif %}
                     {% for level in episode.levels %}
                         {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
                             <!-- Mark level as locked -->
@@ -98,6 +101,11 @@
                                     <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                                     <img class="level_image coin_image" value="{{level.name}}">
                                 {% endif %}
+                            </p>
+                        {% elif not user.is_authenticated and level.name > 19 and level.name != 29 and level.name != 33 and level.name != 44 and level.name != 51 and level.name != 61 and level.name != 68 %}
+                            <!-- Mark level as locked -->
+                            <p>
+                                <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
                             </p>
                         {% else %}
                             <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
@@ -111,7 +119,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    {% if episode.random_levels_enabled %}
+                    {% if not user.is_authenticated and episode.id <= 2 or user.is_authenticated and episode.random_levels_enabled %}
                     <p>
                         <a href="{% url 'random_level_for_episode' episode.id %}">
                         Random: Try your hand at a random level

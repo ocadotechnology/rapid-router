@@ -27,7 +27,7 @@ class TestPythonLevels(BaseGameTest):
         self.go_to_level(4, from_python_den=True).run_print_program()
 
     def test_invalid_import(self):
-        self.go_to_level(49, from_python_den=True).run_invalid_import_program()
+        self.go_to_level(5, from_python_den=True).run_invalid_import_program()
 
     def test_run_code(self):
         self.go_to_level(4, from_python_den=True)
