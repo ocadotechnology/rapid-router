@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v7.4.3 (2025-03-18)
+
+### Bug Fixes
+
+- Use video instead of iframe in popup
+  ([#1789](https://github.com/ocadotechnology/rapid-router/pull/1789),
+  [`86c4c54`](https://github.com/ocadotechnology/rapid-router/commit/86c4c54cc67534634b982b63e261dbee049d99c7))
+
+
 ## v7.4.2 (2025-03-18)
 
 ### Bug Fixes
