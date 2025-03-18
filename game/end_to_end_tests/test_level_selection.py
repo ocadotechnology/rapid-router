@@ -1,5 +1,3 @@
-import time
-
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
