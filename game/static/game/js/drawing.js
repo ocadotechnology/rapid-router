@@ -1021,10 +1021,10 @@ ocargo.Drawing.translate = function (coordinate) {
 
 // A Function used to stop the iframe video
 function stopVideo() {
-  // https://gist.github.com/cferdinandi/9044694
-  const video = document.getElementsByClassName("video");
-  const iframeSrc = video[0].src;
-  video[0].src = iframeSrc;
+  // // https://gist.github.com/cferdinandi/9044694
+  const video = document.getElementsByTagName("video");
+  const videoSrc = video[0].src;
+  video[0].src = videoSrc;
 }
 
 /*
@@ -1064,8 +1064,8 @@ ocargo.Drawing.startPopup = function (
     }
   }
 
-  const videoFrame = $("iframe")
-  if (videoFrame[0]) {
+  const video = $("video")
+  if (video) {
     mascot.hide()
   }
 
