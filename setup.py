@@ -21,7 +21,7 @@ def parse_requirements(packages: t.Dict[str, t.Dict[str, t.Any]]):
         packages: The group name of the requirements.
 
     Returns:
-        The requirements as a list of strings, required by `setuptools.setup`.
+        The requirements as a list of strings, required by `setuptools.setup`
     """
 
     requirements: t.List[str] = []
