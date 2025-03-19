@@ -1,6 +1,26 @@
 # CHANGELOG
 
 
+## v7.4.5 (2025-03-19)
+
+### Bug Fixes
+
+- Send events ([#1787](https://github.com/ocadotechnology/rapid-router/pull/1787),
+  [`59d677a`](https://github.com/ocadotechnology/rapid-router/commit/59d677ac939f8164bbf4052d6e7e2d61c5a8e1b5))
+
+* send events
+
+* Try consecutive tests
+
+* only cfl domain
+
+* undo lol
+
+---------
+
+Co-authored-by: Florian Aucomte <f.aucomte@hotmail.co.uk>
+
+
 ## v7.4.4 (2025-03-18)
 
 ### Bug Fixes
