@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.4.6 (2025-03-20)
+
+### Bug Fixes
+
+- Install latest common and portal
+  ([`2ed1ba3`](https://github.com/ocadotechnology/rapid-router/commit/2ed1ba37f1f6aac645ecdd867b27a27745a12e2b))
+
+
 ## v7.4.5 (2025-03-19)
 
 ### Bug Fixes
