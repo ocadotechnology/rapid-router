@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:c58d1266aa88e1e546cf29682fc7bdb49406c8f79e2ae58790e94be2ef14e51e",
-                "sha256:cb1a491941a76732a18e41570644368fed40e4208ab11bd9600f2443be4e52a2"
+                "sha256:7ebee7f4ce0c1f3c29928c81f274b820d6114a542be78c32a369b3db4862f23d",
+                "sha256:b4cf421c4b28dc3c7550ebaf99548687bdb4de0ccb9a08671879e7a9cb828eaf"
             ],
             "index": "pypi",
-            "version": "==8.4.10"
+            "version": "==8.5.0"
         },
         "charset-normalizer": {
             "hashes": [
@@ -662,11 +662,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:c58d1266aa88e1e546cf29682fc7bdb49406c8f79e2ae58790e94be2ef14e51e",
-                "sha256:cb1a491941a76732a18e41570644368fed40e4208ab11bd9600f2443be4e52a2"
+                "sha256:7ebee7f4ce0c1f3c29928c81f274b820d6114a542be78c32a369b3db4862f23d",
+                "sha256:b4cf421c4b28dc3c7550ebaf99548687bdb4de0ccb9a08671879e7a9cb828eaf"
             ],
             "index": "pypi",
-            "version": "==8.4.10"
+            "version": "==8.5.0"
         },
         "chardet": {
             "hashes": [
@@ -784,11 +784,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:dc4ae64541e9f6788024d7137e4b3b4701c9e351c2adb91262b18649af41cd13",
-                "sha256:f133dc105c40cedd8a6510b5a65ebedaffc44bc53df0ae7c9f9005b139164652"
+                "sha256:72029ae26cee4602b07d183b5dfafe6f045d88b3646a440bec1a44fbc92b7edf",
+                "sha256:fbb0f3d5ec28c0f9ba860ddcbf27927b8143b334aee76df6bf497396e90393cd"
             ],
             "index": "pypi",
-            "version": "==8.4.10"
+            "version": "==8.5.0"
         },
         "diff-match-patch": {
             "hashes": [
@@ -972,11 +972,11 @@
         },
         "iniconfig": {
             "hashes": [
-                "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3",
-                "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"
+                "sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7",
+                "sha256:9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760"
             ],
-            "markers": "python_version >= '3.7'",
-            "version": "==2.0.0"
+            "markers": "python_version >= '3.8'",
+            "version": "==2.1.0"
         },
         "isort": {
             "hashes": [
@@ -1242,11 +1242,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907",
-                "sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb"
+                "sha256:a03875334331946f13c549dbd8f4bac7a13a50a895a0eb1e8c6a8ace80d40a94",
+                "sha256:eb437d586b6a0986388f0d6f74aa0cde27b48d0e3d66843640bfb6bdcdb6e351"
             ],
-            "markers": "python_version >= '3.8'",
-            "version": "==4.3.6"
+            "markers": "python_version >= '3.9'",
+            "version": "==4.3.7"
         },
         "pluggy": {
             "hashes": [
