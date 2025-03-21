@@ -8,7 +8,7 @@
   },
   "black-formatter.args": [
     "--config",
-    "pyproject.toml"
+    "../configs/backend/pyproject.toml"
   ],
   "black-formatter.path": [
     ".venv/bin/python",
@@ -37,7 +37,7 @@
     "**/__pycache__": true
   },
   "isort.args": [
-    "--settings-file=pyproject.toml"
+    "--settings-file=../configs/backend/pyproject.toml"
   ],
   "isort.path": [
     ".venv/bin/python",
@@ -45,7 +45,7 @@
     "isort"
   ],
   "mypy-type-checker.args": [
-    "--config-file=pyproject.toml"
+    "--config-file=../configs/backend/pyproject.toml"
   ],
   "mypy-type-checker.path": [
     ".venv/bin/python",
@@ -53,7 +53,7 @@
     "mypy"
   ],
   "pylint.args": [
-    "--rcfile=pyproject.toml"
+    "--rcfile=../configs/backend/pyproject.toml"
   ],
   "pylint.path": [
     ".venv/bin/python",
@@ -65,7 +65,7 @@
     "-n=auto",
     "--cov=.",
     "--cov-report=html",
-    "-c=pyproject.toml",
+    "-c=../configs/backend/pyproject.toml",
     "."
   ],
   "python.testing.pytestEnabled": true,
