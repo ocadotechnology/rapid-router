@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:026aec7fb9f856cbda1953ef226febf846e137867b764bde8c0ae91d6914ce52",
-                "sha256:196c6056792b879ec2b87e9a95a7e4a434daa45c002582fdc0a5d34959f9d1ba"
+                "sha256:538908391cc05bc904117b8217acbdf9069388220441f6259a9e4a82aaa66ed4",
+                "sha256:ce2118f82fc0ffa2015fbb82c59d62e2d68834cce2833a2429770e6285ee6db1"
             ],
             "index": "pypi",
-            "version": "==8.6.0"
+            "version": "==8.6.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -164,11 +164,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:1a47f7a7a3d43ce64570d350e008d2949abe8c7e21737b351b6a1611277c6d89",
-                "sha256:91ceed4e3a6db5aedced65e3c8f963118ea9ba753fc620831c77074e620e7d83"
+                "sha256:11b28fa4b00e59d0def004e9ee012fefbb1065a5beb39ee838983fd24493ad4f",
+                "sha256:42e92a1dd2810072bcc40a39a212b693f94406d0ba0749e68eb642f31dc770b4"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==5.2"
+            "version": "==5.1.8"
         },
         "django-countries": {
             "hashes": [
@@ -662,11 +662,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:026aec7fb9f856cbda1953ef226febf846e137867b764bde8c0ae91d6914ce52",
-                "sha256:196c6056792b879ec2b87e9a95a7e4a434daa45c002582fdc0a5d34959f9d1ba"
+                "sha256:538908391cc05bc904117b8217acbdf9069388220441f6259a9e4a82aaa66ed4",
+                "sha256:ce2118f82fc0ffa2015fbb82c59d62e2d68834cce2833a2429770e6285ee6db1"
             ],
             "index": "pypi",
-            "version": "==8.6.0"
+            "version": "==8.6.1"
         },
         "chardet": {
             "hashes": [
@@ -800,11 +800,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:1a47f7a7a3d43ce64570d350e008d2949abe8c7e21737b351b6a1611277c6d89",
-                "sha256:91ceed4e3a6db5aedced65e3c8f963118ea9ba753fc620831c77074e620e7d83"
+                "sha256:11b28fa4b00e59d0def004e9ee012fefbb1065a5beb39ee838983fd24493ad4f",
+                "sha256:42e92a1dd2810072bcc40a39a212b693f94406d0ba0749e68eb642f31dc770b4"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==5.2"
+            "version": "==5.1.8"
         },
         "django-classy-tags": {
             "hashes": [
