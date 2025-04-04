@@ -120,7 +120,12 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-STATICFILES_STORAGE = "pipeline.storage.PipelineStorage"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": "pipeline.storage.PipelineManifestStorage",
+    },
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
