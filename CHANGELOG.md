@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v7.5.2 (2025-04-04)
+
+### Bug Fixes
+
+- Install latest common
+  ([`543205d`](https://github.com/ocadotechnology/rapid-router/commit/543205df5670c3a9b0bc1cbd0041b448ff64b323))
+
+- Remove logger instances ([#1795](https://github.com/ocadotechnology/rapid-router/pull/1795),
+  [`fb7e18a`](https://github.com/ocadotechnology/rapid-router/commit/fb7e18a841b88dcec64394331dad7bb6dcbe8fd0))
+
+* fix: Remove logger instances
+
+* Merge branch 'master' into remove_logger
+
+
 ## v7.5.1 (2025-04-04)
 
 ### Bug Fixes
