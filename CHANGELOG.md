@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.5.1 (2025-04-04)
+
+### Bug Fixes
+
+- Drf 3.16 ([#1798](https://github.com/ocadotechnology/rapid-router/pull/1798),
+  [`e6efb60`](https://github.com/ocadotechnology/rapid-router/commit/e6efb603d3863de7a3aaf923faa67a1555f7bc98))
+
+
 ## v7.5.0 (2025-04-04)
 
 ### Bug Fixes
