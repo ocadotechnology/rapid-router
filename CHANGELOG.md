@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## v7.5.0 (2025-04-04)
+
+### Bug Fixes
+
+- New common ([#1797](https://github.com/ocadotechnology/rapid-router/pull/1797),
+  [`72932e3`](https://github.com/ocadotechnology/rapid-router/commit/72932e34adef785adc26a78b73551bb8274a35bf))
+
+* fix: new common
+
+* Use new STORAGES setting
+
+Co-Authored-By: faucomte97 <f.aucomte@hotmail.co.uk>
+
+### Features
+
+- Django 5.1 ([#1796](https://github.com/ocadotechnology/rapid-router/pull/1796),
+  [`d77037f`](https://github.com/ocadotechnology/rapid-router/commit/d77037f3313d66cbce0e3de390727c97e5e2e4cf))
+
+* feat: django 5.1
+
+* new cfl common
+
+
 ## v7.4.7 (2025-03-26)
 
 ### Bug Fixes
