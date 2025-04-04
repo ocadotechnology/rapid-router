@@ -1,8 +1,4 @@
-import logging
-
 from rest_framework import permissions
-
-LOGGER = logging.getLogger(__name__)
 
 
 def _get_userprofile_school(userprofile):
@@ -11,9 +7,6 @@ def _get_userprofile_school(userprofile):
     elif hasattr(userprofile, "student"):
         return userprofile.student.class_field.teacher.school
     else:
-        LOGGER.error(
-            f"Userprofile ID {userprofile.id} has no teacher or student attribute"
-        )
         return None
 
 
