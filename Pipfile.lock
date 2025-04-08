@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "379b0c87d88527e104bd8166c973f7bcc69482e63266f6a6fd0df0c7283c557e"
+            "sha256": "ed6ec9ba04410fc2e59f911a60b71638dfd558acccea708a5703d85ada0c3d44"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:6b2cb3c7ba12d651e70e1f72fb62423a20dd04a54ddee80e6627789175236a2f",
-                "sha256:717d5011a21a84d001c9edb4f23943206a0c1be37e32b7539b243d280771b5a5"
+                "sha256:ec64bc57bee0add7762e3ddd87699a32776c78631b19365451381e18a9417796",
+                "sha256:f3cfa85a9343205b555a89f54faad0fcfa80e2af4e2e2fb4e134309e347a32dd"
             ],
             "index": "pypi",
-            "version": "==8.6.4"
+            "version": "==8.6.5"
         },
         "charset-normalizer": {
             "hashes": [
@@ -226,12 +226,12 @@
         },
         "django-reverse-js": {
             "hashes": [
-                "sha256:7d626f4d660604e4c2623a494a08ddb70587375110cf4e7bb6f56eeb4471630f",
-                "sha256:89c15e3f1bd656a6f7c7f3641144c0a79d42ec692182c8edd6a91061674f6b62"
+                "sha256:42739b2d955704cb723467655c67278602695d2aae6e7595ff80db323c73e958",
+                "sha256:e9e604aaf8c5cda7c1b1cb9a1a78cff395f7937935085d22bcd484016512a069"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.10'",
-            "version": "==0.1.7"
+            "version": "==0.1.8"
         },
         "django-two-factor-auth": {
             "hashes": [
@@ -267,12 +267,12 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:143ef3ea6fb1e1bffb4c74b114051de653ffb7737a3f7ab1670e657ca6ae8c44",
-                "sha256:ec7b479e3e5656bf4f58c652c120494df1820f4f28f522fb7ca09e213c2aab52"
+                "sha256:2df07257ec2f84a6b346b8d83100bcf8fa501c6e01ab75cd3799b0bb253b3d2a",
+                "sha256:a47e13a5e05e02f3b8e1e7a0f9db372199fe8c3763532fe7a1e0379e4e135f16"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.11'",
-            "version": "==9.0.2"
+            "version": "==9.1.0"
         },
         "ipython-pygments-lexers": {
             "hashes": [
@@ -679,11 +679,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:6b2cb3c7ba12d651e70e1f72fb62423a20dd04a54ddee80e6627789175236a2f",
-                "sha256:717d5011a21a84d001c9edb4f23943206a0c1be37e32b7539b243d280771b5a5"
+                "sha256:ec64bc57bee0add7762e3ddd87699a32776c78631b19365451381e18a9417796",
+                "sha256:f3cfa85a9343205b555a89f54faad0fcfa80e2af4e2e2fb4e134309e347a32dd"
             ],
             "index": "pypi",
-            "version": "==8.6.4"
+            "version": "==8.6.5"
         },
         "chardet": {
             "hashes": [
@@ -801,11 +801,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:526ba877b68458abdd93b77622e9e30da312ff23a6443ebcc97e6073a8584817",
-                "sha256:c47078b4abf74bd79a5a7318a40112c08564c007a09ab46cbbfdc6f1addfa13c"
+                "sha256:5b243fcfc7cac74a6ca7d18571dcff3e0cb07df08cc7ef1ef7e066c97a14ec0f",
+                "sha256:b58ab70d06d300289f055b4d93377645eb7306de4b2a0df2ae8344a2df88ba0e"
             ],
             "index": "pypi",
-            "version": "==8.6.4"
+            "version": "==8.6.5"
         },
         "diff-match-patch": {
             "hashes": [
