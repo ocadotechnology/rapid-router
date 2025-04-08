@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.5.3 (2025-04-08)
+
+### Bug Fixes
+
+- Install latest common and upgrade django-reverse-js
+  ([`5a87d7c`](https://github.com/ocadotechnology/rapid-router/commit/5a87d7c4220e230bf1dfd459de8db290bd1daac0))
+
+
 ## v7.5.2 (2025-04-04)
 
 ### Bug Fixes
