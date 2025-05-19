@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v7.5.8 (2025-05-19)
+
+### Bug Fixes
+
+- Sass compiler ([#1804](https://github.com/ocadotechnology/rapid-router/pull/1804),
+  [`d443aa9`](https://github.com/ocadotechnology/rapid-router/commit/d443aa9ff65a0ccbbdace63c92f8e5bb55f30d32))
+
+* fix: sass compiler
+
+* relock
+
+
 ## v7.5.7 (2025-05-16)
 
 ### Bug Fixes
