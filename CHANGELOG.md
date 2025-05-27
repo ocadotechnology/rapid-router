@@ -1,6 +1,112 @@
 # CHANGELOG
 
 
+## v7.5.8 (2025-05-19)
+
+### Bug Fixes
+
+- Sass compiler ([#1804](https://github.com/ocadotechnology/rapid-router/pull/1804),
+  [`d443aa9`](https://github.com/ocadotechnology/rapid-router/commit/d443aa9ff65a0ccbbdace63c92f8e5bb55f30d32))
+
+* fix: sass compiler
+
+* relock
+
+
+## v7.5.7 (2025-05-16)
+
+### Bug Fixes
+
+- Install latest common
+  ([`6d49154`](https://github.com/ocadotechnology/rapid-router/commit/6d49154c3cf421b113bb611b7cb97cb1b41f69b6))
+
+
+## v7.5.6 (2025-05-09)
+
+### Bug Fixes
+
+- Install latest common
+  ([`22d176c`](https://github.com/ocadotechnology/rapid-router/commit/22d176c2cf1e61c44e951a183da82c5f1fc729d9))
+
+
+## v7.5.5 (2025-05-09)
+
+### Bug Fixes
+
+- Install latest common
+  ([`9bfeca8`](https://github.com/ocadotechnology/rapid-router/commit/9bfeca8994d2dee41eeb5b893f820322495f057a))
+
+
+## v7.5.4 (2025-04-22)
+
+### Bug Fixes
+
+- Install latest common
+  ([`d14c2d1`](https://github.com/ocadotechnology/rapid-router/commit/d14c2d1fd85eec39a2a815521b0c89c8de50ee7d))
+
+
+## v7.5.3 (2025-04-08)
+
+### Bug Fixes
+
+- Install latest common and upgrade django-reverse-js
+  ([`5a87d7c`](https://github.com/ocadotechnology/rapid-router/commit/5a87d7c4220e230bf1dfd459de8db290bd1daac0))
+
+
+## v7.5.2 (2025-04-04)
+
+### Bug Fixes
+
+- Install latest common
+  ([`543205d`](https://github.com/ocadotechnology/rapid-router/commit/543205df5670c3a9b0bc1cbd0041b448ff64b323))
+
+- Remove logger instances ([#1795](https://github.com/ocadotechnology/rapid-router/pull/1795),
+  [`fb7e18a`](https://github.com/ocadotechnology/rapid-router/commit/fb7e18a841b88dcec64394331dad7bb6dcbe8fd0))
+
+* fix: Remove logger instances
+
+* Merge branch 'master' into remove_logger
+
+
+## v7.5.1 (2025-04-04)
+
+### Bug Fixes
+
+- Drf 3.16 ([#1798](https://github.com/ocadotechnology/rapid-router/pull/1798),
+  [`e6efb60`](https://github.com/ocadotechnology/rapid-router/commit/e6efb603d3863de7a3aaf923faa67a1555f7bc98))
+
+
+## v7.5.0 (2025-04-04)
+
+### Bug Fixes
+
+- New common ([#1797](https://github.com/ocadotechnology/rapid-router/pull/1797),
+  [`72932e3`](https://github.com/ocadotechnology/rapid-router/commit/72932e34adef785adc26a78b73551bb8274a35bf))
+
+* fix: new common
+
+* Use new STORAGES setting
+
+Co-Authored-By: faucomte97 <f.aucomte@hotmail.co.uk>
+
+### Features
+
+- Django 5.1 ([#1796](https://github.com/ocadotechnology/rapid-router/pull/1796),
+  [`d77037f`](https://github.com/ocadotechnology/rapid-router/commit/d77037f3313d66cbce0e3de390727c97e5e2e4cf))
+
+* feat: django 5.1
+
+* new cfl common
+
+
+## v7.4.7 (2025-03-26)
+
+### Bug Fixes
+
+- Install latest common and portal
+  ([`5090464`](https://github.com/ocadotechnology/rapid-router/commit/50904643e84a68c87b9943f5ad52d0fdedb7f269))
+
+
 ## v7.4.6 (2025-03-20)
 
 ### Bug Fixes

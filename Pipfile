@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 cfl-common = ">=8.0.0"
-django-reverse-js = "==0.1.7"
+django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
 
