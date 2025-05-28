@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:05c46ccccbe56bde4e75a61c119b08cde1c25c852de7884f2ad6f9e030b4c16e",
-                "sha256:d1d640e962551eb3a675138a1124073a7848bb51219518a5ed15fb2de9266656"
+                "sha256:16143576a533fff068ecf40c238f39c2dcbbcc83e5ab99ad976a10cfa6a2a2a4",
+                "sha256:eb624b3ac8192b4f07eaafc4a307bc2c41641a4b257d5b957b98e0d83d700a35"
             ],
             "index": "pypi",
-            "version": "==8.6.11"
+            "version": "==8.7.0"
         },
         "charset-normalizer": {
             "hashes": [
@@ -679,11 +679,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:05c46ccccbe56bde4e75a61c119b08cde1c25c852de7884f2ad6f9e030b4c16e",
-                "sha256:d1d640e962551eb3a675138a1124073a7848bb51219518a5ed15fb2de9266656"
+                "sha256:16143576a533fff068ecf40c238f39c2dcbbcc83e5ab99ad976a10cfa6a2a2a4",
+                "sha256:eb624b3ac8192b4f07eaafc4a307bc2c41641a4b257d5b957b98e0d83d700a35"
             ],
             "index": "pypi",
-            "version": "==8.6.11"
+            "version": "==8.7.0"
         },
         "chardet": {
             "hashes": [
@@ -793,19 +793,19 @@
         },
         "click": {
             "hashes": [
-                "sha256:6b303f0b2aa85f1cb4e5303078fadcbcd4e476f114fab9b5007005711839325c",
-                "sha256:f5452aeddd9988eefa20f90f05ab66f17fce1ee2a36907fd30b05bbb5953814d"
+                "sha256:27c491cc05d968d271d5a1db13e3b5a184636d9d930f148c50b038f0d0646202",
+                "sha256:61a3265b914e850b85317d0b3109c7f8cd35a670f963866005d6ef1d5175a12b"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==8.2.0"
+            "version": "==8.2.1"
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:cdb41540cd77f95a3b6e65e999312792f15dbe0a2574d9b8ec20753ad80a5eef",
-                "sha256:fe3b6ee2e4926e73222d483a56402194b7beb1952112645576799d1b154576b9"
+                "sha256:11534adf80dff9fd6a79bfb33eedabe8e14101f2cfd617990cdd31740c6ce80c",
+                "sha256:82962aad1ce022770a3fb0d867ea106bdb4c30aaf201fefff9d8d0fde761d261"
             ],
             "index": "pypi",
-            "version": "==8.6.11"
+            "version": "==8.7.0"
         },
         "diff-match-patch": {
             "hashes": [
@@ -1336,12 +1336,12 @@
         },
         "pytest-xdist": {
             "hashes": [
-                "sha256:9ed4adfb68a016610848639bb7e02c9352d5d9f03d04809919e2dafc3be4cca7",
-                "sha256:ead156a4db231eec769737f57668ef58a2084a34b2e55c4a8fa20d861107300d"
+                "sha256:7d3fbd255998265052435eb9daa4e99b62e6fb9cfb6efd1f858d4d8c0c7f0ca0",
+                "sha256:f9248c99a7c15b7d2f90715df93610353a485827bc06eefb6566d23f6400f126"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.8'",
-            "version": "==3.6.1"
+            "markers": "python_version >= '3.9'",
+            "version": "==3.7.0"
         },
         "python-dateutil": {
             "hashes": [
