@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:05c46ccccbe56bde4e75a61c119b08cde1c25c852de7884f2ad6f9e030b4c16e",
-                "sha256:d1d640e962551eb3a675138a1124073a7848bb51219518a5ed15fb2de9266656"
+                "sha256:16143576a533fff068ecf40c238f39c2dcbbcc83e5ab99ad976a10cfa6a2a2a4",
+                "sha256:eb624b3ac8192b4f07eaafc4a307bc2c41641a4b257d5b957b98e0d83d700a35"
             ],
             "index": "pypi",
-            "version": "==8.6.11"
+            "version": "==8.7.0"
         },
         "charset-normalizer": {
             "hashes": [
@@ -679,11 +679,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:05c46ccccbe56bde4e75a61c119b08cde1c25c852de7884f2ad6f9e030b4c16e",
-                "sha256:d1d640e962551eb3a675138a1124073a7848bb51219518a5ed15fb2de9266656"
+                "sha256:16143576a533fff068ecf40c238f39c2dcbbcc83e5ab99ad976a10cfa6a2a2a4",
+                "sha256:eb624b3ac8192b4f07eaafc4a307bc2c41641a4b257d5b957b98e0d83d700a35"
             ],
             "index": "pypi",
-            "version": "==8.6.11"
+            "version": "==8.7.0"
         },
         "chardet": {
             "hashes": [
@@ -801,11 +801,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:cdb41540cd77f95a3b6e65e999312792f15dbe0a2574d9b8ec20753ad80a5eef",
-                "sha256:fe3b6ee2e4926e73222d483a56402194b7beb1952112645576799d1b154576b9"
+                "sha256:11534adf80dff9fd6a79bfb33eedabe8e14101f2cfd617990cdd31740c6ce80c",
+                "sha256:82962aad1ce022770a3fb0d867ea106bdb4c30aaf201fefff9d8d0fde761d261"
             ],
             "index": "pypi",
-            "version": "==8.6.11"
+            "version": "==8.7.0"
         },
         "diff-match-patch": {
             "hashes": [
