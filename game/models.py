@@ -361,3 +361,4 @@ class Worksheet(models.Model):
     locked_classes = models.ManyToManyField(
         Class, blank=True, related_name="locked_worksheets"
     )
+    starter_code = models.TextField(default="# Write your code below")

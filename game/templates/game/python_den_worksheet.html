@@ -7,10 +7,16 @@
 {% block scripts %}
 {{block.super}}
 <script type="text/javascript" src="https://editor-static.raspberrypi.org/releases/v0.29.1/web-component.js"></script>
+<script type="text/javascript" src="{% static 'game/js/editor.js' %}"></script>
+
+<script>
+    var EPISODE = "{{ worksheet.episode.name|escapejs }}"
+</script>
 {% endblock %}
 
 {% block css %}
 {{block.super}}
+<link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'game/css/editor.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
@@ -24,25 +30,24 @@
 </section>
 {% endblock header %}
 
-
-{% block nav_ocargo_levels %}
-    {% if user|is_logged_in_as_student %}
-    <a class="button button--secondary button--secondary--light">Levels</a>
-    {% elif user|is_independent_student %}
-    <a class="button button--secondary">Levels</a>
-    {% else %}
-    <a class="button button--secondary button--secondary--light">Levels</a>
-    {% endif %}
-{% endblock nav_ocargo_levels %}
-
 {% block content %}
-<div class="container background">
-    <editor-wc
-        code="print('Hello component')"
-        with_projectbar="true"
-        use_editor_styles="true"
-        output_panels='["text"]'
-        editable_instructions="true">
-    </editor-wc>
+<div class="container">
+    <h4 class="text-center">{{worksheet.episode.name}}</h4>
 </div>
+
+<div>
+    <div class="d-flex align-items-center justify-content-between m-5 flex-lg-row flex-md-column flex-sm-column">
+        <a href="{{worksheet.video_link}}" class="button button--level button--icon hidden-md hidden-lg mb-5" target="_blank">
+            Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+
+        <editor-wc
+                code="{{worksheet.starter_code}}"
+                use_editor_styles="true">
+        </editor-wc>
+
+        <video width="33%" height="500" class="hidden-sm hidden-xs"
+               src="{{worksheet.video_link}}" type="video/mp4" controls></video>
+    </div>
+</div>
+
 {% endblock content %}
