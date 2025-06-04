@@ -45,8 +45,25 @@
                 use_editor_styles="true">
         </editor-wc>
 
-        <video width="33%" height="500" class="hidden-sm hidden-xs"
-               src="{{worksheet.video_link}}" type="video/mp4" controls></video>
+        <div class="d-flex flex-column">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#video" aria-controls="video" role="tab" data-toggle="tab">Video</a></li>
+                <li role="presentation"><a href="#worksheet" aria-controls="worksheet" role="tab" data-toggle="tab">Worksheet</a></li>
+                <li role="presentation"><a href="#lolz" aria-controls="lolz" role="tab" data-toggle="tab">LOLZ</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="video">
+                    <video height="500" class="hidden-sm hidden-xs"
+                           src="{{worksheet.video_link}}" type="video/mp4" controls></video>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="worksheet">
+                    <iframe src="{{worksheet.lesson_plan_link}}"></iframe>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="lolz">LOLZ</div>
+            </div>
+        </div>
+
     </div>
 </div>
 
