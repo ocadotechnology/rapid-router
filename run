@@ -30,4 +30,4 @@ if [ "$translation" = "1" ]; then
 fi
 
 ./manage.py collectstatic --noinput --clear
-./manage.py runserver "$@"
+./manage.py runserver_plus --cert-file localhost.pem --key-file localhost-key.pem "$@"
