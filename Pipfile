@@ -4,7 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cfl-common = ">=8.0.0"
+cfl-common = "==8.7.3"
+codeforlife-portal = "==8.7.3"
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
