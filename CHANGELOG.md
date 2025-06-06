@@ -1,6 +1,20 @@
 # CHANGELOG
 
 
+## v7.5.11 (2025-06-05)
+
+### Bug Fixes
+
+- Django 5.9.10 ([#1806](https://github.com/ocadotechnology/rapid-router/pull/1806),
+  [`8603837`](https://github.com/ocadotechnology/rapid-router/commit/8603837301f9ade3c774b8b9f723065e2f53b797))
+
+* fix: django 5.9.10
+
+* 8.7.3
+
+* wleknmfkjerngen
+
+
 ## v7.5.10 (2025-05-31)
 
 ### Bug Fixes
