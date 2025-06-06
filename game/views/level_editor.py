@@ -225,21 +225,23 @@ def save_level_for_editor(request, levelId=None):
     fields_pattern = re.compile("^[\w.?!', ]*$")
 
     name_is_safe = name_pattern.match(data["name"])
-    subtitle_is_safe = "subtitle" not in data or fields_pattern.match(data["subtitle"])
-    lesson_is_safe = "lesson" not in data or fields_pattern.match(data["lesson"])
-    hint_is_safe = "hint" not in data or fields_pattern.match(data["hint"])
+    fields_are_safe = all(
+        [
+            field not in data or fields_pattern.match(data[field])
+            for field in ["subtitle", "lesson", "hint"]
+        ]
+    )
 
-    if not (name_is_safe and subtitle_is_safe and lesson_is_safe and hint_is_safe):
+    if not (name_is_safe and fields_are_safe):
         return HttpResponseUnauthorized()
 
     level_management.save_level(level, data)
 
     is_user_school_student = (
-            hasattr(level.owner, "student")
-            and not level.owner.student.is_independent()
+        hasattr(level.owner, "student") and not level.owner.student.is_independent()
     )
     is_user_independent = (
-            hasattr(level.owner, "student") and level.owner.student.is_independent()
+        hasattr(level.owner, "student") and level.owner.student.is_independent()
     )
     is_user_teacher = hasattr(level.owner, "teacher")
 
@@ -403,9 +405,11 @@ class SharingInformationForEditor(APIView):
                 )
                 valid_recipients["classes"].append(
                     {
-                        "name": f"{class_.name} ({app_tags.make_into_username(class_.teacher.new_user)})"
-                        if teacher.is_admin
-                        else class_.name,
+                        "name": (
+                            f"{class_.name} ({app_tags.make_into_username(class_.teacher.new_user)})"
+                            if teacher.is_admin
+                            else class_.name
+                        ),
                         "id": class_.id,
                         "students": [
                             {
