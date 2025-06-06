@@ -221,80 +221,86 @@ def save_level_for_editor(request, levelId=None):
     if not permissions.can_save_level(request.user, level):
         return HttpResponseUnauthorized()
 
-    pattern = re.compile("^(\w?[ ]?)*$")
+    name_pattern = re.compile("^(\w?[ ]?)*$")
+    fields_pattern = re.compile("^[\w.?!', ]*$")
 
-    if pattern.match(data["name"]):
-        level_management.save_level(level, data)
+    name_is_safe = name_pattern.match(data["name"])
+    subtitle_is_safe = "subtitle" not in data or fields_pattern.match(data["subtitle"])
+    lesson_is_safe = "lesson" not in data or fields_pattern.match(data["lesson"])
+    hint_is_safe = "hint" not in data or fields_pattern.match(data["hint"])
 
-        is_user_school_student = (
-                hasattr(level.owner, "student")
-                and not level.owner.student.is_independent()
-        )
-        is_user_independent = (
-                hasattr(level.owner, "student") and level.owner.student.is_independent()
-        )
-        is_user_teacher = hasattr(level.owner, "teacher")
-
-        # when level is created
-        if levelId is None:
-            teacher = None
-
-            # if level owner is a school student, share with teacher automatically if they aren't an admin
-            if is_user_school_student:
-                teacher = level.owner.student.class_field.teacher
-                if not teacher.is_admin:
-                    level.shared_with.add(teacher.new_user)
-
-                if not data["anonymous"]:
-                    level_management.email_new_custom_level(
-                        teacher.new_user.email,
-                        request.build_absolute_uri(reverse("level_moderation")),
-                        request.build_absolute_uri(
-                            reverse("play_custom_level", kwargs={"levelId": level.id})
-                        ),
-                        str(level.owner.student),
-                        level.owner.student.class_field.name,
-                    )
-
-            elif is_user_teacher:
-                teacher = level.owner.teacher
-
-            # if level owner is a teacher or an indy user, approval isn't needed
-            if not is_user_school_student:
-                level.needs_approval = False
-
-            # share with all admins of the school if user is in a school
-            if not is_user_independent:
-                if not teacher.school is None:
-                    school_admins = teacher.school.admins()
-
-                    [
-                        level.shared_with.add(school_admin.new_user)
-                        for school_admin in school_admins
-                        if school_admin.new_user != request.user
-                    ]
-
-        # anytime a student edits their level
-        if is_user_school_student:
-            if not level.needs_approval:
-                level.needs_approval = True
-
-                if not data["anonymous"]:
-                    level_management.email_new_custom_level(
-                        level.owner.student.class_field.teacher.new_user.email,
-                        request.build_absolute_uri(reverse("level_moderation")),
-                        request.build_absolute_uri(
-                            reverse("play_custom_level", kwargs={"levelId": level.id})
-                        ),
-                        str(level.owner.student),
-                        level.owner.student.class_field.name,
-                    )
-
-        level.save()
-        response = {"id": level.id}
-        return HttpResponse(json.dumps(response), content_type="application/json")
-    else:
+    if not (name_is_safe and subtitle_is_safe and lesson_is_safe and hint_is_safe):
         return HttpResponseUnauthorized()
+
+    level_management.save_level(level, data)
+
+    is_user_school_student = (
+            hasattr(level.owner, "student")
+            and not level.owner.student.is_independent()
+    )
+    is_user_independent = (
+            hasattr(level.owner, "student") and level.owner.student.is_independent()
+    )
+    is_user_teacher = hasattr(level.owner, "teacher")
+
+    # when level is created
+    if levelId is None:
+        teacher = None
+
+        # if level owner is a school student, share with teacher automatically if they aren't an admin
+        if is_user_school_student:
+            teacher = level.owner.student.class_field.teacher
+            if not teacher.is_admin:
+                level.shared_with.add(teacher.new_user)
+
+            if not data["anonymous"]:
+                level_management.email_new_custom_level(
+                    teacher.new_user.email,
+                    request.build_absolute_uri(reverse("level_moderation")),
+                    request.build_absolute_uri(
+                        reverse("play_custom_level", kwargs={"levelId": level.id})
+                    ),
+                    str(level.owner.student),
+                    level.owner.student.class_field.name,
+                )
+
+        elif is_user_teacher:
+            teacher = level.owner.teacher
+
+        # if level owner is a teacher or an indy user, approval isn't needed
+        if not is_user_school_student:
+            level.needs_approval = False
+
+        # share with all admins of the school if user is in a school
+        if not is_user_independent:
+            if not teacher.school is None:
+                school_admins = teacher.school.admins()
+
+                [
+                    level.shared_with.add(school_admin.new_user)
+                    for school_admin in school_admins
+                    if school_admin.new_user != request.user
+                ]
+
+    # anytime a student edits their level
+    if is_user_school_student:
+        if not level.needs_approval:
+            level.needs_approval = True
+
+            if not data["anonymous"]:
+                level_management.email_new_custom_level(
+                    level.owner.student.class_field.teacher.new_user.email,
+                    request.build_absolute_uri(reverse("level_moderation")),
+                    request.build_absolute_uri(
+                        reverse("play_custom_level", kwargs={"levelId": level.id})
+                    ),
+                    str(level.owner.student),
+                    level.owner.student.class_field.name,
+                )
+
+    level.save()
+    response = {"id": level.id}
+    return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 @transaction.atomic
