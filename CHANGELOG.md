@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v7.5.12 (2025-06-06)
+
+### Bug Fixes
+
+- Disallow special characters for custom level fields pt. 2
+  ([#1807](https://github.com/ocadotechnology/rapid-router/pull/1807),
+  [`325f391`](https://github.com/ocadotechnology/rapid-router/commit/325f3910441fc09dc1f249d732858ed863f7a604))
+
+* fix: Disallow special characters for custom level fields pt. 2
+
+* Merge branch 'master' into level_editor_fields
+
+* Simplify
+
+* Merge branch 'level_editor_fields' of https://github.com/ocadotechnology/rapid-router into
+  level_editor_fields
+
+
 ## v7.5.11 (2025-06-05)
 
 ### Bug Fixes
