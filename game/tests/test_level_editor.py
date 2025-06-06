@@ -488,3 +488,38 @@ class LevelEditorTestCase(TestCase):
         # Teacher shouldn't see any shared levels now
         response = self.client.get(levels_url)
         assert len(response.context["directly_shared_levels"]) == 0
+
+    def test_level_cannot_be_created_with_invalid_fields(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, _, access_code = create_class_directly(email)
+        create_school_student_directly(access_code)
+
+        level_data = self.LEVEL_DATA1
+        level_data["subtitle"] = "<a>invalid subtitle</a>"
+
+        self.login(email, password)
+        url = reverse("save_level_for_editor")
+        response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
+
+        assert response.status_code == 401
+
+        level_data["subtitle"] = "valid subtitle"
+        level_data["lesson"] = "<a>invalid lesson</a>"
+
+        response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
+
+        assert response.status_code == 401
+
+        level_data["lesson"] = "valid lesson"
+        level_data["hint"] = "<a>invalid hint</a>"
+
+        response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
+
+        assert response.status_code == 401
+
+        level_data["hint"] = "valid hint"
+
+        response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
+
+        assert response.status_code == 200
