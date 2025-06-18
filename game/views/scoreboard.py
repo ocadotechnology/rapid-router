@@ -35,33 +35,27 @@ class StudentRow:
 
 
 # Returns row of student object with values and scores of each selected level
-def student_row(levels_sorted, student, best_attempts):
+def student_row(levels_sorted, student, attempts):
     threshold = 0.5
 
-    num_all = num_finished = num_attempted = num_started = 0
+    num_all = num_finished = num_attempted = 0
     total_score = 0
     total_possible_score = 0
     level_scores = {}
-    times = []
+    total_time = 0
 
     for level in levels_sorted:
         level_scores[level.id] = {}
         level_scores[level.id]["score"] = ""
 
-        if (
-            level.episode is None
-            and student.new_user not in level.shared_with.all()
-        ):
+        if level.episode is None and student.new_user not in level.shared_with.all():
             level_scores[level.id]["score"] = "Not shared"
 
         if level.owner == student.user:
             level_scores[level.id]["score"] = "Owner"
 
-    if best_attempts:
-        attempts_dict = {
-            best_attempt.level.id: best_attempt
-            for best_attempt in best_attempts
-        }
+    if attempts:
+        attempts_dict = {attempt.level.id: attempt for attempt in attempts}
         for level in levels_sorted:
 
             attempt = attempts_dict.get(level.id)
@@ -84,39 +78,24 @@ def student_row(levels_sorted, student, best_attempts):
                         max_score = 20
 
                 num_all += 1
-                if attempt.score:
-                    if attempt.score / max_score >= threshold:
-                        num_finished += 1
-                    else:
-                        num_attempted += 1
+                if attempt.score / max_score >= threshold:
+                    num_finished += 1
                 else:
-                    num_started += 1
+                    num_attempted += 1
 
-                total_score += attempt.score if attempt.score is not None else 0
+                total_time += attempt.time_spent
+
+                total_score += attempt.score
                 total_possible_score += max_score
 
-                elapsed_time = attempt.elapsed_time()
-                times.append(chop_milliseconds(elapsed_time))
-                # '-' is used to show that the student has started the level but has not submitted any attempts
-
-                level_scores[level.id]["score"] = (
-                    int(attempt.score) if attempt.score is not None else "-"
-                )
-                level_scores[level.id]["full_score"] = (
-                    attempt.score == max_score
-                )
+                level_scores[level.id]["score"] = int(attempt.score)
+                level_scores[level.id]["full_score"] = attempt.score == max_score
                 level_scores[level.id]["is_low_attempt"] = (
                     attempt.score == 0 or max_score / attempt.score < threshold
                 )
-            else:
-                times.append(timedelta(0))
-
-    total_time = sum(times, timedelta())
 
     success_rate = (
-        total_score / total_possible_score * 100
-        if total_possible_score > 0
-        else 0
+        total_score / total_possible_score * 100 if total_possible_score > 0 else 0
     )
 
     row = StudentRow(
@@ -157,8 +136,8 @@ def scoreboard_data(episode_ids, attempts_per_students, language):
 
     level_headers = list(map(to_name_function, levels_sorted))
     student_data = [
-        student_row(levels_sorted, student, best_attempts)
-        for student, best_attempts in attempts_per_students.items()
+        student_row(levels_sorted, student, attempts)
+        for student, attempts in attempts_per_students.items()
     ]
 
     return student_data, Headers, level_headers, levels_sorted
@@ -169,8 +148,8 @@ def shared_levels_data(user, shared_levels, attempts_per_students):
         shared_level_to_name(level, user) for level in shared_levels
     )
     shared_student_data = [
-        student_row(shared_levels, student, best_attempts)
-        for student, best_attempts in attempts_per_students.items()
+        student_row(shared_levels, student, attempts)
+        for student, attempts in attempts_per_students.items()
     ]
 
     return SharedHeaders, shared_level_headers, shared_student_data
@@ -184,7 +163,7 @@ class StudentInTrouble:
         self.areas = kwargs.get("areas")
 
 
-def _check_attempts(best_attempts):
+def _check_attempts(attempts):
     threshold = 0.5
 
     # episode ids with low attempts (below 50%)
@@ -193,21 +172,17 @@ def _check_attempts(best_attempts):
     for episode_id in range(1, 12):
         total_score = 0
         total_possible_score = 0
-        # Get the best attempts for the specific Episode
+        # Get the attempts for the specific Episode
         attempts = [
-            best_attempt
-            for best_attempt in best_attempts
-            if best_attempt.level.episode.id == episode_id
+            attempt for attempt in attempts if attempt.level.episode.id == episode_id
         ]
         for attempt in attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
 
-            total_score += attempt.score if attempt.score is not None else 0
+            total_score += attempt.score
             total_possible_score += max_score
 
-            is_low_attempt = (
-                attempt.score == 0 or max_score / attempt.score < threshold
-            )
+            is_low_attempt = attempt.score == 0 or max_score / attempt.score < threshold
             if is_low_attempt:
                 low_episode_ids.add(episode_id)
 
@@ -217,17 +192,12 @@ def _check_attempts(best_attempts):
 # Returns students that need improvement
 def get_improvement_data(attempts_per_student):
     the_students = []  # that need improvement
-    for student, best_attempts in attempts_per_student.items():
-        episodes_of_concern = _check_attempts(best_attempts)
+    for student, attempts in attempts_per_student.items():
+        episodes_of_concern = _check_attempts(attempts)
         if episodes_of_concern:
-            areas = [
-                messages.get_episode_title(ep_id)
-                for ep_id in episodes_of_concern
-            ]
+            areas = [messages.get_episode_title(ep_id) for ep_id in episodes_of_concern]
             areas_summary = ", ".join(areas)
-            the_students.append(
-                StudentInTrouble(student=student, areas=areas_summary)
-            )
+            the_students.append(StudentInTrouble(student=student, areas=areas_summary))
     return the_students
 
 
@@ -341,10 +311,10 @@ def scoreboard(request, language):
     attempts_per_student = {}
 
     for student in students:
-        best_attempts = Attempt.objects.filter(
-            level__in=all_levels, student=student, is_best_attempt=True
+        attempts = Attempt.objects.filter(
+            level__in=all_levels, student=student
         ).select_related("level")
-        attempts_per_student[student] = best_attempts
+        attempts_per_student[student] = attempts
 
     (student_data, headers, level_headers, levels_sorted) = scoreboard_data(
         episode_ids, attempts_per_student, language
@@ -380,12 +350,10 @@ def scoreboard(request, language):
 
         for student in students:
             shared_levels += levels_owned_by(student.new_user)
-            best_attempts_shared_levels = Attempt.objects.filter(
-                level__in=shared_levels, student=student, is_best_attempt=True
+            attempts_shared_levels = Attempt.objects.filter(
+                level__in=shared_levels, student=student
             ).select_related("level")
-            attempts_per_student_shared_levels[
-                student
-            ] = best_attempts_shared_levels
+            attempts_per_student_shared_levels[student] = attempts_shared_levels
 
         (
             shared_headers,
@@ -457,9 +425,9 @@ def sorted_levels_by(level_ids):
 
 def are_classes_viewable_by_teacher(class_ids, user):
     teachers = Teacher.objects.filter(school=user.teacher.school)
-    classes_in_teachers_school = Class.objects.filter(
-        teacher__in=teachers
-    ).values_list("id", flat=True)
+    classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list(
+        "id", flat=True
+    )
     for class_id in class_ids:
         is_authorised = class_id in classes_in_teachers_school
         if not is_authorised:
@@ -534,6 +502,5 @@ class User(object):
 
     def is_independent_student(self):
         return (
-            hasattr(self.profile, "student")
-            and self.profile.student.is_independent()
+            hasattr(self.profile, "student") and self.profile.student.is_independent()
         )
