@@ -78,6 +78,7 @@
     var PYTHON_VIEW_ENABLED = {{level.python_view_enabled|booltojs}}
     var RETURN_URL = "{{return_url}}"
     var PYTHON_WORKSPACE = {% if python_workspace == None %}null{% else %}"{{python_workspace|linebreaksbr}}"{% endif %}
+    var ATTEMPT_START_TIME = Date.now()
   </script>
 
   <script defer type="text/javascript" src="{% static 'game/js/utils.js' %}"></script>
