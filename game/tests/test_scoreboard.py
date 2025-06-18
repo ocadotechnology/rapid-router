@@ -128,7 +128,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.class_field.name == clas.name
         assert student_row.name == student.user.user.first_name
         assert student_row.total_score == 20
-        assert student_row.total_time == 5
+        assert student_row.total_time == "00:00:05"
         assert student_row.level_scores[all_levels[0].id]["score"] == 20
         assert student_row.completed == 1
         assert student_row.success_rate == 100.0
@@ -137,7 +137,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.class_field.name == clas.name
         assert student_row.name == student2.user.user.first_name
         assert student_row.total_score == 18
-        assert student_row.total_time == 10
+        assert student_row.total_time == "00:00:10"
         assert student_row.level_scores[all_levels[0].id]["score"] == 2
         assert student_row.level_scores[all_levels[1].id]["score"] == 16
         assert student_row.completed == 1
@@ -155,7 +155,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.class_field.name == clas.name
         assert student_row.name == student2.user.user.first_name
         assert student_row.total_score == 10
-        assert student_row.total_time == 5
+        assert student_row.total_time == "00:00:05"
         assert student_row.level_scores[shared_level.id]["score"] == 10
         assert student_row.completed == 1
         assert student_row.success_rate == 100.0

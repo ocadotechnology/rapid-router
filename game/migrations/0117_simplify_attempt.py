@@ -20,7 +20,8 @@ def collect_attempt_data(apps: Apps, *args):
 
     students_with_attempts = Student.objects.filter(attempts__isnull=False)
 
-    for student in students_with_attempts:
+    for student in students_with_attempts.iterator(chunk_size=1000):
+        # Collect only complete attempts, meaning attempts that have a populated score and finish time
         student_attempts = Attempt.objects.filter(
             student=student,
             score__isnull=False,
@@ -28,6 +29,7 @@ def collect_attempt_data(apps: Apps, *args):
             finish_time__isnull=False,
         )
 
+        # If a student doesn't have any complete attempt, move on to next student
         if len(student_attempts) == 0:
             continue
 
@@ -44,7 +46,7 @@ def collect_attempt_data(apps: Apps, *args):
 
             time_spent = 0
 
-            for attempt in attempts_per_level:
+            for attempt in attempts_per_level.iterator(chunk_size=100):
                 attempt_duration = int((
                     attempt.finish_time - attempt.start_time
                 ).total_seconds())

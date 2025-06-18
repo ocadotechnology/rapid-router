@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division
 
+import time
 from builtins import map, next, object
-from datetime import timedelta
 
 from common.models import Class, Teacher, Student
 from django.http import Http404
@@ -27,7 +27,7 @@ class StudentRow:
         self.class_field = student.class_field
         self.name = student.user.user.first_name
         self.id = student.id
-        self.total_time = kwargs.get("total_time", timedelta(0))
+        self.total_time = kwargs.get("total_time", 0)
         self.total_score = kwargs.get("total_score", 0)
         self.level_scores = kwargs.get("level_scores", {})
         self.completed = kwargs.get("completed", 0)
@@ -97,6 +97,7 @@ def student_row(levels_sorted, student, attempts):
     success_rate = (
         total_score / total_possible_score * 100 if total_possible_score > 0 else 0
     )
+    total_time = time.strftime('%H:%M:%S', time.gmtime(total_time))
 
     row = StudentRow(
         student=student,
@@ -476,10 +477,6 @@ def is_valid_request(user, class_ids):
 
 def is_viewable(class_):
     return class_.classmates_data_viewable
-
-
-def chop_milliseconds(delta):
-    return delta - timedelta(microseconds=delta.microseconds)
 
 
 class User(object):
