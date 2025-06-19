@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.5.16 (2025-06-19)
+
+### Bug Fixes
+
+- Install portal v8.7.8
+  ([`36e443a`](https://github.com/ocadotechnology/rapid-router/commit/36e443a408e5ad9b2baf4295554d1b97897cff4f))
+
+
 ## v7.5.15 (2025-06-19)
 
 ### Bug Fixes
