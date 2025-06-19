@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7fb11418243b94fb4de3c51772ba332223d6935410634c703490107eb82107f9"
+            "sha256": "6323caf77eb4c83f6631b4da4144f6ca78e0a583dfe8496be6d4bf3ea727b049"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:32403f50f8af5d3bdd0233ad0b1e82f3448adc744e5b625640796abdee85734a",
-                "sha256:3cacc97e9847a84b2c31f8535dc21452fc8db81219cbb4c222f1132d583331ef"
+                "sha256:511923964ce27461733d4644206309c9f6efd1f512051c5c90d311e1afb7146a",
+                "sha256:6262cf794fd9d486cbe67b4d4919465dc3693af5f11930ce0cef210ea973c534"
             ],
             "index": "pypi",
-            "version": "==8.7.7"
+            "version": "==8.7.8"
         },
         "charset-normalizer": {
             "hashes": [
@@ -718,11 +718,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:32403f50f8af5d3bdd0233ad0b1e82f3448adc744e5b625640796abdee85734a",
-                "sha256:3cacc97e9847a84b2c31f8535dc21452fc8db81219cbb4c222f1132d583331ef"
+                "sha256:511923964ce27461733d4644206309c9f6efd1f512051c5c90d311e1afb7146a",
+                "sha256:6262cf794fd9d486cbe67b4d4919465dc3693af5f11930ce0cef210ea973c534"
             ],
             "index": "pypi",
-            "version": "==8.7.7"
+            "version": "==8.7.8"
         },
         "chardet": {
             "hashes": [
@@ -863,11 +863,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:0ba34fa033e21385132292404d4ec301ec618ca47764ad126ecb5f50cadd7d16",
-                "sha256:b934630a72e0ab1c02eeac0cbf691a287e595832de1e93417ef6df16f83ed37c"
+                "sha256:2d584cd75196e481664192d03917831f72a717c7d0864c814e0d0520ab0cd780",
+                "sha256:8655fa4513d72272125b80214e4e95d1e70ac2976a2d7412063b92414ecff7cd"
             ],
             "index": "pypi",
-            "version": "==8.7.7"
+            "version": "==8.7.8"
         },
         "diff-match-patch": {
             "hashes": [
@@ -1113,14 +1113,6 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==8.7.0"
-        },
-        "mypy-boto3-s3": {
-            "hashes": [
-                "sha256:368c963969eda65bb3a9df61e87510dd8b3247cce59f559c2ec6c43d5796bef5",
-                "sha256:506edd56892452dff5b673e3c79a11b6f8935076ce4a9daaac4cda708a176201"
-            ],
-            "markers": "python_version >= '3.8'",
-            "version": "==1.36.9"
         },
         "mypy-extensions": {
             "hashes": [
