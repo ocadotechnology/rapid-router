@@ -27,17 +27,14 @@ class AttemptAdmin(admin.ModelAdmin):
     search_fields = [
         "level",
         "student",
-        "start_time",
-        "finish_time",
-        "is_best_attempt",
     ]
     raw_id_fields = ["student"]
     list_display = [
         "level",
         "student",
-        "start_time",
-        "finish_time",
-        "is_best_attempt",
+        "time_spent",
+        "count",
+        "score"
     ]
 
 

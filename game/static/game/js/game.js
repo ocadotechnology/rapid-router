@@ -287,6 +287,10 @@ ocargo.Game.prototype.sendAttempt = function (score) {
     // Send out the submitted data.
     if (LEVEL_ID) {
       var csrftoken = Cookies.get('csrftoken')
+
+      const attemptDuration = Math.floor((Date.now() - ATTEMPT_START_TIME) / 1000)
+      ATTEMPT_START_TIME = Date.now() // Set start time to now() again to reset counter for next attempt
+
       $.ajax({
         url: Urls.submit_attempt(),
         type: 'POST',
@@ -297,11 +301,9 @@ ocargo.Game.prototype.sendAttempt = function (score) {
           }
         }.bind(this),
         data: {
-          nightmode: NIGHT_MODE ? 'True' : 'False',
           level: parseInt(LEVEL_ID),
           score: score,
-          workspace: ocargo.blocklyControl.serialize(),
-          python_workspace: ocargo.pythonControl.getCode()
+          time_spent: attemptDuration
         },
         error: function (xhr, errmsg, err) {
           console.error(
