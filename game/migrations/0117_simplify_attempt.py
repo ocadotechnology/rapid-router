@@ -18,6 +18,7 @@ def collect_attempt_data(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
     Student = apps.get_model("common", "Student")
 
+    # Collect all students that have at least 1 Attempt object
     students_with_attempts = Student.objects.filter(attempts__isnull=False)
 
     for student in students_with_attempts.iterator(chunk_size=5000):
@@ -34,24 +35,32 @@ def collect_attempt_data(apps: Apps, *args):
             continue
 
         student_attempts_data = {}
+
+        # Collect only levels that the student has made complete attempts for
         levels_with_attempts = Level.objects.filter(attempts__in=student_attempts)
 
         for level in levels_with_attempts:
+            # Collect all attempts for that level
             attempts_per_level = student_attempts.filter(level=level)
+
+            # Aggregate the number of attempt rows into the new count field
             count = len(attempts_per_level)
 
+            # Get the best attempt's score and save that as the value for the score field
             best_attempt = attempts_per_level.filter(is_best_attempt=True)
             assert len(best_attempt) == 1
             score = best_attempt[0].score
 
             time_spent = 0
 
+            # Calculate sum of time spent on all attempts for that level and save to new time_spent field
             for attempt in attempts_per_level.iterator(chunk_size=1000):
                 attempt_duration = int((
                     attempt.finish_time - attempt.start_time
                 ).total_seconds())
                 time_spent += attempt_duration
 
+            # Save the attempt data as a new entry in the dict for that level
             level_attempts_data = {
                 "count": count,
                 "time_spent": time_spent,
@@ -59,6 +68,7 @@ def collect_attempt_data(apps: Apps, *args):
             }
             student_attempts_data[level.pk] = level_attempts_data
 
+        # Save all attempt data for all levels in the dict for that student
         attempt_data[student.pk] = student_attempts_data
 
 
