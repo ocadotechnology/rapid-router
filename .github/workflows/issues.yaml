@@ -1,0 +1,10 @@
+name: Issues
+
+on:
+  issues:
+  issue_comment:
+
+jobs:
+  issue:
+    uses: ocadotechnology/codeforlife-workspace/.github/workflows/issues.yaml@main
+    secrets: inherit
