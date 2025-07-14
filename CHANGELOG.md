@@ -1,6 +1,82 @@
 # CHANGELOG
 
 
+## v7.5.17 (2025-07-10)
+
+### Bug Fixes
+
+- Install latest common
+  ([`116d409`](https://github.com/ocadotechnology/rapid-router/commit/116d40940d4324b689bfaef17ce9b813711b0f99))
+
+
+## v7.5.16 (2025-06-19)
+
+### Bug Fixes
+
+- Install portal v8.7.8
+  ([`36e443a`](https://github.com/ocadotechnology/rapid-router/commit/36e443a408e5ad9b2baf4295554d1b97897cff4f))
+
+
+## v7.5.15 (2025-06-19)
+
+### Bug Fixes
+
+- Install latest common
+  ([`42fba36`](https://github.com/ocadotechnology/rapid-router/commit/42fba36a241617ae30e0da3363fd571fbac7fc39))
+
+
+## v7.5.14 (2025-06-19)
+
+### Bug Fixes
+
+- Clean unused dependencies ([#1805](https://github.com/ocadotechnology/rapid-router/pull/1805),
+  [`fe06a58`](https://github.com/ocadotechnology/rapid-router/commit/fe06a58a8804e0cf361e9c1f22f5dd4ef4df9065))
+
+* fix: Clean unused dependencies
+
+* Install latest common
+
+
+## v7.5.13 (2025-06-10)
+
+### Bug Fixes
+
+- Update requests
+  ([`7169f33`](https://github.com/ocadotechnology/rapid-router/commit/7169f3337ba89124075a1a7342535ce2731f6f2f))
+
+
+## v7.5.12 (2025-06-06)
+
+### Bug Fixes
+
+- Disallow special characters for custom level fields pt. 2
+  ([#1807](https://github.com/ocadotechnology/rapid-router/pull/1807),
+  [`325f391`](https://github.com/ocadotechnology/rapid-router/commit/325f3910441fc09dc1f249d732858ed863f7a604))
+
+* fix: Disallow special characters for custom level fields pt. 2
+
+* Merge branch 'master' into level_editor_fields
+
+* Simplify
+
+* Merge branch 'level_editor_fields' of https://github.com/ocadotechnology/rapid-router into
+  level_editor_fields
+
+
+## v7.5.11 (2025-06-05)
+
+### Bug Fixes
+
+- Django 5.9.10 ([#1806](https://github.com/ocadotechnology/rapid-router/pull/1806),
+  [`8603837`](https://github.com/ocadotechnology/rapid-router/commit/8603837301f9ade3c774b8b9f723065e2f53b797))
+
+* fix: django 5.9.10
+
+* 8.7.3
+
+* wleknmfkjerngen
+
+
 ## v7.5.10 (2025-05-31)
 
 ### Bug Fixes
