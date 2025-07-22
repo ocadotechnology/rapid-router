@@ -5,9 +5,7 @@ def video_link(url):
     return (
         "<div class='popup_video'>"
         "<video controls name='media'>"
-        "<source src="
-        + str(url)
-        + "type='video/mp4'></video><br></div>"
+        "<source src=" + str(url) + "type='video/mp4'></video><br></div>"
     )
 
 
@@ -804,8 +802,8 @@ def description_level34():
     message = (
         "It can be handy to use <b>If</b> to give your van choices, so you don't "
         "have to give the van new instructions at every step. <br> For "
-        "example: Tell the van <b>If</b> the <b>road exists forwards do Move "
-        "forwards,</b> but <b>If</b> the <b>road exists left do Turn left</b>. "
+        "example: Tell the van <b>If</b> the <b>road exists forwards</b> do <b>Move "
+        "forwards</b>, <b>Else</b> do <b>Turn left</b>. "
         "<br> The van will choose correctly from the <b>Move forwards</b> and "
         "<b>Turn left</b> instructions depending on the road. <br> Use an 'if "
         "statement' in a 'loop' to drive the van down this bendy road."
@@ -816,7 +814,7 @@ def description_level34():
 def hint_level34():
     return (
         "This route looks complicated, but you can solve it without counting blocks. "
-        "You are going to use a <b>Repeat until</b> block again and <b>If</b> blocks "
+        "You are going to use a <b>Repeat until</b> block again and an <b>If</b> block "
         "to help the driver check the road ahead so they can decide which way to go. "
         "What are the possible directions on this route?"
     )
@@ -850,10 +848,7 @@ def title_level36():
 
 
 def description_level36():
-    message = video_link(
-        "https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FdCZE3FuBgH5fHsGocKGv%2Fuploads%2FsxMatN6zCvgFag8YDvK4%2FHelen%20explains%20if_else%20statements.mp4?alt=media&token=1051ab04-b02d-4b75-8278-2b63216b2985"
-    )
-    message += (
+    message = (
         f"<div class='popup_message'>"
         f"You can change the <b>if</b> block to make more choices. Click on the"
         f" {if_else_icon_url()} to add <b>else if</b>."
@@ -869,9 +864,7 @@ def description_level36():
         f"This is a general algorithm, it can be used for lots of different routes!"
         f"</div>"
     )
-    return build_description(
-        title_level36(), f"<div class='main_popup_container'>{message}</div>"
-    )
+    return build_description(title_level36(), message)
 
 
 def hint_level36():
