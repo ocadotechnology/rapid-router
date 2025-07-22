@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v7.5.18 (2025-07-22)
+
+### Bug Fixes
+
+- Introduce if-else straight away
+  ([#1810](https://github.com/ocadotechnology/rapid-router/pull/1810),
+  [`0cfe5c1`](https://github.com/ocadotechnology/rapid-router/commit/0cfe5c16319e2305dd68e418348b14afcfb39293))
+
+
 ## v7.5.17 (2025-07-10)
 
 ### Bug Fixes
