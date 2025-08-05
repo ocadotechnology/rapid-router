@@ -17,4 +17,7 @@ $(document).ready(function () {
 
     // Make editor font size not small
     $(shadowRoot).find(".editor").removeClass("editor--small");
+
+    // Ensure window doesn't scroll to bottom of page
+    window.scrollTo(0, 0);
 });

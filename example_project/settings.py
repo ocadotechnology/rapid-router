@@ -142,5 +142,3 @@ except ImportError:
     pass
 
 from common.csp_config import *
-
-CSP_REPORT_ONLY = True
