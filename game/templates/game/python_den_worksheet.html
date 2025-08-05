@@ -39,10 +39,12 @@
     <div class="d-flex align-items-stretch justify-content-between m-5 flex-lg-row flex-md-column flex-sm-column">
         <div class="d-flex align-items-stretch justify-content-center">
             <a href="{% if user|is_independent_student %} {{worksheet.indy_worksheet_link}} {% else %} {{worksheet.student_worksheet_link}} {% endif %}"
-               class="button button--level button--icon hidden-md hidden-lg mb-5 mr-5" target="_blank">
+               class="button button--level button--icon hidden-md hidden-lg mb-5" target="_blank">
                 Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-            <a href="{{worksheet.video_link}}" class="button button--level button--icon hidden-md hidden-lg mb-5" target="_blank">
-                Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+            {% if not user|is_logged_in_as_student %}
+                <a href="{{worksheet.video_link}}" class="button button--level button--icon hidden-md hidden-lg mb-5 ml-5" target="_blank">
+                    Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+            {% endif %}
         </div>
 
         <editor-wc
