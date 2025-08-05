@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game", "0116_update_worksheet_video_links"),
+        ("game", "0117_update_solutions_to_if_else"),
     ]
 
     operations = [
