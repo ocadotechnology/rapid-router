@@ -41,6 +41,7 @@ iframe {
 
 @media (max-width: 1000px) {
     editor-wc {
+        height: 600px;
         width: 100%;
     }
 }

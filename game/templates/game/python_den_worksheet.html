@@ -37,31 +37,36 @@
 
 <div>
     <div class="d-flex align-items-stretch justify-content-between m-5 flex-lg-row flex-md-column flex-sm-column">
-        <a href="{{worksheet.video_link}}" class="button button--level button--icon hidden-md hidden-lg mb-5" target="_blank">
-            Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+        <div class="d-flex align-items-stretch justify-content-center">
+            <a href="{% if user|is_independent_student %} {{worksheet.indy_worksheet_link}} {% else %} {{worksheet.student_worksheet_link}} {% endif %}"
+               class="button button--level button--icon hidden-md hidden-lg mb-5 mr-5" target="_blank">
+                Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+            <a href="{{worksheet.video_link}}" class="button button--level button--icon hidden-md hidden-lg mb-5" target="_blank">
+                Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+        </div>
 
         <editor-wc
                 code="{{worksheet.starter_code}}"
                 use_editor_styles="true">
         </editor-wc>
 
-        <div class="d-flex flex-column">
-            {% if user|is_logged_in_as_student %}
+        <div class="hidden-sm hidden-xs">
+            <div class="d-flex flex-column">
+                {% if user|is_logged_in_as_student %}
                 <iframe height="500" width="600" src="{{worksheet.student_worksheet_link}}"></iframe>
-            {% else %}
+                {% else %}
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#worksheet" aria-controls="worksheet" role="tab" data-toggle="tab">
-                            {% if user|is_independent_student %}
-                            Worksheet
-                            {% else %}
-                            Lesson plan
-                            {% endif %}</a>
+                        {% if user|is_independent_student %}
+                            <a href="#worksheet" aria-controls="worksheet" role="tab" data-toggle="tab">Worksheet</a>
+                        {% else %}
+                            <a href="#student-worksheet" aria-controls="student_worksheet" role="tab" data-toggle="tab">Student Worksheet</a>
+                        {% endif %}
                     </li>
                     {% if user|is_logged_in_as_teacher %}
-                        <li role="presentation">
-                            <a href="#student-worksheet" aria-controls="student_worksheet" role="tab" data-toggle="tab">Student worksheet</a>
-                        </li>
+                    <li role="presentation">
+                        <a href="#worksheet" aria-controls="worksheet" role="tab" data-toggle="tab">Lesson plan</a>
+                    </li>
                     {% endif %}
                     <li role="presentation">
                         <a href="#video" aria-controls="video" role="tab" data-toggle="tab">Video</a>
@@ -69,21 +74,23 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="worksheet">
+                    {% if user|is_logged_in_as_teacher %}
+                    <div role="tabpanel" class="tab-pane active" id="student-worksheet">
+                        <iframe height="500" width="600" src="{{worksheet.student_worksheet_link}}"></iframe>
+                    </div>
+                    {% endif %}
+                    <div role="tabpanel" class="tab-pane {% if user|is_independent_student %} active {% endif %}" id="worksheet">
                         <iframe height="500" width="600" src="{% if user|is_independent_student %} {{worksheet.indy_worksheet_link}} {% else %} {{worksheet.lesson_plan_link}} {% endif %}"></iframe>
                     </div>
-                    {% if user|is_logged_in_as_teacher %}
-                        <div role="tabpanel" class="tab-pane" id="student-worksheet">
-                            <iframe height="500" width="600" src="{{worksheet.student_worksheet_link}}"></iframe>
-                        </div>
-                    {% endif %}
                     <div role="tabpanel" class="tab-pane" id="video">
-                        <video height="500" width="600" class="hidden-sm hidden-xs"
+                        <video height="500" width="600"
                                src="{{worksheet.video_link}}" type="video/mp4" controls></video>
                     </div>
                 </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
+
     </div>
 </div>
 
