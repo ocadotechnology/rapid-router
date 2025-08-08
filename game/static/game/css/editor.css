@@ -1,0 +1,47 @@
+editor-wc {
+    display: block;
+    width: 66%;
+}
+
+video,
+iframe {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.tab-pane video,
+.tab-pane iframe {
+    border-radius: 0 0 5px 5px;
+}
+
+.nav-tabs {
+    border-bottom: 0;
+}
+
+.nav-tabs > li > a {
+    text-decoration: none;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+    border: 1px solid grey;
+    border-bottom-color: transparent;
+    font-weight: normal;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    border: 1px solid black;
+    border-bottom-color: transparent;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+@media (max-width: 1000px) {
+    editor-wc {
+        height: 600px;
+        width: 100%;
+    }
+}
