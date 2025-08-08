@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1061cf46dd4497a2f667190ea72e226c6bf963d6c6eec862f2cbcbb52debe532"
+            "sha256": "af4fe1ec42e9e14d408dc4edf204ee15fad71f550ed2c6583a7f7751cf7ca55c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,11 +42,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:a80cda38b7c64af83c288541f4fa2eebafe5a6d3fe9974b931886dee3d460ed2",
-                "sha256:f393d1196152778946e14a273ec0cb9beee15c5a6114cdd17be4b2b45ccc880a"
+                "sha256:361a8acd91ac906187be61714d1251cbe3a55c5f95cdf518288f0efadce1b7c9",
+                "sha256:3bca27e7b2e95857e978891c89c7f1d00c54f2d272b812ccb395e629f365ef9d"
             ],
             "index": "pypi",
-            "version": "==8.8.0"
+            "version": "==8.8.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -718,11 +718,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:a80cda38b7c64af83c288541f4fa2eebafe5a6d3fe9974b931886dee3d460ed2",
-                "sha256:f393d1196152778946e14a273ec0cb9beee15c5a6114cdd17be4b2b45ccc880a"
+                "sha256:361a8acd91ac906187be61714d1251cbe3a55c5f95cdf518288f0efadce1b7c9",
+                "sha256:3bca27e7b2e95857e978891c89c7f1d00c54f2d272b812ccb395e629f365ef9d"
             ],
             "index": "pypi",
-            "version": "==8.8.0"
+            "version": "==8.8.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -855,11 +855,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:ee4ba07b1c49aaf81b263d0e5d459e67eaded85034fc26932c77e5807abdf5d3",
-                "sha256:f6446ac5593abb0d84f4e41617c5d56be9fefa911f25249d4b685bdadf4a0561"
+                "sha256:400aa6eb72ed590a72b14ef11eba2c4909e423bcaa4ee119a2afa678b5ab75d8",
+                "sha256:9f7466ea2b86b93eff83fb28c0f69b53aa40561845a28f89eb45cb893d5c91ff"
             ],
             "index": "pypi",
-            "version": "==8.8.0"
+            "version": "==8.8.1"
         },
         "diff-match-patch": {
             "hashes": [
