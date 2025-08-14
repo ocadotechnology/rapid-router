@@ -142,3 +142,11 @@ except ImportError:
     pass
 
 from common.csp_config import *
+
+if MODULE_NAME == "local":
+    # NOTE: This is only used locally for testing purposes.
+    os.environ.setdefault(
+        "ENCRYPTION_KEY", "XTgWqMlZCMI_E5BvCArkif9nrJIIhe_6Ic6Q_UcWJDk="
+    )
+
+ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
