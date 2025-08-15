@@ -310,7 +310,7 @@ class Workspace(models.Model):
 
 
 class Attempt(models.Model):
-    start_time = models.DateTimeField(auto_now_add=True)
+    time_spent = models.BigIntegerField(default=0, blank=True, null=True)
     level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
     student = models.ForeignKey(
         Student,
@@ -319,15 +319,8 @@ class Attempt(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
-    finish_time = models.DateTimeField(null=True, blank=True)
-    score = models.FloatField(default=0, null=True)
-    workspace = models.TextField(default="")
-    night_mode = models.BooleanField(default=False)
-    python_workspace = models.TextField(default="")
-    is_best_attempt = models.BooleanField(db_index=True, default=False)
-
-    def elapsed_time(self):
-        return self.finish_time - self.start_time
+    score = models.FloatField(default=0, blank=True, null=True)
+    count = models.IntegerField(default=0, blank=True, null=True)
 
 
 class Worksheet(models.Model):
