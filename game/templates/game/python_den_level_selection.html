@@ -85,7 +85,7 @@
                                     </div>
                                 {% else %}
                                     <div class="col-sm-7 python-den-level">
-                                        <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
+                                        <a href="{% url 'worksheet' worksheet.id %}">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                     </div>
                                     {% if user|is_logged_in_as_teacher %}
                                         <div class="col-sm-3 python-den-level">
@@ -169,7 +169,7 @@
                                             </div>
                                         {% else %}
                                             <div class="col-sm-7 python-den-level">
-                                                <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
+                                                <a href="{% url 'worksheet' worksheet.id %}">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                             </div>
                                             {% if user|is_logged_in_as_teacher %}
                                                 <div class="col-sm-3 python-den-level">
@@ -251,7 +251,7 @@
                                         </div>
                                     {% else %}
                                         <div class="col-sm-7 python-den-level">
-                                            <a href="https://editor.raspberrypi.org/en/projects/blank-python-starter" target="_blank">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
+                                            <a href="{% url 'worksheet' worksheet.id %}">{{episode.name}}{% if episode.worksheets|length > 1 %} pt. {{ worksheet.index }}{% endif %}</a>
                                         </div>
                                         {% if user|is_logged_in_as_teacher %}
                                             <div class="col-sm-3 python-den-level">

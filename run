@@ -30,4 +30,11 @@ if [ "$translation" = "1" ]; then
 fi
 
 ./manage.py collectstatic --noinput --clear
+
 ./manage.py runserver "$@"
+
+# Uncomment the line below and comment out the one above to run localhost with https.
+# Needed for Gitbook embedded content to connect successfully (Python Den).
+# Also requires valid certificate files to be had locally.
+
+#./manage.py runserver_plus --cert-file localhost.pem --key-file localhost-key.pem "$@"
