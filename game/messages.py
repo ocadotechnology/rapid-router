@@ -795,7 +795,7 @@ def hint_level33():
 
 
 def title_level34():
-    return "Multiple <b>if</b>s"
+    return "<b>If</b> and bends"
 
 
 def description_level34():
