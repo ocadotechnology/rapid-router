@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v7.5.22 (2025-08-15)
+
+### Bug Fixes
+
+- Rename level 34
+  ([`3b395c0`](https://github.com/ocadotechnology/rapid-router/commit/3b395c01318e357b802c31259e0778d9d7b0950d))
+
+### Continuous Integration
+
+- Add local key setting
+  ([`445b016`](https://github.com/ocadotechnology/rapid-router/commit/445b0168cbed93239d53ca7f0559b3f774ec8e14))
+
+
 ## v7.5.21 (2025-08-14)
 
 ### Bug Fixes
