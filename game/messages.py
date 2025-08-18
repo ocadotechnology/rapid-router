@@ -80,6 +80,19 @@ def no_data_to_show_level_moderation():
     )
 
 
+""" Strings used on the Python Den worksheet page. """
+
+
+def no_permission_python_den_worksheet_title():
+    return "No permission"
+
+
+def no_permission_python_den_worksheet_page():
+    return (
+        "This content is only available to logged in users. Please log in to access this page."
+    )
+
+
 """ String messages used as level tips in the game view. """
 
 
@@ -2565,6 +2578,11 @@ def hint_level109():
 
 
 # PYTHON DEN
+
+# Worksheets starter code
+
+def worksheet_starter_code():
+    return "# Write your code below"
 
 # Episode 12, Levels 110 - 122
 (

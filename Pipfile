@@ -4,23 +4,26 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cfl-common = "==8.8.3"
+cfl-common = "==8.9.1"
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
 
 [dev-packages]
 black = "*"
-codeforlife-portal = "==8.8.3"
+codeforlife-portal = "==8.9.1"
+django-extensions = "==4.1"
 django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
 importlib-metadata = "<5" # Using version 5 causes an issue when trying to run pytest. Not sure why, linked to: https://stackoverflow.com/questions/73929564/entrypoints-object-has-no-attribute-get-digital-ocean
 isort = "*"
+pyOpenSSL = "==25.1.0"
 pytest = "==8.*"
 pytest-django = "==4.8.0"
 pytest-order = "*"
 pytest-xdist = "*"
 selenium = "==4.29.0"
+Werkzeug = "==3.1.3"
 
 [requires]
 python_version = "3.12"

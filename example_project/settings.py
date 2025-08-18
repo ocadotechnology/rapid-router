@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "django_reverse_js",
     "django_otp",
     "django_otp.plugins.otp_static",
