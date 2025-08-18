@@ -2579,6 +2579,11 @@ def hint_level109():
 
 # PYTHON DEN
 
+# Worksheets starter code
+
+def worksheet_starter_code():
+    return "# Write your code below"
+
 # Episode 12, Levels 110 - 122
 (
     title_level1001,

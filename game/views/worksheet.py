@@ -16,7 +16,10 @@ def worksheet(request, worksheetId):
         )
 
     worksheet = Worksheet.objects.get(pk=worksheetId)
+    starter_code = messages.worksheet_starter_code()
 
     return render(
-        request, "game/python_den_worksheet.html", context={"worksheet": worksheet}
+        request,
+        "game/python_den_worksheet.html",
+        context={"worksheet": worksheet, "starter_code": starter_code},
     )
