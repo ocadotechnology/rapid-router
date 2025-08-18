@@ -1,6 +1,51 @@
 # CHANGELOG
 
 
+## v7.6.0 (2025-08-18)
+
+### Features
+
+- Embedding Raspberry Pi IDE in Python Den
+  ([#1811](https://github.com/ocadotechnology/rapid-router/pull/1811),
+  [`f7593f0`](https://github.com/ocadotechnology/rapid-router/commit/f7593f0144f5e6ef2c24b10437cb924b32792665))
+
+* POC of Raspberry PI IDE embed
+
+* Install latest common
+
+* Merge branch 'master' into raspberry_pi_embed
+
+# Conflicts: #	Pipfile.lock
+
+* Python Den worksheet page with embedded IDE
+
+* Tabs
+
+* Working tabs
+
+# Conflicts: #	Pipfile #	Pipfile.lock
+
+* Focus on student worksheet tab
+
+* Resolve migration conflicts
+
+* Final fixes
+
+* Remove irrelevant docstring
+
+* Restrict video
+
+* Add helper text
+
+* Only allow authenticated users
+
+* Add permissions unit test
+
+* And lockfile
+
+* Use messages for starter code string
+
+
 ## v7.5.23 (2025-08-15)
 
 ### Bug Fixes
