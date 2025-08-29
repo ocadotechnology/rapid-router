@@ -5,6 +5,7 @@ from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
+from django.utils import timezone
 
 
 def theme_choices():
@@ -310,6 +311,7 @@ class Workspace(models.Model):
 
 
 class Attempt(models.Model):
+    date = models.DateField(default=timezone.now)
     time_spent = models.BigIntegerField(default=0, blank=True, null=True)
     level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
     student = models.ForeignKey(
