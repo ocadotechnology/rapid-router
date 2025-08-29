@@ -1,6 +1,145 @@
 # CHANGELOG
 
 
+## v7.6.3 (2025-08-18)
+
+### Bug Fixes
+
+- Install latest common
+  ([`ec1687c`](https://github.com/ocadotechnology/rapid-router/commit/ec1687c2bfcc429b14cc475b1a934a443f1f7560))
+
+
+## v7.6.2 (2025-08-18)
+
+### Bug Fixes
+
+- Install latest common
+  ([`52912cc`](https://github.com/ocadotechnology/rapid-router/commit/52912ccdced5a2bd6668ab9718efe06d5dba643c))
+
+
+## v7.6.1 (2025-08-18)
+
+### Bug Fixes
+
+- Install latest common
+  ([`e8254cb`](https://github.com/ocadotechnology/rapid-router/commit/e8254cb00ccc58497a02805199cd592e415e0086))
+
+
+## v7.6.0 (2025-08-18)
+
+### Features
+
+- Embedding Raspberry Pi IDE in Python Den
+  ([#1811](https://github.com/ocadotechnology/rapid-router/pull/1811),
+  [`f7593f0`](https://github.com/ocadotechnology/rapid-router/commit/f7593f0144f5e6ef2c24b10437cb924b32792665))
+
+* POC of Raspberry PI IDE embed
+
+* Install latest common
+
+* Merge branch 'master' into raspberry_pi_embed
+
+# Conflicts: #	Pipfile.lock
+
+* Python Den worksheet page with embedded IDE
+
+* Tabs
+
+* Working tabs
+
+# Conflicts: #	Pipfile #	Pipfile.lock
+
+* Focus on student worksheet tab
+
+* Resolve migration conflicts
+
+* Final fixes
+
+* Remove irrelevant docstring
+
+* Restrict video
+
+* Add helper text
+
+* Only allow authenticated users
+
+* Add permissions unit test
+
+* And lockfile
+
+* Use messages for starter code string
+
+
+## v7.5.23 (2025-08-15)
+
+### Bug Fixes
+
+- Install latest common
+  ([`f242586`](https://github.com/ocadotechnology/rapid-router/commit/f2425868e71cc58833bf7ff062ea2a9e703ea5f9))
+
+
+## v7.5.22 (2025-08-15)
+
+### Bug Fixes
+
+- Rename level 34
+  ([`3b395c0`](https://github.com/ocadotechnology/rapid-router/commit/3b395c01318e357b802c31259e0778d9d7b0950d))
+
+### Continuous Integration
+
+- Add local key setting
+  ([`445b016`](https://github.com/ocadotechnology/rapid-router/commit/445b0168cbed93239d53ca7f0559b3f774ec8e14))
+
+
+## v7.5.21 (2025-08-14)
+
+### Bug Fixes
+
+- Install latest common
+  ([`b73be38`](https://github.com/ocadotechnology/rapid-router/commit/b73be38d2839530ae8caaba014051d31cceea921))
+
+
+## v7.5.20 (2025-08-08)
+
+### Bug Fixes
+
+- Install latest common
+  ([`025540e`](https://github.com/ocadotechnology/rapid-router/commit/025540e5b761e2365b35150810fb48c18cd00caf))
+
+
+## v7.5.19 (2025-08-08)
+
+### Bug Fixes
+
+- Install latest common
+  ([`eda5d76`](https://github.com/ocadotechnology/rapid-router/commit/eda5d76e463cb5e71f9fb509cf7a9504bfc20ab7))
+
+
+## v7.5.18 (2025-07-22)
+
+### Bug Fixes
+
+- Introduce if-else straight away
+  ([#1810](https://github.com/ocadotechnology/rapid-router/pull/1810),
+  [`0cfe5c1`](https://github.com/ocadotechnology/rapid-router/commit/0cfe5c16319e2305dd68e418348b14afcfb39293))
+
+
+## v7.5.17 (2025-07-10)
+
+### Bug Fixes
+
+- Install latest common
+  ([`116d409`](https://github.com/ocadotechnology/rapid-router/commit/116d40940d4324b689bfaef17ce9b813711b0f99))
+
+
+## v7.5.16 (2025-06-19)
+
+### Bug Fixes
+
+- Install portal v8.7.8
+  ([`36e443a`](https://github.com/ocadotechnology/rapid-router/commit/36e443a408e5ad9b2baf4295554d1b97897cff4f))
+
+
 ## v7.5.15 (2025-06-19)
 
 ### Bug Fixes
