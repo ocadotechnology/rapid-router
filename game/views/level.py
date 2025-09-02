@@ -8,6 +8,7 @@ from django.db.models import F
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from rest_framework import serializers
 
@@ -24,7 +25,7 @@ from game.cache import (
 )
 from game.character import get_character
 from game.decor import get_decor_element
-from game.models import Attempt, Level, Workspace
+from game.models import Attempt, Level, Workspace, DailyActivity
 from game.theme import get_theme
 from game.views.language_code_conversions import language_code_dict
 from game.views.level_solutions import solutions
@@ -328,12 +329,30 @@ def submit_attempt(request):
                 "score": score,
                 "time_spent": time_spent,
                 "count": 1,
-            }
+            },
         )
 
         if not created and score > attempt.score:
             attempt.score = score
             attempt.save()
+
+        # Attempt is in Python Den if level is an "official" level and the level's name (id) is over 1000
+        daily_activity_field = (
+            "pd_attempt_count"
+            if level.owner is None
+            and level.episode is not None
+            and int(level.name) > 1000
+            else "rr_attempt_count"
+        )
+        DailyActivity.objects.update_or_create(
+            date=timezone.now().date(),
+            defaults={
+                daily_activity_field: F(daily_activity_field) + 1,
+            },
+            create_defaults={
+                daily_activity_field: 1,
+            },
+        )
 
     return HttpResponse("[]", content_type="application/json")
 

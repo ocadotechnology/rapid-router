@@ -311,7 +311,6 @@ class Workspace(models.Model):
 
 
 class Attempt(models.Model):
-    date = models.DateField(default=timezone.now)
     time_spent = models.BigIntegerField(default=0, blank=True, null=True)
     level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
     student = models.ForeignKey(
@@ -356,3 +355,20 @@ class Worksheet(models.Model):
     locked_classes = models.ManyToManyField(
         Class, blank=True, related_name="locked_worksheets"
     )
+
+
+class DailyActivity(models.Model):
+    """
+    A model to record sets of daily activity. Currently used to record the
+    amount of Rapid Router and Python Den attempts, per day.
+    """
+
+    date = models.DateField(default=timezone.now)
+    rr_attempt_count = models.PositiveBigIntegerField(default=0)
+    pd_attempt_count = models.PositiveBigIntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = "Daily activities"
+
+    def __str__(self):
+        return f"Activity on {self.date}: RR attempts: {self.rr_attempt_count}, PD attempts: {self.pd_attempt_count}"

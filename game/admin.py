@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from game.models import Level, Block, Episode, Workspace, LevelDecor, Attempt, Worksheet
+from game.models import Level, Block, Episode, Workspace, LevelDecor, Attempt, Worksheet, DailyActivity
 
 
 class LevelAdmin(admin.ModelAdmin):
@@ -54,3 +54,4 @@ admin.site.register(Block)
 admin.site.register(Attempt, AttemptAdmin)
 admin.site.register(LevelDecor, LevelDecorAdmin)
 admin.site.register(Worksheet, WorksheetAdmin)
+admin.site.register(DailyActivity)
