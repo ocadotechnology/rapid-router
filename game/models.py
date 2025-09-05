@@ -5,6 +5,7 @@ from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
+from django.utils import timezone
 
 
 def theme_choices():
@@ -310,7 +311,7 @@ class Workspace(models.Model):
 
 
 class Attempt(models.Model):
-    start_time = models.DateTimeField(auto_now_add=True)
+    time_spent = models.BigIntegerField(default=0, blank=True, null=True)
     level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
     student = models.ForeignKey(
         Student,
@@ -319,15 +320,8 @@ class Attempt(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
-    finish_time = models.DateTimeField(null=True, blank=True)
-    score = models.FloatField(default=0, null=True)
-    workspace = models.TextField(default="")
-    night_mode = models.BooleanField(default=False)
-    python_workspace = models.TextField(default="")
-    is_best_attempt = models.BooleanField(db_index=True, default=False)
-
-    def elapsed_time(self):
-        return self.finish_time - self.start_time
+    score = models.FloatField(default=0, blank=True, null=True)
+    count = models.IntegerField(default=0, blank=True, null=True)
 
 
 class Worksheet(models.Model):
@@ -361,3 +355,20 @@ class Worksheet(models.Model):
     locked_classes = models.ManyToManyField(
         Class, blank=True, related_name="locked_worksheets"
     )
+
+
+class DailyActivity(models.Model):
+    """
+    A model to record sets of daily activity. Currently used to record the
+    amount of Rapid Router and Python Den attempts, per day.
+    """
+
+    date = models.DateField(default=timezone.now)
+    rr_attempt_count = models.PositiveBigIntegerField(default=0)
+    pd_attempt_count = models.PositiveBigIntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = "Daily activities"
+
+    def __str__(self):
+        return f"Activity on {self.date}: RR attempts: {self.rr_attempt_count}, PD attempts: {self.pd_attempt_count}"
