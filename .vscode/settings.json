@@ -6,29 +6,14 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.tabSize": 4
   },
-  "black-formatter.args": [
-    "--config",
-    "../configs/backend/pyproject.toml"
-  ],
-  "black-formatter.path": [
-    ".venv/bin/python",
-    "-m",
-    "black"
-  ],
-  "cSpell.words": [
-    "codeforlife",
-    "klass",
-    "ocado",
-    "kurono",
-    "pipenv"
-  ],
+  "black-formatter.args": ["--config", "../backend/pyproject.toml"],
+  "black-formatter.path": [".venv/bin/python", "-m", "black"],
+  "cSpell.words": ["codeforlife", "klass", "ocado", "kurono", "pipenv"],
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
   "editor.formatOnSave": true,
-  "editor.rulers": [
-    80
-  ],
+  "editor.rulers": [80],
   "editor.tabSize": 2,
   "files.exclude": {
     "**/.hypothesis": true,
@@ -36,36 +21,18 @@
     "**/.pytest_cache": true,
     "**/__pycache__": true
   },
-  "isort.args": [
-    "--settings-file=../configs/backend/pyproject.toml"
-  ],
-  "isort.path": [
-    ".venv/bin/python",
-    "-m",
-    "isort"
-  ],
-  "mypy-type-checker.args": [
-    "--config-file=../configs/backend/pyproject.toml"
-  ],
-  "mypy-type-checker.path": [
-    ".venv/bin/python",
-    "-m",
-    "mypy"
-  ],
-  "pylint.args": [
-    "--rcfile=../configs/backend/pyproject.toml"
-  ],
-  "pylint.path": [
-    ".venv/bin/python",
-    "-m",
-    "pylint"
-  ],
+  "isort.args": ["--settings-file=../backend/pyproject.toml"],
+  "isort.path": [".venv/bin/python", "-m", "isort"],
+  "mypy-type-checker.args": ["--config-file=../backend/pyproject.toml"],
+  "mypy-type-checker.path": [".venv/bin/python", "-m", "mypy"],
+  "pylint.args": ["--rcfile=../backend/pyproject.toml"],
+  "pylint.path": [".venv/bin/python", "-m", "pylint"],
   "python.defaultInterpreterPath": ".venv/bin/python",
   "python.testing.pytestArgs": [
     "-n=auto",
     "--cov=.",
     "--cov-report=html",
-    "-c=../configs/backend/pyproject.toml",
+    "-c=../backend/pyproject.toml",
     "."
   ],
   "python.testing.pytestEnabled": true,
