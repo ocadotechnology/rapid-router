@@ -265,10 +265,7 @@
 
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <div class="input_div">
-                  <span>{% trans "Max fuel:" %}</span>
-                  <input type="number" id="max_fuel">
-                </div>
+                
                 <br style="clear:both">
 
                 <div class="table">
@@ -384,6 +381,10 @@
             <p> {% trans "Here you can choose your character. Who will you play as?" %}</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
+                <div class="input_div">
+                  <span>{% trans "Max fuel:" %}</span>
+                  <input type="number" id="max_fuel">
+                </div>
                 <p>{% trans "Character:" %}
                   <select id="character_select">
                   {% for char in characters %}
