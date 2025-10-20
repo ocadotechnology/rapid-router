@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v7.6.6 (2025-10-20)
+
+### Bug Fixes
+
+- 1664 - change max fuel label and location
+  ([#1813](https://github.com/ocadotechnology/rapid-router/pull/1813),
+  [`c5faabd`](https://github.com/ocadotechnology/rapid-router/commit/c5faabd246d05a420c9ec596eec081a2dd2d5b8d))
+
+* Moved "max fuel" object to character page
+
+* 1664 Updated "max fuel" text
+
+* fix linting and format errors
+
+---------
+
+Co-authored-by: Florian Aucomte <f.aucomte@hotmail.co.uk>
+
+
 ## v7.6.5 (2025-10-09)
 
 ### Bug Fixes
