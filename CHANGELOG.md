@@ -1,6 +1,49 @@
 # CHANGELOG
 
 
+## v7.6.7 (2025-10-28)
+
+### Bug Fixes
+
+- Install latest common
+  ([`4ceff4b`](https://github.com/ocadotechnology/rapid-router/commit/4ceff4b52cb602e9cf18e550df65d2489bae219a))
+
+
+## v7.6.6 (2025-10-20)
+
+### Bug Fixes
+
+- 1664 - change max fuel label and location
+  ([#1813](https://github.com/ocadotechnology/rapid-router/pull/1813),
+  [`c5faabd`](https://github.com/ocadotechnology/rapid-router/commit/c5faabd246d05a420c9ec596eec081a2dd2d5b8d))
+
+* Moved "max fuel" object to character page
+
+* 1664 Updated "max fuel" text
+
+* fix linting and format errors
+
+---------
+
+Co-authored-by: Florian Aucomte <f.aucomte@hotmail.co.uk>
+
+
+## v7.6.5 (2025-10-09)
+
+### Bug Fixes
+
+- Install latest common
+  ([`4313bbc`](https://github.com/ocadotechnology/rapid-router/commit/4313bbc15ebb5165ab3cd382ccce826aca251043))
+
+
+## v7.6.4 (2025-09-05)
+
+### Bug Fixes
+
+- Install latest common
+  ([`bafa8da`](https://github.com/ocadotechnology/rapid-router/commit/bafa8dafb535553d9b9976fd8399d304692d73ba))
+
+
 ## v7.6.3 (2025-08-18)
 
 ### Bug Fixes
