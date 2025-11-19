@@ -340,6 +340,7 @@ class LevelMetrics(models.Model):
     attempt_count = models.IntegerField(default=1)
 
     class Meta:
+        unique_together = ("student", "level")
         verbose_name_plural = "Levels metrics"
 
 
