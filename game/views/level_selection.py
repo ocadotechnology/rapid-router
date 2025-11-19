@@ -10,7 +10,7 @@ import game.level_management as level_management
 import game.messages as messages
 from game import app_settings, random_road
 from game.cache import cached_episode
-from game.models import Attempt, Episode, Level, Worksheet
+from game.models import Episode, Level, Worksheet, LevelMetrics
 from .level_editor import play_anonymous_level
 
 
@@ -177,8 +177,8 @@ def levels(request, language):
     """
     user = request.user
     if user.is_authenticated and is_student(user):
-        attempts = Attempt.objects.filter(student=user.userprofile.student)
-        scores_per_level = {attempt.level.id: attempt.score for attempt in attempts}
+        attempts = LevelMetrics.objects.filter(student=user.userprofile.student)
+        scores_per_level = {attempt.level.id: attempt.top_score for attempt in attempts}
     else:
         scores_per_level = {}
 

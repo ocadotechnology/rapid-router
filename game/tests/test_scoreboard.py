@@ -16,7 +16,7 @@ from common.tests.utils.teacher import signup_teacher_directly
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from game.models import Attempt, Level, Episode
+from game.models import LevelMetrics, Level, Episode
 from game.tests.utils.level import create_save_level
 from game.views.scoreboard import (
     StudentRow,
@@ -91,16 +91,16 @@ class ScoreboardTestCase(TestCase):
         all_shared_levels = [shared_level]
 
         attempts_per_student = {
-            student: Attempt.objects.filter(
+            student: LevelMetrics.objects.filter(
                 level__in=all_levels, student=student
             ).select_related("level"),
-            student2: Attempt.objects.filter(
+            student2: LevelMetrics.objects.filter(
                 level__in=all_levels, student=student2
             ).select_related("level"),
         }
 
         shared_attempts_per_student = {
-            student2: Attempt.objects.filter(
+            student2: LevelMetrics.objects.filter(
                 level__in=all_shared_levels,
                 student=student2,
             ).select_related("level"),

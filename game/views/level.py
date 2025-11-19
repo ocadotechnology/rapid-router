@@ -25,7 +25,7 @@ from game.cache import (
 )
 from game.character import get_character
 from game.decor import get_decor_element
-from game.models import Attempt, Level, Workspace, DailyActivity
+from game.models import Level, Workspace, DailyActivity, LevelMetrics
 from game.theme import get_theme
 from game.views.language_code_conversions import language_code_dict
 from game.views.level_solutions import solutions
@@ -316,25 +316,25 @@ def submit_attempt(request):
         score = float(request.POST.get("score"))
         time_spent = request.POST.get("time_spent")
 
-        attempt, created = Attempt.objects.update_or_create(
+        level_metrics, created = LevelMetrics.objects.update_or_create(
             level=level,
             student=student,
             defaults={
                 "time_spent": F("time_spent") + time_spent,
-                "count": F("count") + 1,
+                "attempt_count": F("attempt_count") + 1,
             },
             create_defaults={
                 "level": level,
                 "student": student,
-                "score": score,
+                "top_score": score,
                 "time_spent": time_spent,
-                "count": 1,
+                "attempt_count": 1,
             },
         )
 
-        if not created and score > attempt.score:
-            attempt.score = score
-            attempt.save()
+        if not created and score > level_metrics.top_score:
+            level_metrics.top_score = score
+            level_metrics.save()
 
         # Attempt is in Python Den if level is an "official" level and the level's name (id) is over 1000
         daily_activity_field = (

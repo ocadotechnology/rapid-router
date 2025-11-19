@@ -311,7 +311,7 @@ class Workspace(models.Model):
 
 
 class Attempt(models.Model):
-    time_spent = models.BigIntegerField(default=0, blank=True, null=True)
+    start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
     student = models.ForeignKey(
         Student,
@@ -320,8 +320,27 @@ class Attempt(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
-    score = models.FloatField(default=0, blank=True, null=True)
-    count = models.IntegerField(default=0, blank=True, null=True)
+    finish_time = models.DateTimeField(null=True, blank=True)
+    score = models.FloatField(default=0, null=True)
+    is_best_attempt = models.BooleanField(db_index=True, default=False)
+
+    def elapsed_time(self):
+        return self.finish_time - self.start_time
+
+
+class LevelMetrics(models.Model):
+    time_spent = models.BigIntegerField(default=0)
+    level = models.ForeignKey(Level, related_name="metrics", on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        Student,
+        related_name="level_metrics",
+        on_delete=models.CASCADE,
+    )
+    top_score = models.FloatField(default=0)
+    attempt_count = models.IntegerField(default=1)
+
+    class Meta:
+        verbose_name_plural = "Levels metrics"
 
 
 class Worksheet(models.Model):

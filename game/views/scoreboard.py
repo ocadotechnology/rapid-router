@@ -11,7 +11,7 @@ import game.messages as messages
 import game.permissions as permissions
 from game.forms import ScoreboardForm
 from game.level_management import levels_owned_by, levels_shared_with
-from game.models import Level, Attempt, sort_levels, Episode
+from game.models import Level, sort_levels, Episode, LevelMetrics
 from game.views.scoreboard_csv import scoreboard_csv
 from . import level_selection
 from .helper import renderError
@@ -78,20 +78,22 @@ def student_row(levels_sorted, student, attempts):
                         max_score = 20
 
                 num_all += 1
-                if attempt.score / max_score >= threshold:
+                if attempt.top_score / max_score >= threshold:
                     num_finished += 1
                 else:
                     num_attempted += 1
 
                 total_time += attempt.time_spent
 
-                total_score += attempt.score
+                print(attempt.top_score)
+
+                total_score += attempt.top_score
                 total_possible_score += max_score
 
-                level_scores[level.id]["score"] = int(attempt.score)
-                level_scores[level.id]["full_score"] = attempt.score == max_score
+                level_scores[level.id]["score"] = int(attempt.top_score)
+                level_scores[level.id]["full_score"] = attempt.top_score == max_score
                 level_scores[level.id]["is_low_attempt"] = (
-                    attempt.score == 0 or max_score / attempt.score < threshold
+                    attempt.top_score == 0 or max_score / attempt.top_score < threshold
                 )
 
     success_rate = (
@@ -180,10 +182,10 @@ def _check_attempts(attempts):
         for attempt in attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
 
-            total_score += attempt.score
+            total_score += attempt.top_score
             total_possible_score += max_score
 
-            is_low_attempt = attempt.score == 0 or max_score / attempt.score < threshold
+            is_low_attempt = attempt.top_score == 0 or max_score / attempt.top_score < threshold
             if is_low_attempt:
                 low_episode_ids.add(episode_id)
 
@@ -312,7 +314,7 @@ def scoreboard(request, language):
     attempts_per_student = {}
 
     for student in students:
-        attempts = Attempt.objects.filter(
+        attempts = LevelMetrics.objects.filter(
             level__in=all_levels, student=student
         ).select_related("level")
         attempts_per_student[student] = attempts
@@ -351,7 +353,7 @@ def scoreboard(request, language):
 
         for student in students:
             shared_levels += levels_owned_by(student.new_user)
-            attempts_shared_levels = Attempt.objects.filter(
+            attempts_shared_levels = LevelMetrics.objects.filter(
                 level__in=shared_levels, student=student
             ).select_related("level")
             attempts_per_student_shared_levels[student] = attempts_shared_levels
