@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v7.6.9 (2025-11-24)
+
+### Bug Fixes
+
+- Update scoreboard error message from classless teachers
+  ([#1867](https://github.com/ocadotechnology/rapid-router/pull/1867),
+  [`c9bbe3c`](https://github.com/ocadotechnology/rapid-router/commit/c9bbe3c31b87a2d5f910b5a2cf3ae91b2d003135))
+
+
 ## v7.6.8 (2025-11-10)
 
 ### Bug Fixes
