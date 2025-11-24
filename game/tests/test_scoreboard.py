@@ -5,7 +5,10 @@ from datetime import datetime, timedelta
 
 from common.models import Class, Teacher, Student
 from common.tests.utils.classes import create_class_directly
-from common.tests.utils.organisation import create_organisation_directly, join_teacher_to_organisation
+from common.tests.utils.organisation import (
+    create_organisation_directly,
+    join_teacher_to_organisation,
+)
 from common.tests.utils.student import (
     create_school_student_directly,
     create_independent_student_directly,
@@ -39,8 +42,7 @@ class ScoreboardTestCase(TestCase):
         episode1 = Episode.objects.get(id=1)
         episode2 = Episode.objects.get(id=2)
         level_ids = [
-            f"{x}"
-            for x in range(1, len(episode1.levels) + len(episode2.levels) + 1)
+            f"{x}" for x in range(1, len(episode1.levels) + len(episode2.levels) + 1)
         ]
         level1 = Level.objects.get(name="1")
         level13 = Level.objects.get(name="13")
@@ -119,9 +121,7 @@ class ScoreboardTestCase(TestCase):
 
         # Check data for custom levels matches
         assert shared_headers == SharedHeaders
-        assert shared_level_headers == [
-            f"{shared_level.name} ({shared_level.owner})"
-        ]
+        assert shared_level_headers == [f"{shared_level.name} ({shared_level.owner})"]
 
         assert len(shared_student_data) == 1
 
@@ -234,9 +234,7 @@ class ScoreboardTestCase(TestCase):
         )
 
         c = Client()
-        c.login(
-            username=admin_teacher.user.user.email, password="secretpa$sword2"
-        )
+        c.login(username=admin_teacher.user.user.email, password="secretpa$sword2")
 
         url = reverse("scoreboard")
         response = c.get(url)
@@ -306,8 +304,22 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
+        assert "The scoreboard is only visible to school students and teachers" in str(
+            response.content
+        )
+
+    def test_teacher_without_classes_cannot_see_scoreboard(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+
+        c = Client()
+        c.login(username=email, password=password)
+
+        url = reverse("scoreboard")
+        response = c.get(url)
+
         assert (
-            "Scoreboard is only visible to school students and teachers"
+            "The scoreboard can only be used by teachers who have classes assigned to them."
             in str(response.content)
         )
 
@@ -332,18 +344,11 @@ class ScoreboardCsvTestCase(TestCase):
         shared_levels = [shared_level1, shared_level2]
 
         shared_levels_headers = list(
-            [
-                shared_level_to_name(level, level.owner)
-                for level in shared_levels
-            ]
+            [shared_level_to_name(level, level.owner) for level in shared_levels]
         )
 
-        shared_level_rows[0] = self.shared_student_row(
-            students[0], shared_levels
-        )
-        shared_level_rows[1] = self.shared_student_row(
-            students[1], shared_levels
-        )
+        shared_level_rows[0] = self.shared_student_row(students[0], shared_levels)
+        shared_level_rows[1] = self.shared_student_row(students[1], shared_levels)
 
         # Create students' improvement table data
         improvement_data = []
@@ -369,13 +374,10 @@ class ScoreboardCsvTestCase(TestCase):
         ) = self.actual_data(response.content.decode("utf-8"), len(students))
 
         # Check the headers and the number or rows match expectations
-        assert actual_scoreboard_header == self.expected_scoreboard_header(
-            levels
-        )
+        assert actual_scoreboard_header == self.expected_scoreboard_header(levels)
         assert len(actual_scoreboard_rows) == len(student_rows)
-        assert (
-            actual_shared_levels_header
-            == self.expected_shared_levels_header(shared_levels)
+        assert actual_shared_levels_header == self.expected_shared_levels_header(
+            shared_levels
         )
         assert len(actual_shared_levels_rows) == len(shared_level_rows)
 
@@ -491,18 +493,13 @@ class ScoreboardCsvTestCase(TestCase):
 
     def expected_scoreboard_header(self, levels):
         level_strings = list(map(str, levels))
-        all_header_strings = (
-            CSVHeaders + level_strings + ["Areas for improvement"]
-        )
+        all_header_strings = CSVHeaders + level_strings + ["Areas for improvement"]
         joined = ",".join(all_header_strings)
         return joined
 
     def expected_shared_levels_header(self, shared_levels):
         level_strings = list(
-            [
-                shared_level_to_name(level, level.owner)
-                for level in shared_levels
-            ]
+            [shared_level_to_name(level, level.owner) for level in shared_levels]
         )
         all_header_strings = CSVSharedHeaders + level_strings
         joined = ",".join(all_header_strings)
@@ -524,9 +521,7 @@ class ScoreboardCsvTestCase(TestCase):
         scoreboard_header = split[scoreboard_header_row]
         scoreboard_rows = split[scoreboard_rows_start:scoreboard_rows_end]
         shared_levels_header = split[shared_levels_header_row]
-        shared_levels_rows = split[
-            shared_levels_rows_start:shared_levels_rows_end
-        ]
+        shared_levels_rows = split[shared_levels_rows_start:shared_levels_rows_end]
 
         return (
             scoreboard_header,

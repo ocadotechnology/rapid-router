@@ -47,8 +47,19 @@ def no_permission_title():
 
 def no_permission_scoreboard():
     return (
-        "Scoreboard is only visible to school students and teachers. Log in if you "
+        "The scoreboard is only visible to school students and teachers. Log in if you "
         "think you should be able to see it."
+    )
+
+
+def no_classes_title():
+    return "No classes"
+
+
+def no_classes_scoreboard():
+    return (
+        "The scoreboard can only be used by teachers who have classes assigned to them. "
+        "It seems you don't have any classes, please create one so you can use this feature."
     )
 
 
