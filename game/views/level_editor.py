@@ -4,6 +4,7 @@ import json
 import re
 from builtins import map, str
 
+from common.app_settings import domain
 from common.models import Student, Teacher
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -258,10 +259,8 @@ def save_level_for_editor(request, levelId=None):
             if not data["anonymous"]:
                 level_management.email_new_custom_level(
                     teacher.new_user.email,
-                    request.build_absolute_uri(reverse("level_moderation")),
-                    request.build_absolute_uri(
-                        reverse("play_custom_level", kwargs={"levelId": level.id})
-                    ),
+                    f"{domain(request)}{reverse("level_moderation")}",
+                    f"{domain(request)}{reverse("play_custom_level", kwargs={"levelId": level.id})}",
                     str(level.owner.student),
                     level.owner.student.class_field.name,
                 )
@@ -292,10 +291,8 @@ def save_level_for_editor(request, levelId=None):
             if not data["anonymous"]:
                 level_management.email_new_custom_level(
                     level.owner.student.class_field.teacher.new_user.email,
-                    request.build_absolute_uri(reverse("level_moderation")),
-                    request.build_absolute_uri(
-                        reverse("play_custom_level", kwargs={"levelId": level.id})
-                    ),
+                    f"{domain(request)}{reverse("level_moderation")}",
+                    f"{domain(request)}{reverse("play_custom_level", kwargs={"levelId": level.id})}",
                     str(level.owner.student),
                     level.owner.student.class_field.name,
                 )

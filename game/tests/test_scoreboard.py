@@ -334,6 +334,21 @@ class ScoreboardTestCase(TestCase):
             response.content
         )
 
+    def test_teacher_without_classes_cannot_see_scoreboard(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+
+        c = Client()
+        c.login(username=email, password=password)
+
+        url = reverse("scoreboard")
+        response = c.get(url)
+
+        assert (
+            "The scoreboard can only be used by teachers who have classes assigned to them."
+            in str(response.content)
+        )
+
 
 class ScoreboardCsvTestCase(TestCase):
     def test_scoreboard_csv(self):

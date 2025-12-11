@@ -1,6 +1,39 @@
 # CHANGELOG
 
 
+## v7.6.12 (2025-12-10)
+
+### Bug Fixes
+
+- Install latest common
+  ([`1424223`](https://github.com/ocadotechnology/rapid-router/commit/14242239960e0296a0bfb7f2e842c130d52857aa))
+
+
+## v7.6.11 (2025-12-05)
+
+### Bug Fixes
+
+- Install latest common
+  ([`4e3a37d`](https://github.com/ocadotechnology/rapid-router/commit/4e3a37d12c1f7631060d0052fef753973ce96b57))
+
+
+## v7.6.10 (2025-12-03)
+
+### Bug Fixes
+
+- Install latest common
+  ([`6e429bb`](https://github.com/ocadotechnology/rapid-router/commit/6e429bb3f8cc56cf2a2f4ab2b92d473dabcb82c2))
+
+
+## v7.6.9 (2025-11-24)
+
+### Bug Fixes
+
+- Update scoreboard error message from classless teachers
+  ([#1867](https://github.com/ocadotechnology/rapid-router/pull/1867),
+  [`c9bbe3c`](https://github.com/ocadotechnology/rapid-router/commit/c9bbe3c31b87a2d5f910b5a2cf3ae91b2d003135))
+
+
 ## v7.6.8 (2025-11-10)
 
 ### Bug Fixes

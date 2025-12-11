@@ -286,7 +286,7 @@ def scoreboard(request, language):
             episode_ids = set(all_episode_ids)
 
     if is_teacher_with_no_classes_assigned(user, users_classes):
-        return render_no_permission_error(request)
+        return render_no_classes_error(request)
 
     if not is_valid_request(user, class_ids):
         raise Http404
@@ -398,6 +398,14 @@ def render_no_permission_error(request):
         request,
         messages.no_permission_title(),
         messages.no_permission_scoreboard(),
+    )
+
+
+def render_no_classes_error(request):
+    return renderError(
+        request,
+        messages.no_classes_title(),
+        messages.no_classes_scoreboard(),
     )
 
 
