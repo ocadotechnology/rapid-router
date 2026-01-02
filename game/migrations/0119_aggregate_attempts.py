@@ -24,7 +24,7 @@ WITH ranked_attempts AS (
     WHERE is_best_attempt = TRUE
 )
 UPDATE game_attempt
-SET is_best_attempt = 0
+SET is_best_attempt = FALSE
 FROM ranked_attempts
 WHERE id = ranked_attempts.sub_id
 AND ranked_attempts.rank > 1;
