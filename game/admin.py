@@ -57,6 +57,19 @@ class LevelMetricsAdmin(admin.ModelAdmin):
     ]
 
 
+class DailyActivityAdmin(admin.ModelAdmin):
+    search_fields = [
+        "date",
+        "level",
+    ]
+    raw_id_fields = ["level"]
+    list_display = [
+        "date",
+        "level",
+        "count",
+    ]
+
+
 class LevelDecorAdmin(admin.ModelAdmin):
     search_fields = ["level__name"]
     list_display = ["id", "level", "x", "y", "decor_name"]
@@ -74,4 +87,4 @@ admin.site.register(Attempt, AttemptAdmin)
 admin.site.register(LevelMetrics, LevelMetricsAdmin)
 admin.site.register(LevelDecor, LevelDecorAdmin)
 admin.site.register(Worksheet, WorksheetAdmin)
-admin.site.register(DailyActivity)
+admin.site.register(DailyActivity, DailyActivityAdmin)

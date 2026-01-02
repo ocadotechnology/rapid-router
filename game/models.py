@@ -382,15 +382,15 @@ class Worksheet(models.Model):
 
 class DailyActivity(models.Model):
     """
-    A model to record sets of daily activity. Currently used to record the
-    amount of Rapid Router and Python Den attempts, per day.
+    A model to record attempt count per level per day.
     """
     date = models.DateField(default=timezone.now)
-    rr_attempt_count = models.PositiveBigIntegerField(default=0)
-    pd_attempt_count = models.PositiveBigIntegerField(default=0)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True)
+    count = models.PositiveBigIntegerField(default=0)
 
     class Meta:
+        unique_together = ("date", "level")
         verbose_name_plural = "Daily activities"
 
     def __str__(self):
-        return f"Activity on {self.date}: RR attempts: {self.rr_attempt_count}, PD attempts: {self.pd_attempt_count}"
+        return f"On {self.date}, level {self.level} was played {self.count} time(s)."

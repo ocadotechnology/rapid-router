@@ -62,13 +62,14 @@ AND student_id = best_attempt.sub_student_id;
 """
 
     ATTEMPT_COUNT_PER_DAY_SQL = """
+INSERT INTO game_dailyactivity (date, level_id, count)
 SELECT
     DATE(finish_time),
     level_id,
-    COUNT(*) AS attempts_per_day
+    COUNT(*) AS count
 FROM game_attempt
 WHERE finish_time IS NOT NULL
-GROUP BY DATE(finish_time), student_id, level_id
+GROUP BY DATE(finish_time), level_id
 """
 
     operations = [
@@ -76,8 +77,8 @@ GROUP BY DATE(finish_time), student_id, level_id
             code=delete_attempts_with_invalid_score,
             reverse_code=migrations.RunPython.noop,
         ),
-        migrations.RunSQL(FALSIFY_INVALID_BEST_ATTEMPTS_SQL),
-        migrations.RunSQL(ATTEMPT_COUNT_AND_TIME_PER_LEVEL_SQL),
-        migrations.RunSQL(ATTEMPT_TOP_SCORE_PER_LEVEL_SQL),
-        migrations.RunSQL(ATTEMPT_COUNT_PER_DAY_SQL),
+        migrations.RunSQL(sql=FALSIFY_INVALID_BEST_ATTEMPTS_SQL, reverse_sql=migrations.RunSQL.noop),
+        migrations.RunSQL(sql=ATTEMPT_COUNT_AND_TIME_PER_LEVEL_SQL, reverse_sql=migrations.RunSQL.noop),
+        migrations.RunSQL(sql=ATTEMPT_TOP_SCORE_PER_LEVEL_SQL, reverse_sql=migrations.RunSQL.noop),
+        migrations.RunSQL(sql=ATTEMPT_COUNT_PER_DAY_SQL, reverse_sql=migrations.RunSQL.noop),
     ]
