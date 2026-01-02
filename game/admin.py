@@ -37,6 +37,7 @@ class AttemptAdmin(admin.ModelAdmin):
         "student",
         "start_time",
         "finish_time",
+        "score",
         "is_best_attempt",
     ]
 

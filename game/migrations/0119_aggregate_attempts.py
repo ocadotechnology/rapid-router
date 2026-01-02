@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     def delete_attempts_with_invalid_score(apps, *args):
         Attempt = apps.get_model("game", "Attempt")
 
-        Attempt.objects.filter(score__lt=0, score__gt=20).delete()
+        Attempt.objects.filter(models.Q(score__lt=0) | models.Q(score__gt=20)).delete()
 
     FALSIFY_INVALID_BEST_ATTEMPTS_SQL = """
 WITH ranked_attempts AS (
@@ -31,12 +31,13 @@ AND ranked_attempts.rank > 1;
 """
 
     ATTEMPT_COUNT_AND_TIME_PER_LEVEL_SQL = """
-INSERT INTO game_levelmetrics (student_id, level_id, attempt_count, time_spent)
+INSERT INTO game_levelmetrics (student_id, level_id, attempt_count, time_spent, top_score)
 SELECT
-   student_id,
-   level_id,
-   COUNT(*) AS attempt_count,
-   SUM(UNIXEPOCH(finish_time) - UNIXEPOCH(start_time)) AS elapsed_time
+    student_id,
+    level_id,
+    COUNT(*) AS attempt_count,
+    SUM(UNIXEPOCH(finish_time) - UNIXEPOCH(start_time)) AS elapsed_time,
+    0 AS top_score
 FROM game_attempt
 WHERE finish_time IS NOT NULL
 GROUP BY student_id, level_id;
@@ -54,7 +55,6 @@ FROM (
     WHERE finish_time IS NOT NULL
     AND start_time IS NOT NULL
     AND score IS NOT NULL
-    AND score > 0
     AND is_best_attempt = TRUE
 ) AS best_attempt
 WHERE level_id = best_attempt.sub_level_id
