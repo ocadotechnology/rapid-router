@@ -43,9 +43,14 @@ WHERE finish_time IS NOT NULL
 GROUP BY student_id, level_id;
 """
 
+    DELETE_LEVEL_METRICS_SQL = """
+DELETE FROM game_levelmetrics
+WHERE TRUE;
+"""
+
     ATTEMPT_TOP_SCORE_PER_LEVEL_SQL = """
 UPDATE game_levelmetrics
-SET top_score = CAST(best_attempt.score AS INT64)
+SET top_score = CAST(best_attempt.score AS BIGINT)
 FROM (
     SELECT
         level_id AS sub_level_id,
@@ -72,13 +77,18 @@ WHERE finish_time IS NOT NULL
 GROUP BY DATE(finish_time), level_id
 """
 
+    DELETE_DAILY_ACTIVITY_SQL = """
+DELETE FROM game_dailyactivity
+WHERE TRUE;
+"""
+
     operations = [
         migrations.RunPython(
             code=delete_attempts_with_invalid_score,
             reverse_code=migrations.RunPython.noop,
         ),
         migrations.RunSQL(sql=FALSIFY_INVALID_BEST_ATTEMPTS_SQL, reverse_sql=migrations.RunSQL.noop),
-        migrations.RunSQL(sql=ATTEMPT_COUNT_AND_TIME_PER_LEVEL_SQL, reverse_sql=migrations.RunSQL.noop),
+        migrations.RunSQL(sql=ATTEMPT_COUNT_AND_TIME_PER_LEVEL_SQL, reverse_sql=DELETE_LEVEL_METRICS_SQL),
         migrations.RunSQL(sql=ATTEMPT_TOP_SCORE_PER_LEVEL_SQL, reverse_sql=migrations.RunSQL.noop),
-        migrations.RunSQL(sql=ATTEMPT_COUNT_PER_DAY_SQL, reverse_sql=migrations.RunSQL.noop),
+        migrations.RunSQL(sql=ATTEMPT_COUNT_PER_DAY_SQL, reverse_sql=DELETE_DAILY_ACTIVITY_SQL),
     ]
