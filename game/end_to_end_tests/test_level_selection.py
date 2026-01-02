@@ -1,4 +1,3 @@
-import pytest
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
@@ -8,7 +7,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
-from game.models import Attempt, Episode
+from game.models import Episode
+from game.tests.utils.level_metrics import create_level_metrics
 
 
 class TestLevelSelection(BaseGameTest):
@@ -22,14 +22,13 @@ class TestLevelSelection(BaseGameTest):
 
         # Student has perfect score for each level in an episode
         episode = Episode.objects.get(name="Loops with Conditions")
-        for a_level in episode.levels:
-            attempt = Attempt(student=student, score=20.0, level=a_level)
-            attempt.save()
+        for level in episode.levels:
+            create_level_metrics(student, level, 20)
 
         #  Student logs in
         code_page = self.go_to_homepage().go_to_student_login_page()
         student_login_page = code_page.student_input_access_code(access_code)
-        page = student_login_page.student_login(name, password)
+        student_login_page.student_login(name, password)
 
         # Goes to rapid router levels
         page = self.go_to_reverse("levels")
@@ -57,14 +56,11 @@ class TestLevelSelection(BaseGameTest):
         )
 
         try:
-            image_for_uncomplete_episode = page.browser.find_element(
-                By.CSS_SELECTOR, "#episode-3 > p > img"
-            )
-        except NoSuchElementException as this_should_happen:
+            page.browser.find_element(By.CSS_SELECTOR, "#episode-3 > p > img")
+        except NoSuchElementException:
             pass
 
-    @pytest.mark.skip(reason="levelless episode no longer opens up after clicking next level, need to investigate")
-    def test_redirect_to_levelless_episode(self):
+    def test_aredirect_to_levelless_episode(self):
         levels_page = self.go_to_reverse("python_levels")
         expected_url = levels_page.browser.current_url
 
