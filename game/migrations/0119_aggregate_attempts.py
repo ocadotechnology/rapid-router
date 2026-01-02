@@ -36,7 +36,7 @@ SELECT
     student_id,
     level_id,
     COUNT(*) AS attempt_count,
-    SUM(UNIXEPOCH(finish_time) - UNIXEPOCH(start_time)) AS elapsed_time,
+    SUM(EXTRACT(EPOCH FROM finish_time) - EXTRACT(EPOCH FROM start_time)) AS elapsed_time,
     0 AS top_score
 FROM game_attempt
 WHERE finish_time IS NOT NULL
