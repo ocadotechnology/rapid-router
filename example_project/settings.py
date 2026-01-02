@@ -1,5 +1,11 @@
 """Django settings for example_project project."""
 import os
+import sys
+try:
+    import pysqlite3
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
 
 DEBUG = True
 

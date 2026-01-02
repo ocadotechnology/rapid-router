@@ -13,46 +13,52 @@ class Migration(migrations.Migration):
         Attempt.objects.filter(score__lt=0, score__gt=20).delete()
 
     FALSIFY_INVALID_BEST_ATTEMPTS_SQL = """
-UPDATE attempt
-SET is_best_attempt = FALSE
-FROM (
-    SELECT *
-    FROM attempt
-    WHERE is_best_attempt = TRUE
-    QUALIFY ROW_NUMBER() OVER (
+WITH ranked_attempts AS (
+    SELECT
+        id AS sub_id,
+        ROW_NUMBER() OVER (
         PARTITION BY student_id, level_id 
         ORDER BY score DESC, start_time DESC
-    ) != 1
-) AS invalid_attempt
-WHERE attempt.id = invalid_attempt.id;
+        ) AS rank
+    FROM game_attempt
+    WHERE is_best_attempt = TRUE
+)
+UPDATE game_attempt
+SET is_best_attempt = 0
+FROM ranked_attempts
+WHERE id = ranked_attempts.sub_id
+AND ranked_attempts.rank > 1;
 """
 
     ATTEMPT_COUNT_AND_TIME_PER_LEVEL_SQL = """
-INSERT INTO level_metrics (student_id, level_id, attempt_count, time_spent)
+INSERT INTO game_levelmetrics (student_id, level_id, attempt_count, time_spent)
 SELECT
    student_id,
    level_id,
-   COUNT(*) as attempt_count,
-   SUM(TIMESTAMP_DIFF(finish_time, start_time, SECOND)) AS elapsed_time,
-FROM attempt
+   COUNT(*) AS attempt_count,
+   SUM(UNIXEPOCH(finish_time) - UNIXEPOCH(start_time)) AS elapsed_time
+FROM game_attempt
 WHERE finish_time IS NOT NULL
 GROUP BY student_id, level_id;
 """
 
     ATTEMPT_TOP_SCORE_PER_LEVEL_SQL = """
-UPDATE level_metrics
+UPDATE game_levelmetrics
 SET top_score = CAST(best_attempt.score AS INT64)
 FROM (
-    SELECT *,
-    FROM attempt
+    SELECT
+        level_id AS sub_level_id,
+        student_id AS sub_student_id,
+        score
+    FROM game_attempt
     WHERE finish_time IS NOT NULL
     AND start_time IS NOT NULL
     AND score IS NOT NULL
     AND score > 0
     AND is_best_attempt = TRUE
 ) AS best_attempt
-WHERE level_metrics.level_id = best_attempt.level_id
-AND level_metrics.student_id = best_attempt.student_id;    
+WHERE level_id = best_attempt.sub_level_id
+AND student_id = best_attempt.sub_student_id;    
 """
 
     ATTEMPT_COUNT_PER_DAY_SQL = """
@@ -60,7 +66,7 @@ SELECT
     DATE(finish_time),
     level_id,
     COUNT(*) AS attempts_per_day
-FROM attempt
+FROM game_attempt
 WHERE finish_time IS NOT NULL
 GROUP BY DATE(finish_time), student_id, level_id
 """
