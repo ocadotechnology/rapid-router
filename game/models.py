@@ -3,6 +3,7 @@ from builtins import str
 
 from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.query import QuerySet
 from django.utils import timezone
@@ -329,15 +330,17 @@ class Attempt(models.Model):
 
 
 class LevelMetrics(models.Model):
-    time_spent = models.BigIntegerField(default=0)
+    time_spent = models.PositiveBigIntegerField(default=0)
     level = models.ForeignKey(Level, related_name="metrics", on_delete=models.CASCADE)
     student = models.ForeignKey(
         Student,
         related_name="level_metrics",
         on_delete=models.CASCADE,
     )
-    top_score = models.FloatField(default=0)
-    attempt_count = models.IntegerField(default=1)
+    top_score = models.PositiveIntegerField(
+        default=0, validators=[MaxValueValidator(20)]
+    )
+    attempt_count = models.PositiveIntegerField(default=1)
 
     class Meta:
         unique_together = ("student", "level")
@@ -382,7 +385,6 @@ class DailyActivity(models.Model):
     A model to record sets of daily activity. Currently used to record the
     amount of Rapid Router and Python Den attempts, per day.
     """
-
     date = models.DateField(default=timezone.now)
     rr_attempt_count = models.PositiveBigIntegerField(default=0)
     pd_attempt_count = models.PositiveBigIntegerField(default=0)
