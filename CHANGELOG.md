@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v7.6.17 (2026-01-28)
+
+### Bug Fixes
+
+- Bump version
+  ([`82df442`](https://github.com/ocadotechnology/rapid-router/commit/82df442bad6d869a7adf075f4018015baed8637e))
+
+### Build System
+
+- Remove dep from migration
+  ([`1ee89ac`](https://github.com/ocadotechnology/rapid-router/commit/1ee89ac83aedf6eca98dc589ead251d5e3429590))
+
+
 ## v7.6.16 (2026-01-28)
 
 ### Bug Fixes
