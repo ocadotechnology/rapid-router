@@ -68,9 +68,7 @@ def add_missing_model_solutions(apps: Apps, *args):
 
         model_solution = model_solutions[attempt.level.name]
 
-        ideal_number_of_blocks = int(
-            model_solution.replace("[", "").replace("]", "")
-        )
+        ideal_number_of_blocks = int(model_solution.replace("[", "").replace("]", ""))
 
         if number_of_blocks == ideal_number_of_blocks:
             attempt.score = 20
