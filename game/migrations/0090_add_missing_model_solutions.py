@@ -2,9 +2,9 @@ import datetime
 import logging
 import re
 
-import pytz
 from django.apps.registry import Apps
 from django.db import migrations
+from django.utils.timezone import make_aware
 
 LOGGER = logging.getLogger(__name__)
 
@@ -53,7 +53,7 @@ def add_missing_model_solutions(apps: Apps, *args):
             "91",
         ],
         score=10,
-        finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
+        finish_time__gte=make_aware(datetime.datetime(2023, 3, 1, 00, 00)),
     ).select_related("level")
 
     LOGGER.info(f"Retrieved {attempts.count()} attempts.")
@@ -68,9 +68,7 @@ def add_missing_model_solutions(apps: Apps, *args):
 
         model_solution = model_solutions[attempt.level.name]
 
-        ideal_number_of_blocks = int(
-            model_solution.replace("[", "").replace("]", "")
-        )
+        ideal_number_of_blocks = int(model_solution.replace("[", "").replace("]", ""))
 
         if number_of_blocks == ideal_number_of_blocks:
             attempt.score = 20
@@ -130,7 +128,7 @@ def remove_new_model_solutions(apps: Apps, *args):
             "91",
         ],
         score__gt=10,
-        finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
+        finish_time__gte=make_aware(datetime.datetime(2023, 3, 1, 00, 00)),
     ).select_related("level").update(score=10)
 
 

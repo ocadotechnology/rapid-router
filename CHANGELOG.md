@@ -1,6 +1,64 @@
 # CHANGELOG
 
 
+## v7.6.18 (2026-01-28)
+
+### Bug Fixes
+
+- Install latest common
+  ([`0d876e2`](https://github.com/ocadotechnology/rapid-router/commit/0d876e2b1c74764d0d98205a38d265c9b7c8ed29))
+
+
+## v7.6.17 (2026-01-28)
+
+### Bug Fixes
+
+- Bump version
+  ([`82df442`](https://github.com/ocadotechnology/rapid-router/commit/82df442bad6d869a7adf075f4018015baed8637e))
+
+### Build System
+
+- Remove dep from migration
+  ([`1ee89ac`](https://github.com/ocadotechnology/rapid-router/commit/1ee89ac83aedf6eca98dc589ead251d5e3429590))
+
+
+## v7.6.16 (2026-01-28)
+
+### Bug Fixes
+
+- Install latest common
+  ([`67ca07d`](https://github.com/ocadotechnology/rapid-router/commit/67ca07d8b97dccc2e67a7e5a42ad8fa9c69b61b8))
+
+
+## v7.6.15 (2026-01-28)
+
+### Bug Fixes
+
+- Install latest common
+  ([`59adf58`](https://github.com/ocadotechnology/rapid-router/commit/59adf58c573fc43c17ec7ef1180bc8a39381b28c))
+
+
+## v7.6.14 (2026-01-19)
+
+### Bug Fixes
+
+- Install latest common
+  ([`104cbad`](https://github.com/ocadotechnology/rapid-router/commit/104cbadcf45c6c3062971265770331bed7c3ca4e))
+
+### Build System
+
+- Upgrade to werkzeug 3.1.5
+  ([`d2b1563`](https://github.com/ocadotechnology/rapid-router/commit/d2b156303a04bdcecdbc0dddc68ae3f9c9300747))
+
+
+## v7.6.13 (2026-01-16)
+
+### Bug Fixes
+
+- Install latest common
+  ([`aa30446`](https://github.com/ocadotechnology/rapid-router/commit/aa304462d162ba64093232a22d9cba60883624d9))
+
+
 ## v7.6.12 (2025-12-10)
 
 ### Bug Fixes
