@@ -45,8 +45,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "HOST": "db",
-        "NAME": "db",
-        "USER": "postgres",
+        "NAME": "legacy_rapid_router",
+        "USER": "root",
         "PASSWORD": "password",
         "PORT": "5432",
         "ATOMIC_REQUESTS": True,
