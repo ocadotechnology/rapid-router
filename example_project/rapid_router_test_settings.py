@@ -43,10 +43,12 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        "NAME": os.path.join(
-            os.path.abspath(os.path.dirname(__file__)), "db.sqlite3"
-        ),  # Or path to database file if using sqlite3.
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": "db",
+        "NAME": "db",
+        "USER": "postgres",
+        "PASSWORD": "password",
+        "PORT": "5432",
         "ATOMIC_REQUESTS": True,
     }
 }
