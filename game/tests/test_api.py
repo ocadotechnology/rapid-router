@@ -11,6 +11,8 @@ from .utils.user import get_superuser
 
 
 class APITests(APITestCase):
+    fixtures = ["seed"]
+
     def test_list_decors(self):
         url = reverse("decor-list")
         superuser = get_superuser()

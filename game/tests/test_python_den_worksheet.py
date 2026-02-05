@@ -8,6 +8,8 @@ from game.models import Worksheet
 
 
 class PythonDenWorksheetTestCase(TestCase):
+    fixtures = ["seed"]
+
     @classmethod
     def setUpClass(cls):
         cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED

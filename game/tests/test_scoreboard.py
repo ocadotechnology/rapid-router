@@ -327,6 +327,8 @@ class ScoreboardTestCase(TestCase):
 
 
 class ScoreboardCsvTestCase(TestCase):
+    fixtures = ["seed"]
+
     def test_scoreboard_csv(self):
         # Take the first two levels of the main game
         levels = Level.objects.sorted_levels()[0:2]
