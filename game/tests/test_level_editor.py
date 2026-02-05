@@ -18,6 +18,8 @@ from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
 class LevelEditorTestCase(TestCase):
+    fixtures = ["seed"]
+
     LEVEL_DATA1 = {
         "origin": '{"coordinate":[3,5],"direction":"S"}',
         "python_enabled": False,

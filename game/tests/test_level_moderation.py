@@ -11,6 +11,8 @@ from .utils.level import create_save_level
 
 
 class LevelModerationTestCase(TestCase):
+    fixtures = ["seed"]
+
     @classmethod
     def setUpClass(cls):
         cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
