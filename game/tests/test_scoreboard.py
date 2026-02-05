@@ -36,6 +36,8 @@ from game.views.scoreboard_csv import (
 
 
 class ScoreboardTestCase(TestCase):
+    fixtures = ["seed"]
+    
     def test_teacher_multiple_students_multiple_levels(self):
         # Setup official levels data
         episode_ids = [1, 2]

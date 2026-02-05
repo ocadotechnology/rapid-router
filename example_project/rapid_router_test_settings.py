@@ -83,6 +83,7 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "django_reverse_js",
     "django_otp",
     "django_otp.plugins.otp_static",
@@ -162,3 +163,5 @@ if MODULE_NAME == "local":
     )
 
 ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
+
+AUTH_USER_MODEL = "common.User"
