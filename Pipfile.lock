@@ -347,7 +347,7 @@
         },
         "codeforlife-portal": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "28f20fcac2b8f48f15a742c8bcdf97105ac8ac0b"
+            "ref": "25d61e3dc34335ce819a4b709c2a56f57cc9b552"
         },
         "cryptography": {
             "hashes": [
