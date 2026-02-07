@@ -13,7 +13,7 @@ jobs:
       postgres: # https://docs.github.com/en/actions/use-cases-and-examples/using-containerized-services/creating-postgresql-service-containers
         image: postgres:17
         env:
-          POSTGRES_DB: "db"
+          POSTGRES_DB: "legacy_rapid_router"
           POSTGRES_HOST: "localhost"
           POSTGRES_USER: "root"
           POSTGRES_PASSWORD: "password"
