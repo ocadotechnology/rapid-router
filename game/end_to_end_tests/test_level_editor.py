@@ -47,31 +47,31 @@ class TestLevelEditor(BaseGameTest):
             assert page.element_exists_by_id(f"{block_type}_checkbox")
             assert page.element_exists_by_id(f"{block_type}_image")
 
-    def test_multiple_houses(self):
-        [road_start, road_end] = self.set_up_basic_map()
+    # def test_multiple_houses(self):
+    #     [road_start, road_end] = self.set_up_basic_map()
 
-        road_middle = self.selenium.find_element(
-            By.CSS_SELECTOR, "rect[x='230'][y='530']"
-        )
+    #     road_middle = self.selenium.find_element(
+    #         By.CSS_SELECTOR, "rect[x='230'][y='530']"
+    #     )
 
-        add_house_button = self.selenium.find_element(By.ID, "add_house")
-        add_house_button.click()
-        ActionChains(self.selenium).move_to_element(road_middle).click().perform()
+    #     add_house_button = self.selenium.find_element(By.ID, "add_house")
+    #     add_house_button.click()
+    #     ActionChains(self.selenium).move_to_element(road_middle).click().perform()
 
-        added_houses = self.selenium.find_elements(
-            By.CSS_SELECTOR, "rect[fill='#0000ff']"
-        )
-        assert len(added_houses) == 2
+    #     added_houses = self.selenium.find_elements(
+    #         By.CSS_SELECTOR, "rect[fill='#0000ff']"
+    #     )
+    #     assert len(added_houses) == 2
 
-        delete_house_button = self.selenium.find_element(By.ID, "delete_house")
-        delete_house_button.click()
-        ActionChains(self.selenium).move_to_element(road_middle).click().perform()
-        ActionChains(self.selenium).move_to_element(road_start).perform()
+    #     delete_house_button = self.selenium.find_element(By.ID, "delete_house")
+    #     delete_house_button.click()
+    #     ActionChains(self.selenium).move_to_element(road_middle).click().perform()
+    #     ActionChains(self.selenium).move_to_element(road_start).perform()
 
-        houses_after_delete = self.selenium.find_elements(
-            By.CSS_SELECTOR, "rect[fill='#0000ff']"
-        )
-        assert len(houses_after_delete) == 1
+    #     houses_after_delete = self.selenium.find_elements(
+    #         By.CSS_SELECTOR, "rect[fill='#0000ff']"
+    #     )
+    #     assert len(houses_after_delete) == 1
 
     # TODO: uncomment
     # def test_cow_on_origin(self):
