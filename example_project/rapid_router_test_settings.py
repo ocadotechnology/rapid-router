@@ -8,7 +8,9 @@ headless_chrome_options.add_argument("--no-sandbox")
 headless_chrome_options.add_argument("--disable-dev-shm-usage")
 
 SELENIUM_WEBDRIVERS = {
-    "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {"options": headless_chrome_options}},
+    "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
+    "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
+    "chrome-headless": {"callable": webdriver.Chrome, "args": (), "kwargs": {"options": headless_chrome_options}},
 }
 
 SELENIUM_WIDTHS = [1624]
