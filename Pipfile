@@ -17,7 +17,7 @@ django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
 importlib-metadata = "<5" # Using version 5 causes an issue when trying to run pytest. Not sure why, linked to: https://stackoverflow.com/questions/73929564/entrypoints-object-has-no-attribute-get-digital-ocean
 isort = "*"
-pyOpenSSL = "==25.1.0"
+pyOpenSSL = "==25.3.0"
 pytest = "==8.*"
 pytest-django = "==4.8.0"
 pytest-order = "*"
