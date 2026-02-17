@@ -337,7 +337,7 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "git": "git+https://github.com/ocadotechnology/codeforlife-package-python.git",
+            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
             "ref": "056971fd4f41468a84a1cb5d1cf87de57fcd05ef"
         },
@@ -1943,7 +1943,7 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "git": "git+https://github.com/ocadotechnology/codeforlife-package-python.git",
+            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
             "ref": "056971fd4f41468a84a1cb5d1cf87de57fcd05ef"
         },
