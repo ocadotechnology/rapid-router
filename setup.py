@@ -31,10 +31,12 @@ def parse_requirements(packages: t.Dict[str, t.Dict[str, t.Any]]):
             requirement += f" @ git+{package['git']}"
             if "ref" in package:
                 requirement += f"@{package['ref']}"
+            if "subdirectory" in package:
+                requirement += f"#subdirectory={package['subdirectory']}"
         elif "version" in package:
             if "extras" in package:
                 requirement += f"[{','.join(package['extras'])}]"
-            requirement += package["version"] 
+            requirement += package["version"]
             if "markers" in package:
                 requirement += f"; {package['markers']}"
         requirements.append(requirement)

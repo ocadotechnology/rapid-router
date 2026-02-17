@@ -183,7 +183,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "b41862455bec42aea6a4c3630b984a78894b4afa",
+            "ref": "418a3331adb7fc9de4ced1c85231ab662c66eff8",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -337,9 +337,7 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
-            "markers": "python_version == '3.12'",
-            "ref": "b4cd735ccf2a08843e32507b502f26c5b7b4b2b2"
+            "markers": "python_version == '3.12'"
         },
         "cryptography": {
             "hashes": [
@@ -1789,7 +1787,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "b41862455bec42aea6a4c3630b984a78894b4afa",
+            "ref": "418a3331adb7fc9de4ced1c85231ab662c66eff8",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -1943,13 +1941,11 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
-            "markers": "python_version == '3.12'",
-            "ref": "b4cd735ccf2a08843e32507b502f26c5b7b4b2b2"
+            "markers": "python_version == '3.12'"
         },
         "codeforlife-portal": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "b41862455bec42aea6a4c3630b984a78894b4afa"
+            "ref": "418a3331adb7fc9de4ced1c85231ab662c66eff8"
         },
         "coverage": {
             "extras": [
@@ -3051,11 +3047,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:4a13c2db1071e5846c3b3e04e5b095c0de36b2a24be9a3bc0145ca66fce4e328",
-                "sha256:dd7f808d828e1764a22ebff09e60f175ee3c41876606a6132a688d809c7c9c73"
+                "sha256:9170634f126f8efdae22fb58ae8a0eaa86f38365bc57897a6c4f781d1f5875bd",
+                "sha256:9a33809944b9db043ad67ca0db94b14bf452cc6aeaac46a88ea55b26e2e9d291"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==4.6.0"
+            "version": "==4.9.2"
         },
         "pluggy": {
             "hashes": [
@@ -3691,11 +3687,11 @@
         },
         "trio": {
             "hashes": [
-                "sha256:150f29ec923bcd51231e1d4c71c7006e65247d68759dd1c19af4ea815a25806b",
-                "sha256:4ab65984ef8370b79a76659ec87aa3a30c5c7c83ff250b4de88c29a8ab6123c5"
+                "sha256:3bd5d87f781d9b0192d592aef28691f8951d6c2e41b7e1da4c25cde6c180ae9b",
+                "sha256:a29b92b73f09d4b48ed249acd91073281a7f1063f09caba5dc70465b5c7aa970"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==0.32.0"
+            "version": "==0.33.0"
         },
         "trio-websocket": {
             "hashes": [
