@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "85a3cf6073881e8ba0a3effbf5e6feaa46a2ac6a84dad1a0413d76b890465ff9"
+            "sha256": "e1e21201c09a69ad24ead0b1c8e2485bef6c950d156ddc4d63cf539795a136af"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -183,7 +183,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "418a3331adb7fc9de4ced1c85231ab662c66eff8",
+            "ref": "6e378ccd7856214b9869458ab95bc52c0239d727",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -337,7 +337,9 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "markers": "python_version == '3.12'"
+            "git": "git+https://github.com/ocadotechnology/codeforlife-package-python.git",
+            "markers": "python_version == '3.12'",
+            "ref": "056971fd4f41468a84a1cb5d1cf87de57fcd05ef"
         },
         "cryptography": {
             "hashes": [
@@ -1787,7 +1789,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "418a3331adb7fc9de4ced1c85231ab662c66eff8",
+            "ref": "6e378ccd7856214b9869458ab95bc52c0239d727",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -1941,11 +1943,13 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "markers": "python_version == '3.12'"
+            "git": "git+https://github.com/ocadotechnology/codeforlife-package-python.git",
+            "markers": "python_version == '3.12'",
+            "ref": "056971fd4f41468a84a1cb5d1cf87de57fcd05ef"
         },
         "codeforlife-portal": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "418a3331adb7fc9de4ced1c85231ab662c66eff8"
+            "ref": "5e330bad0f183be5c1a7bf3bb2e24d12f28e3129"
         },
         "coverage": {
             "extras": [
