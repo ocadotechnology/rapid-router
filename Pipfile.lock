@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "19dc10bcda695c54a0282edcffc179b054ac48642138eaa3b4888a7ad870d38d"
+            "sha256": "161161ca8e4d28d232eedaa43bd8bbee905637de1654d5d06e15d9d1f5f75b38"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -127,16 +127,13 @@
                 "sha256:fc7de24befaeae77ba923797c7c87834c73648a05a4bde34b3b7e5588973a453",
                 "sha256:fe562eb1a64e67dd297ccc4f5addea2501664954f2692b69a76449ec7913ecbf"
             ],
-            "markers": "platform_python_implementation != 'PyPy'",
+            "markers": "python_version >= '3.9'",
             "version": "==2.0.0"
         },
         "cfl-common": {
-            "hashes": [
-                "sha256:82b680cf652f8bf8923bc7af01ca51cb8b6807f8655fa8e6148c18611f438efa",
-                "sha256:e5a831a28072472971bd5f0ac4c29b260b4e5399fdcb42d4da926b3862fc5daa"
-            ],
-            "index": "pypi",
-            "version": "==8.9.22"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "766d7ca0d12309ab8943dd754337ff403e0fc863",
+            "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
             "hashes": [
@@ -735,7 +732,7 @@
                 "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29",
                 "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"
             ],
-            "markers": "implementation_name != 'PyPy'",
+            "markers": "python_version >= '3.10'",
             "version": "==3.0"
         },
         "pygments": {
@@ -762,6 +759,19 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==2.6.0"
+        },
+        "pysqlite3-binary": {
+            "hashes": [
+                "sha256:1a7e41f169994c140064e3757f9785f5f460e72607f1d9a5244853d4de3cc4f2",
+                "sha256:a4be1927a02d8079f1bf8e46af641798341e9bd1a3c5e57fa6f83207a0a8fa66",
+                "sha256:bb3653a0eb0ef5db2d0ed49d43b11ab4be24fdf5b2e65a39650fc59348e30dc6",
+                "sha256:bf257ca54a0b94dce14324b29960fae5b1d57a669ce327b92fe245049abf2854",
+                "sha256:c7146a400deb786b064fd299aa79589a81e532f6dccc38b7986744ace484afdc",
+                "sha256:c8d25d8568978669c8ba53f32d10fb779176f25d720cda148b28baaf6ef0a20c",
+                "sha256:cb551d736ac3a049b3a91332dbcb0df506eaed58add8a95acfd264dc45ce3fa8",
+                "sha256:df084f3da52bc92204357cd6ba68f98a8ef8e55a9e8dac3c4d96029ee56fb57b"
+            ],
+            "version": "==0.5.4"
         },
         "python-dateutil": {
             "hashes": [
@@ -1056,16 +1066,13 @@
                 "sha256:fc7de24befaeae77ba923797c7c87834c73648a05a4bde34b3b7e5588973a453",
                 "sha256:fe562eb1a64e67dd297ccc4f5addea2501664954f2692b69a76449ec7913ecbf"
             ],
-            "markers": "platform_python_implementation != 'PyPy'",
+            "markers": "python_version >= '3.9'",
             "version": "==2.0.0"
         },
         "cfl-common": {
-            "hashes": [
-                "sha256:82b680cf652f8bf8923bc7af01ca51cb8b6807f8655fa8e6148c18611f438efa",
-                "sha256:e5a831a28072472971bd5f0ac4c29b260b4e5399fdcb42d4da926b3862fc5daa"
-            ],
-            "index": "pypi",
-            "version": "==8.9.22"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "766d7ca0d12309ab8943dd754337ff403e0fc863",
+            "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
             "hashes": [
@@ -1218,12 +1225,8 @@
             "version": "==0.3.0"
         },
         "codeforlife-portal": {
-            "hashes": [
-                "sha256:503c771cf4ff8977e2f83dcea636e0948c7278c89056ba6a429fbc1afe7db1e9",
-                "sha256:bd60862899fac83cc332c03451281789e7c227ebadcc9d4fe7e4899ee9636e0a"
-            ],
-            "index": "pypi",
-            "version": "==8.9.22"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "766d7ca0d12309ab8943dd754337ff403e0fc863"
         },
         "cryptography": {
             "hashes": [
@@ -1994,7 +1997,7 @@
                 "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29",
                 "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"
             ],
-            "markers": "implementation_name != 'PyPy'",
+            "markers": "python_version >= '3.10'",
             "version": "==3.0"
         },
         "pycurl": {
@@ -2078,6 +2081,19 @@
                 "sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"
             ],
             "version": "==1.7.1"
+        },
+        "pysqlite3-binary": {
+            "hashes": [
+                "sha256:1a7e41f169994c140064e3757f9785f5f460e72607f1d9a5244853d4de3cc4f2",
+                "sha256:a4be1927a02d8079f1bf8e46af641798341e9bd1a3c5e57fa6f83207a0a8fa66",
+                "sha256:bb3653a0eb0ef5db2d0ed49d43b11ab4be24fdf5b2e65a39650fc59348e30dc6",
+                "sha256:bf257ca54a0b94dce14324b29960fae5b1d57a669ce327b92fe245049abf2854",
+                "sha256:c7146a400deb786b064fd299aa79589a81e532f6dccc38b7986744ace484afdc",
+                "sha256:c8d25d8568978669c8ba53f32d10fb779176f25d720cda148b28baaf6ef0a20c",
+                "sha256:cb551d736ac3a049b3a91332dbcb0df506eaed58add8a95acfd264dc45ce3fa8",
+                "sha256:df084f3da52bc92204357cd6ba68f98a8ef8e55a9e8dac3c4d96029ee56fb57b"
+            ],
+            "version": "==0.5.4"
         },
         "pytest": {
             "hashes": [
