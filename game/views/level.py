@@ -336,21 +336,14 @@ def submit_attempt(request):
             level_metrics.top_score = score
             level_metrics.save()
 
-        # Attempt is in Python Den if level is an "official" level and the level's name (id) is over 1000
-        daily_activity_field = (
-            "pd_attempt_count"
-            if level.owner is None
-            and level.episode is not None
-            and int(level.name) > 1000
-            else "rr_attempt_count"
-        )
         DailyActivity.objects.update_or_create(
             date=timezone.now().date(),
+            level=level,
             defaults={
-                daily_activity_field: F(daily_activity_field) + 1,
+                "count": F("count") + 1,
             },
             create_defaults={
-                daily_activity_field: 1,
+                "count": 1,
             },
         )
 

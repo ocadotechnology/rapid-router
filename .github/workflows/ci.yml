@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       LANG: C.UTF-8
+      DB_HOST: localhost
     services:
       postgres: # https://docs.github.com/en/actions/use-cases-and-examples/using-containerized-services/creating-postgresql-service-containers
         image: postgres:17

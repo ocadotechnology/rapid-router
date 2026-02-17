@@ -41,7 +41,7 @@ class ScoreboardTestCase(TestCase):
 
         email, _ = signup_teacher_directly()
         create_organisation_directly(email)
-        clas, class_name, access_code = create_class_directly(email)
+        clas, _, access_code = create_class_directly(email)
         name1, password1, student = create_school_student_directly(access_code)
         name2, password2, student2 = create_school_student_directly(access_code)
 
@@ -163,7 +163,7 @@ class ScoreboardTestCase(TestCase):
     def test_scoreboard_loads(self):
         email, password = signup_teacher_directly()
         create_organisation_directly(email)
-        klass, name, access_code = create_class_directly(email)
+        klass, _, access_code = create_class_directly(email)
         create_school_student_directly(access_code)
 
         url = reverse("scoreboard")
@@ -187,7 +187,7 @@ class ScoreboardTestCase(TestCase):
     def test_python_scoreboard_loads(self):
         email, password = signup_teacher_directly()
         create_organisation_directly(email)
-        klass, name, access_code = create_class_directly(email)
+        klass, _, access_code = create_class_directly(email)
         create_school_student_directly(access_code)
 
         url = reverse("python_scoreboard")
@@ -330,7 +330,7 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
-        assert "Scoreboard is only visible to school students and teachers" in str(
+        assert "The scoreboard is only visible to school students and teachers." in str(
             response.content
         )
 
@@ -411,9 +411,9 @@ class ScoreboardCsvTestCase(TestCase):
         (
             class_name,
             name,
-            completed_levels,
+            _,
             total_time,
-            total_scores,
+            _,
             l1,
             l2,
             improvement,
@@ -429,9 +429,9 @@ class ScoreboardCsvTestCase(TestCase):
         (
             class_name,
             name,
-            completed_levels,
+            _,
             total_time,
-            total_scores,
+            _,
             l1,
             l2,
             improvement,
@@ -459,7 +459,7 @@ class ScoreboardCsvTestCase(TestCase):
         """
         Create data for a student row in the main scoreboard table
         """
-        email, password = signup_teacher_directly()
+        email, _ = signup_teacher_directly()
         _, class_name, access_code = create_class_directly(email, class_name)
         _, _, student = create_school_student_directly(access_code)
 

@@ -31,7 +31,7 @@ TEMPLATES = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "localhost",
+        "HOST": os.getenv("DB_HOST", "db"),
         "NAME": "legacy_rapid_router",
         "USER": "root",
         "PASSWORD": "password",
