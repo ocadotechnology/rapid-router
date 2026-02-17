@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cfl-common = {git = "https://github.com/ocadotechnology/codeforlife-portal.git", ref = "6e378ccd7856214b9869458ab95bc52c0239d727", subdirectory = "cfl_common"}
+cfl-common = {git = "https://github.com/ocadotechnology/codeforlife-portal.git", ref = "25f8370f54ac561ef9b8b940bf94e3dcd35268d7", subdirectory = "cfl_common"}
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
