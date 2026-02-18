@@ -181,18 +181,18 @@ class LevelSelectionTestCase(TestCase):
             len(response.context["indirectly_shared_levels"][teacher2.new_user])
             == 2
         )
-        # assert (
-        #     response.context["indirectly_shared_levels"][teacher2.new_user][0][
-        #         "owner"
-        #     ]
-        #     == teacher2.new_user
-        # )
-        # assert (
-        #     response.context["indirectly_shared_levels"][teacher2.new_user][1][
-        #         "owner"
-        #     ]
-        #     == student2.new_user
-        # )
+        assert (
+            response.context["indirectly_shared_levels"][teacher2.new_user][0][
+                "owner"
+            ]
+            == teacher2.new_user
+        )
+        assert (
+            response.context["indirectly_shared_levels"][teacher2.new_user][1][
+                "owner"
+            ]
+            == student2.new_user
+        )
 
         # Log in as second teacher again and check they have access to only their student's level
         self.logout()
