@@ -26,7 +26,11 @@ SELENIUM_WEBDRIVERS = {
         "kwargs": {"options": headless_chrome_options},
     },
     "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
-    "chrome": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
+    "chrome-headless": {
+        "callable": webdriver.Chrome,
+        "args": (),
+        "kwargs": {headless_chrome_options},
+    },
 }
 
 SELENIUM_WIDTHS = [1624]
