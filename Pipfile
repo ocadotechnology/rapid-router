@@ -24,6 +24,7 @@ pytest = "==8.*"
 pytest-django = "==4.8.0"
 pytest-order = "*"
 pytest-xdist = "*"
+pyvirtualdisplay = "*"
 selenium = "==4.29.0"
 Werkzeug = "==3.1.5"
 

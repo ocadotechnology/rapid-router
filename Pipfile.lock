@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "161161ca8e4d28d232eedaa43bd8bbee905637de1654d5d06e15d9d1f5f75b38"
+            "sha256": "1d315670e275621cf9181486debc5b300db63badbf2fd38b3c909bb29d26b853"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -132,7 +132,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "766d7ca0d12309ab8943dd754337ff403e0fc863",
+            "ref": "25afc09c479e211e1a972d235d290a16a5d618cf",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -778,7 +778,7 @@
                 "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3",
                 "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==2.9.0.post0"
         },
         "qrcode": {
@@ -810,7 +810,7 @@
                 "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
                 "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.17.0"
         },
         "sqlparse": {
@@ -1071,7 +1071,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "766d7ca0d12309ab8943dd754337ff403e0fc863",
+            "ref": "25afc09c479e211e1a972d235d290a16a5d618cf",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -1226,7 +1226,7 @@
         },
         "codeforlife-portal": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "766d7ca0d12309ab8943dd754337ff403e0fc863"
+            "ref": "25afc09c479e211e1a972d235d290a16a5d618cf"
         },
         "cryptography": {
             "hashes": [
@@ -2080,6 +2080,7 @@
                 "sha256:2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5",
                 "sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"
             ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.7.1"
         },
         "pysqlite3-binary": {
@@ -2136,7 +2137,7 @@
                 "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3",
                 "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==2.9.0.post0"
         },
         "python-dotenv": {
@@ -2194,6 +2195,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==0.4.1"
+        },
+        "pyvirtualdisplay": {
+            "hashes": [
+                "sha256:09755bc3ceb6eb725fb07eca5425f43f2358d3bf08e00d2a9b792a1aedd16159",
+                "sha256:40d4b8dfe4b8de8552e28eb367647f311f88a130bf837fe910e7f180d5477f0e"
+            ],
+            "index": "pypi",
+            "version": "==3.0"
         },
         "pyyaml": {
             "hashes": [
@@ -2316,7 +2325,7 @@
                 "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
                 "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.17.0"
         },
         "sniffio": {
