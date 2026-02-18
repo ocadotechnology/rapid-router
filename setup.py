@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
+import os
 import re
 import sys
 import typing as t
+from pathlib import Path
 
 from setuptools import find_packages, setup
 
@@ -10,6 +12,34 @@ with open("game/__init__.py", "r") as fd:
     version = re.search(
         r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', fd.read(), re.MULTILINE
     ).group(1)
+
+
+# Get the absolute path of the package.
+PACKAGE_DIR = os.path.dirname(__file__)
+
+
+def get_data_files(target_dir: Path):
+    """Get the path of all files in a target directory relative to where they
+    are located in the package. All subdirectories will be walked.
+
+    Args:
+        target_dir: The directory within the package to walk.
+
+    Returns:
+        A tuple where the values are (the absolute path to the target directory,
+        the paths of all files within the target directory relative to their
+        location in the package).
+    """
+    relative_file_paths: t.List[str] = []
+    for dir_path, _, file_names in os.walk(target_dir):
+        # Get the relative directory of the current directory.
+        relative_dir = os.path.relpath(dir_path, PACKAGE_DIR)
+        # Get the relative file path for each file in the current directory.
+        relative_file_paths += [
+            os.path.join(relative_dir, file_name) for file_name in file_names
+        ]
+
+    return str(target_dir), relative_file_paths
 
 
 def parse_requirements(packages: t.Dict[str, t.Dict[str, t.Any]]):
@@ -67,6 +97,9 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: " "Python :: 3.12",
         "Framework :: Django",
+    ],
+    data_files=[
+        get_data_files(Path(PACKAGE_DIR).joinpath("game/fixtures")),
     ],
     version=version,
     zip_safe=False,
