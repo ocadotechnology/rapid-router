@@ -1,30 +1,32 @@
 import os
 import sys
+
 try:
     import pysqlite3
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 except ImportError:
     pass
 
 from selenium import webdriver
 
-headless_firefox_options = webdriver.FirefoxOptions()
-headless_firefox_options.add_argument("--headless")
-headless_firefox_options.add_argument("--window-size=1920,1080")
-headless_firefox_options.add_argument("--start-maximized")
-headless_firefox_options.add_argument("--disable-gpu")
-headless_firefox_options.add_argument("--no-sandbox")
-headless_firefox_options.add_argument("--disable-extensions")
-headless_firefox_options.add_argument("--disable-dev-shm-usage")
+headless_chrome_options = webdriver.ChromeOptions()
+headless_chrome_options.add_argument("--headless")
+headless_chrome_options.add_argument("--window-size=1920,1080")
+headless_chrome_options.add_argument("--start-maximized")
+headless_chrome_options.add_argument("--disable-gpu")
+headless_chrome_options.add_argument("--no-sandbox")
+headless_chrome_options.add_argument("--disable-extensions")
+headless_chrome_options.add_argument("--disable-dev-shm-usage")
 
 SELENIUM_WEBDRIVERS = {
-    "default": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
-    "chrome": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
-    "firefox-headless": {
-        "callable": webdriver.Firefox,
+    "default": {
+        "callable": webdriver.Chrome,
         "args": (),
-        "kwargs": {"options": headless_firefox_options},
+        "kwargs": {"options": headless_chrome_options},
     },
+    "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
+    "chrome": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
 }
 
 SELENIUM_WIDTHS = [1624]
@@ -143,7 +145,9 @@ PIPELINE = {
             "output_filename": "portal/css/portal.css",
         },
         "popup": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+            ),
             "output_filename": "portal/css/popup.css",
         },
         "game-scss": {

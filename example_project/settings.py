@@ -1,9 +1,12 @@
 """Django settings for example_project project."""
+
 import os
 import sys
+
 try:
     import pysqlite3
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 except ImportError:
     pass
 
@@ -113,7 +116,9 @@ PIPELINE = {
             "output_filename": "portal/css/portal.css",
         },
         "popup": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+            ),
             "output_filename": "portal/css/popup.css",
         },
         "game-scss": {
