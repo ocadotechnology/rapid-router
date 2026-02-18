@@ -29,7 +29,7 @@ SELENIUM_WEBDRIVERS = {
     "chrome-headless": {
         "callable": webdriver.Chrome,
         "args": (),
-        "kwargs": {headless_chrome_options},
+        "kwargs": {"options": headless_chrome_options},
     },
 }
 
