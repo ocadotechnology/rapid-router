@@ -1,6 +1,30 @@
 # CHANGELOG
 
 
+## v7.6.23 (2026-02-19)
+
+### Bug Fixes
+
+- Small static files fixes in level editor
+  ([`57ce2ff`](https://github.com/ocadotechnology/rapid-router/commit/57ce2ffdfcc6025663ca182d8ec788cad7a69c67))
+
+
+## v7.6.22 (2026-02-18)
+
+### Bug Fixes
+
+- Install latest common
+  ([`c4f8456`](https://github.com/ocadotechnology/rapid-router/commit/c4f84561f2db0db45add2ac03bdfcba86abd2c63))
+
+
+## v7.6.21 (2026-02-17)
+
+### Bug Fixes
+
+- Install latest common
+  ([`1af6649`](https://github.com/ocadotechnology/rapid-router/commit/1af664921d90a51744ef6eed9736adf1a82d5e9f))
+
+
 ## v7.6.20 (2026-02-04)
 
 ### Bug Fixes
