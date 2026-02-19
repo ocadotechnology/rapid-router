@@ -3,8 +3,9 @@ import os
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
-headless_chrome_options.add_argument("--headless")
+headless_chrome_options.add_argument("--headless=new")
 headless_chrome_options.add_argument("--no-sandbox")
+headless_chrome_options.add_argument("--disable-dev-shm-usage")
 
 SELENIUM_WEBDRIVERS = {
     "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
@@ -83,6 +84,7 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "django_reverse_js",
     "django_otp",
     "django_otp.plugins.otp_static",
@@ -162,3 +164,5 @@ if MODULE_NAME == "local":
     )
 
 ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
+
+AUTH_USER_MODEL = "common.User"

@@ -22,6 +22,8 @@ custom_handler.monkey_patch()
 
 
 class BaseGameTest(SeleniumTestCase):
+    fixtures = ["seed"]
+
     BLOCKLY_SOLUTIONS_DIR = os.path.join(
         os.path.dirname(__file__), "data/blockly_solutions"
     )

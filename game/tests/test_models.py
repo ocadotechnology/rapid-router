@@ -10,6 +10,8 @@ from .utils.level import create_save_level
 
 
 class TestModels(TestCase):
+    fixtures = ["seed"]
+
     def test_level_next_level_on_delete(self):
         """
         Given two levels level1 and level2 where level2 is level1's next level,

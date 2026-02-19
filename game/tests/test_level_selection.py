@@ -19,6 +19,8 @@ from game.views.level import _next_level_url, _prev_level_url
 
 
 class LevelSelectionTestCase(TestCase):
+    fixtures = ["seed"]
+
     @classmethod
     def setUpClass(cls):
         cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED

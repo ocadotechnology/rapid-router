@@ -6,7 +6,7 @@ from builtins import map, str
 
 from common.app_settings import domain
 from common.models import Student, Teacher
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -27,6 +27,7 @@ from game.models import Level, Block, UserProfile
 from game.theme import get_all_themes
 from game.views.level import LevelSerializer
 
+User = get_user_model()
 
 def level_editor(request, levelId=None):
     """Renders the level editor page.
