@@ -3,8 +3,10 @@ from builtins import str
 
 from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.query import QuerySet
+from django.utils import timezone
 
 
 def theme_choices():
@@ -309,25 +311,22 @@ class Workspace(models.Model):
         return str(self.name)
 
 
-class Attempt(models.Model):
-    start_time = models.DateTimeField(auto_now_add=True)
-    level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
+class LevelMetrics(models.Model):
+    time_spent = models.PositiveBigIntegerField(default=0)
+    level = models.ForeignKey(Level, related_name="metrics", on_delete=models.CASCADE)
     student = models.ForeignKey(
         Student,
-        related_name="attempts",
-        blank=True,
-        null=True,
+        related_name="level_metrics",
         on_delete=models.CASCADE,
     )
-    finish_time = models.DateTimeField(null=True, blank=True)
-    score = models.FloatField(default=0, null=True)
-    workspace = models.TextField(default="")
-    night_mode = models.BooleanField(default=False)
-    python_workspace = models.TextField(default="")
-    is_best_attempt = models.BooleanField(db_index=True, default=False)
+    top_score = models.PositiveIntegerField(
+        default=0, validators=[MaxValueValidator(20)]
+    )
+    attempt_count = models.PositiveIntegerField(default=1)
 
-    def elapsed_time(self):
-        return self.finish_time - self.start_time
+    class Meta:
+        unique_together = ("student", "level")
+        verbose_name_plural = "Levels metrics"
 
 
 class Worksheet(models.Model):
@@ -361,3 +360,19 @@ class Worksheet(models.Model):
     locked_classes = models.ManyToManyField(
         Class, blank=True, related_name="locked_worksheets"
     )
+
+
+class DailyActivity(models.Model):
+    """
+    A model to record attempt count per level per day.
+    """
+    date = models.DateField(default=timezone.now)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True)
+    count = models.PositiveBigIntegerField(default=0)
+
+    class Meta:
+        unique_together = ("date", "level")
+        verbose_name_plural = "Daily activities"
+
+    def __str__(self):
+        return f"On {self.date}, level {self.level} was played {self.count} time(s)."

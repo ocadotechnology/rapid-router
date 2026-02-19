@@ -113,8 +113,8 @@ class LevelSelectionTestCase(TestCase):
         add_teacher_to_school(teacher2, school1)
 
         # Create a class and a student for each teacher
-        _, class_name1, access_code1 = create_class_directly(email1)
-        _, class_name2, access_code2 = create_class_directly(email2)
+        _, _, access_code1 = create_class_directly(email1)
+        _, _, access_code2 = create_class_directly(email2)
         (
             student_name1,
             student_password1,

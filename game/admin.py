@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from game.models import Level, Block, Episode, Workspace, LevelDecor, Attempt, Worksheet
+from game.models import Level, Block, Episode, Workspace, LevelDecor, Worksheet, DailyActivity, LevelMetrics
 
 
 class LevelAdmin(admin.ModelAdmin):
@@ -23,21 +23,31 @@ class WorkspaceAdmin(admin.ModelAdmin):
     raw_id_fields = ["owner"]
 
 
-class AttemptAdmin(admin.ModelAdmin):
+class LevelMetricsAdmin(admin.ModelAdmin):
     search_fields = [
         "level",
         "student",
-        "start_time",
-        "finish_time",
-        "is_best_attempt",
     ]
     raw_id_fields = ["student"]
     list_display = [
         "level",
         "student",
-        "start_time",
-        "finish_time",
-        "is_best_attempt",
+        "time_spent",
+        "attempt_count",
+        "top_score"
+    ]
+
+
+class DailyActivityAdmin(admin.ModelAdmin):
+    search_fields = [
+        "date",
+        "level",
+    ]
+    raw_id_fields = ["level"]
+    list_display = [
+        "date",
+        "level",
+        "count",
     ]
 
 
@@ -54,6 +64,7 @@ admin.site.register(Level, LevelAdmin)
 admin.site.register(Episode, EpisodeAdmin)
 admin.site.register(Workspace, WorkspaceAdmin)
 admin.site.register(Block)
-admin.site.register(Attempt, AttemptAdmin)
+admin.site.register(LevelMetrics, LevelMetricsAdmin)
 admin.site.register(LevelDecor, LevelDecorAdmin)
 admin.site.register(Worksheet, WorksheetAdmin)
+admin.site.register(DailyActivity, DailyActivityAdmin)

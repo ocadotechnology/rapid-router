@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8d4bafa2ac178b689e73f03bfa9491b52078bc59bbc270f471d66b595782337e"
+            "sha256": "5c3ac5197d66a97b396bab64b35df6f40fc9111898664ddda9fac5e2f652b53d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -131,12 +131,9 @@
             "version": "==2.0.0"
         },
         "cfl-common": {
-            "hashes": [
-                "sha256:4b2e3eedcb837573645f1bf3556fe6b877dbaa5cbac733c1f7790e03b4e2e6e6",
-                "sha256:cc8955324eadf89fe39f5e410f030f80dcb3fb48087025d3ecb3832dfeaee3d3"
-            ],
-            "index": "pypi",
-            "version": "==8.9.23"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "eb9eff6edbdd4bc38a49867d3d4981922edb8f46",
+            "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
             "hashes": [
@@ -781,12 +778,25 @@
             "markers": "python_version >= '3.7'",
             "version": "==2.6.0"
         },
+        "pysqlite3-binary": {
+            "hashes": [
+                "sha256:1a7e41f169994c140064e3757f9785f5f460e72607f1d9a5244853d4de3cc4f2",
+                "sha256:a4be1927a02d8079f1bf8e46af641798341e9bd1a3c5e57fa6f83207a0a8fa66",
+                "sha256:bb3653a0eb0ef5db2d0ed49d43b11ab4be24fdf5b2e65a39650fc59348e30dc6",
+                "sha256:bf257ca54a0b94dce14324b29960fae5b1d57a669ce327b92fe245049abf2854",
+                "sha256:c7146a400deb786b064fd299aa79589a81e532f6dccc38b7986744ace484afdc",
+                "sha256:c8d25d8568978669c8ba53f32d10fb779176f25d720cda148b28baaf6ef0a20c",
+                "sha256:cb551d736ac3a049b3a91332dbcb0df506eaed58add8a95acfd264dc45ce3fa8",
+                "sha256:df084f3da52bc92204357cd6ba68f98a8ef8e55a9e8dac3c4d96029ee56fb57b"
+            ],
+            "version": "==0.5.4"
+        },
         "python-dateutil": {
             "hashes": [
                 "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3",
                 "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==2.9.0.post0"
         },
         "qrcode": {
@@ -818,7 +828,7 @@
                 "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
                 "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.17.0"
         },
         "sqlparse": {
@@ -1078,12 +1088,9 @@
             "version": "==2.0.0"
         },
         "cfl-common": {
-            "hashes": [
-                "sha256:4b2e3eedcb837573645f1bf3556fe6b877dbaa5cbac733c1f7790e03b4e2e6e6",
-                "sha256:cc8955324eadf89fe39f5e410f030f80dcb3fb48087025d3ecb3832dfeaee3d3"
-            ],
-            "index": "pypi",
-            "version": "==8.9.23"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "eb9eff6edbdd4bc38a49867d3d4981922edb8f46",
+            "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
             "hashes": [
@@ -1236,12 +1243,8 @@
             "version": "==0.3.0"
         },
         "codeforlife-portal": {
-            "hashes": [
-                "sha256:3fa55227985af6ff0ef5ea51c40c2d5837bd73e654aa4e3af7546abf01924f88",
-                "sha256:992e75450249309f84f5e360b5d75684047110e9ac31f259a22f91ba67fe9d1b"
-            ],
-            "index": "pypi",
-            "version": "==8.9.23"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "eb9eff6edbdd4bc38a49867d3d4981922edb8f46"
         },
         "cryptography": {
             "hashes": [
@@ -2115,6 +2118,19 @@
             ],
             "version": "==1.7.1"
         },
+        "pysqlite3-binary": {
+            "hashes": [
+                "sha256:1a7e41f169994c140064e3757f9785f5f460e72607f1d9a5244853d4de3cc4f2",
+                "sha256:a4be1927a02d8079f1bf8e46af641798341e9bd1a3c5e57fa6f83207a0a8fa66",
+                "sha256:bb3653a0eb0ef5db2d0ed49d43b11ab4be24fdf5b2e65a39650fc59348e30dc6",
+                "sha256:bf257ca54a0b94dce14324b29960fae5b1d57a669ce327b92fe245049abf2854",
+                "sha256:c7146a400deb786b064fd299aa79589a81e532f6dccc38b7986744ace484afdc",
+                "sha256:c8d25d8568978669c8ba53f32d10fb779176f25d720cda148b28baaf6ef0a20c",
+                "sha256:cb551d736ac3a049b3a91332dbcb0df506eaed58add8a95acfd264dc45ce3fa8",
+                "sha256:df084f3da52bc92204357cd6ba68f98a8ef8e55a9e8dac3c4d96029ee56fb57b"
+            ],
+            "version": "==0.5.4"
+        },
         "pytest": {
             "hashes": [
                 "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01",
@@ -2156,7 +2172,7 @@
                 "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3",
                 "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==2.9.0.post0"
         },
         "python-dotenv": {
@@ -2214,6 +2230,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==0.4.1"
+        },
+        "pyvirtualdisplay": {
+            "hashes": [
+                "sha256:09755bc3ceb6eb725fb07eca5425f43f2358d3bf08e00d2a9b792a1aedd16159",
+                "sha256:40d4b8dfe4b8de8552e28eb367647f311f88a130bf837fe910e7f180d5477f0e"
+            ],
+            "index": "pypi",
+            "version": "==3.0"
         },
         "pyyaml": {
             "hashes": [
@@ -2336,7 +2360,7 @@
                 "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
                 "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.17.0"
         },
         "sniffio": {

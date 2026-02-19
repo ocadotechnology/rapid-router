@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 from builtins import map, range
-from datetime import datetime, timedelta
 
 from common.models import Class, Teacher, Student
 from common.tests.utils.classes import create_class_directly
@@ -17,7 +16,7 @@ from common.tests.utils.teacher import signup_teacher_directly
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from game.models import Attempt, Level, Episode
+from game.models import LevelMetrics, Level, Episode
 from game.tests.utils.level import create_save_level
 from game.views.scoreboard import (
     StudentRow,
@@ -37,6 +36,15 @@ from game.views.scoreboard_csv import (
 
 class ScoreboardTestCase(TestCase):
     def test_teacher_multiple_students_multiple_levels(self):
+        def create_attempt(level, score):
+            c.post(reverse("submit_attempt"), {"level": level.id, "score": score, "time_spent": 5})
+
+        email, _ = signup_teacher_directly()
+        create_organisation_directly(email)
+        clas, _, access_code = create_class_directly(email)
+        name1, password1, student = create_school_student_directly(access_code)
+        name2, password2, student2 = create_school_student_directly(access_code)
+
         # Setup official levels data
         episode_ids = [1, 2]
         episode1 = Episode.objects.get(id=1)
@@ -47,36 +55,54 @@ class ScoreboardTestCase(TestCase):
         level1 = Level.objects.get(name="1")
         level13 = Level.objects.get(name="13")
 
-        clas, student, student2 = set_up_data()
+        c = Client()
+        c.post(
+            reverse("student_login", kwargs={"access_code": access_code}),
+            {
+                "username": name1,
+                "password": password1,
+            },
+            follow=True,
+        )
 
-        create_attempt(student, level1, 20)
-        create_attempt(student2, level1, 2)
-        create_attempt(student2, level13, 16)
+        create_attempt(level1, 20)
+
+        c.logout()
+        c.post(
+            reverse("student_login", kwargs={"access_code": access_code}),
+            {
+                "username": name2,
+                "password": password2,
+            },
+            follow=True,
+        )
+
+        create_attempt(level1, 2)
+        create_attempt(level13, 16)
 
         # Setup custom levels data
         shared_level = create_save_level(
             student, "custom_level1", shared_with=[student2.new_user]
         )
 
-        create_attempt(student2, shared_level, 10)
+        create_attempt(shared_level, 10)
 
         all_levels = [level1, level13]
         all_shared_levels = [shared_level]
 
         attempts_per_student = {
-            student: Attempt.objects.filter(
-                level__in=all_levels, student=student, is_best_attempt=True
+            student: LevelMetrics.objects.filter(
+                level__in=all_levels, student=student
             ).select_related("level"),
-            student2: Attempt.objects.filter(
-                level__in=all_levels, student=student2, is_best_attempt=True
+            student2: LevelMetrics.objects.filter(
+                level__in=all_levels, student=student2
             ).select_related("level"),
         }
 
         shared_attempts_per_student = {
-            student2: Attempt.objects.filter(
+            student2: LevelMetrics.objects.filter(
                 level__in=all_shared_levels,
                 student=student2,
-                is_best_attempt=True,
             ).select_related("level"),
         }
 
@@ -102,7 +128,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.class_field.name == clas.name
         assert student_row.name == student.user.user.first_name
         assert student_row.total_score == 20
-        assert student_row.total_time == timedelta(0)
+        assert student_row.total_time == "00:00:05"
         assert student_row.level_scores[all_levels[0].id]["score"] == 20
         assert student_row.completed == 1
         assert student_row.success_rate == 100.0
@@ -111,7 +137,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.class_field.name == clas.name
         assert student_row.name == student2.user.user.first_name
         assert student_row.total_score == 18
-        assert student_row.total_time == timedelta(0)
+        assert student_row.total_time == "00:00:10"
         assert student_row.level_scores[all_levels[0].id]["score"] == 2
         assert student_row.level_scores[all_levels[1].id]["score"] == 16
         assert student_row.completed == 1
@@ -129,7 +155,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.class_field.name == clas.name
         assert student_row.name == student2.user.user.first_name
         assert student_row.total_score == 10
-        assert student_row.total_time == timedelta(0)
+        assert student_row.total_time == "00:00:05"
         assert student_row.level_scores[shared_level.id]["score"] == 10
         assert student_row.completed == 1
         assert student_row.success_rate == 100.0
@@ -137,7 +163,7 @@ class ScoreboardTestCase(TestCase):
     def test_scoreboard_loads(self):
         email, password = signup_teacher_directly()
         create_organisation_directly(email)
-        klass, name, access_code = create_class_directly(email)
+        klass, _, access_code = create_class_directly(email)
         create_school_student_directly(access_code)
 
         url = reverse("scoreboard")
@@ -161,7 +187,7 @@ class ScoreboardTestCase(TestCase):
     def test_python_scoreboard_loads(self):
         email, password = signup_teacher_directly()
         create_organisation_directly(email)
-        klass, name, access_code = create_class_directly(email)
+        klass, _, access_code = create_class_directly(email)
         create_school_student_directly(access_code)
 
         url = reverse("python_scoreboard")
@@ -304,7 +330,7 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
-        assert "The scoreboard is only visible to school students and teachers" in str(
+        assert "The scoreboard is only visible to school students and teachers." in str(
             response.content
         )
 
@@ -385,9 +411,9 @@ class ScoreboardCsvTestCase(TestCase):
         (
             class_name,
             name,
-            completed_levels,
+            _,
             total_time,
-            total_scores,
+            _,
             l1,
             l2,
             improvement,
@@ -403,9 +429,9 @@ class ScoreboardCsvTestCase(TestCase):
         (
             class_name,
             name,
-            completed_levels,
+            _,
             total_time,
-            total_scores,
+            _,
             l1,
             l2,
             improvement,
@@ -433,11 +459,11 @@ class ScoreboardCsvTestCase(TestCase):
         """
         Create data for a student row in the main scoreboard table
         """
-        email, password = signup_teacher_directly()
+        email, _ = signup_teacher_directly()
         _, class_name, access_code = create_class_directly(email, class_name)
         _, _, student = create_school_student_directly(access_code)
 
-        total_time = timedelta(seconds=30)
+        total_time = 30
         scores = [x for x in range(20)]
         total_score = sum(scores)
 
@@ -531,37 +557,6 @@ class ScoreboardCsvTestCase(TestCase):
         )
 
 
-def create_attempt(student, level, score):
-    attempt = Attempt.objects.create(
-        finish_time=datetime.fromtimestamp(1435305072),
-        level=level,
-        student=student,
-        score=score,
-        is_best_attempt=True,
-    )
-    attempt.start_time = datetime.fromtimestamp(1435305072)
-    attempt.save()
-
-
 def ids_of_levels_named(names):
     levels = Level.objects.filter(name__in=names)
     return levels
-
-
-def set_up_data(classmates_data_viewable=False):
-    email, password = signup_teacher_directly()
-    clas, class_name, access_code = create_class_directly(email)
-    if classmates_data_viewable:
-        clas.classmates_data_viewable = True
-        clas.save()
-    _, _, student = create_school_student_directly(access_code)
-    _, _, student2 = create_school_student_directly(access_code)
-    create_random_school_data()
-    return clas, student, student2
-
-
-def create_random_school_data():
-    email, password = signup_teacher_directly()
-    clas, class_name, access_code = create_class_directly(email)
-    create_school_student_directly(access_code)
-    create_school_student_directly(access_code)

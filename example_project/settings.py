@@ -1,5 +1,14 @@
 """Django settings for example_project project."""
+
 import os
+import sys
+
+try:
+    import pysqlite3
+
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+except ImportError:
+    pass
 
 DEBUG = True
 
@@ -24,10 +33,12 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        "NAME": os.path.join(
-            os.path.abspath(os.path.dirname(__file__)), "db.sqlite3"
-        ),  # Or path to database file if using sqlite3.
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.getenv("DB_HOST", "db"),
+        "NAME": "legacy_rapid_router",
+        "USER": "root",
+        "PASSWORD": "password",
+        "PORT": "5432",
         "ATOMIC_REQUESTS": True,
     }
 }
@@ -105,7 +116,9 @@ PIPELINE = {
             "output_filename": "portal/css/portal.css",
         },
         "popup": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+            ),
             "output_filename": "portal/css/popup.css",
         },
         "game-scss": {

@@ -1,18 +1,48 @@
 import os
+import sys
+
+try:
+    import pysqlite3
+
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+except ImportError:
+    pass
 
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
 headless_chrome_options.add_argument("--headless")
+headless_chrome_options.add_argument("--window-size=1920,1080")
+headless_chrome_options.add_argument("--start-maximized")
+headless_chrome_options.add_argument("--disable-gpu")
 headless_chrome_options.add_argument("--no-sandbox")
+headless_chrome_options.add_argument("--disable-extensions")
+headless_chrome_options.add_argument("--disable-dev-shm-usage")
 
 SELENIUM_WEBDRIVERS = {
-    "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
+    "default": {
+        "callable": webdriver.Chrome,
+        "args": (),
+        "kwargs": {"options": headless_chrome_options},
+    },
     "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
-    "chrome-headless": {"callable": webdriver.Chrome, "args": (), "kwargs": {"options": headless_chrome_options}},
+    "chrome-headless": {
+        "callable": webdriver.Chrome,
+        "args": (),
+        "kwargs": {"options": headless_chrome_options},
+    },
 }
 
 SELENIUM_WIDTHS = [1624]
+
+if os.environ.get("SELENIUM_HEADLESS", None):
+    from pyvirtualdisplay import Display
+
+    display = Display(visible=False, size=(1920, 1080))
+    display.start()
+    import atexit
+
+    atexit.register(lambda: display.stop())
 
 DEBUG = True
 
@@ -37,10 +67,12 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        "NAME": os.path.join(
-            os.path.abspath(os.path.dirname(__file__)), "db.sqlite3"
-        ),  # Or path to database file if using sqlite3.
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.getenv("DB_HOST", "db"),
+        "NAME": "legacy_rapid_router",
+        "USER": "root",
+        "PASSWORD": "password",
+        "PORT": "5432",
         "ATOMIC_REQUESTS": True,
     }
 }
@@ -117,7 +149,9 @@ PIPELINE = {
             "output_filename": "portal/css/portal.css",
         },
         "popup": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+            ),
             "output_filename": "portal/css/popup.css",
         },
         "game-scss": {

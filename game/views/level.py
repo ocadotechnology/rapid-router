@@ -4,6 +4,7 @@ import json
 from builtins import object, str
 from datetime import datetime
 
+from django.db.models import F
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -24,11 +25,10 @@ from game.cache import (
 )
 from game.character import get_character
 from game.decor import get_decor_element
-from game.models import Attempt, Level, Workspace
+from game.models import Level, Workspace, DailyActivity, LevelMetrics
 from game.theme import get_theme
 from game.views.language_code_conversions import language_code_dict
 from game.views.level_solutions import solutions
-
 from .helper import renderError
 
 
@@ -227,32 +227,6 @@ def play_level(request, level, from_editor=False, from_python_den=False):
     character_width = character.width
     character_height = character.height
 
-    workspace = None
-    python_workspace = None
-    if not request.user.is_anonymous and hasattr(request.user.userprofile, "student"):
-        student = request.user.userprofile.student
-        attempt = (
-            Attempt.objects.filter(
-                level=level,
-                student=student,
-                finish_time__isnull=True,
-                night_mode=night_mode,
-            )
-            .order_by("-start_time")
-            .first()
-        )
-        if not attempt:
-            attempt = Attempt(
-                level=level, student=student, score=None, night_mode=night_mode
-            )
-            fetch_workspace_from_last_attempt(attempt)
-            attempt.save()
-        else:
-            attempt = close_and_reset(attempt)
-
-        workspace = attempt.workspace
-        python_workspace = attempt.python_workspace
-
     decor_data = cached_level_decor(level)
 
     if night_mode:
@@ -295,8 +269,6 @@ def play_level(request, level, from_editor=False, from_python_den=False):
             "background": background,
             "house": house,
             "cfc": cfc,
-            "workspace": workspace,
-            "python_workspace": python_workspace,
             "return_url": reverse(return_view),
             "character_url": character_url,
             "character_width": character_width,
@@ -317,21 +289,6 @@ def play_level(request, level, from_editor=False, from_python_den=False):
             "available_language_dict": language_code_dict,
         },
     )
-
-
-def fetch_workspace_from_last_attempt(attempt):
-    latest_attempt = (
-        Attempt.objects.filter(
-            level=attempt.level,
-            student=attempt.student,
-            night_mode=attempt.night_mode,
-        )
-        .order_by("-start_time")
-        .first()
-    )
-    if latest_attempt:
-        attempt.workspace = latest_attempt.workspace
-        attempt.python_workspace = latest_attempt.python_workspace
 
 
 def delete_level(request, levelID):
@@ -355,48 +312,42 @@ def submit_attempt(request):
     ):
         level = get_object_or_404(Level, id=request.POST.get("level", 1))
         student = request.user.userprofile.student
-        attempt = Attempt.objects.filter(
-            level=level, student=student, finish_time__isnull=True
-        ).first()
-        if attempt:
-            attempt.score = float(request.POST.get("score"))
-            attempt.workspace = request.POST.get("workspace")
-            attempt.python_workspace = request.POST.get("python_workspace")
 
-            record_best_attempt(attempt)
-            close_and_reset(attempt)
+        score = float(request.POST.get("score"))
+        time_spent = request.POST.get("time_spent")
+
+        level_metrics, created = LevelMetrics.objects.update_or_create(
+            level=level,
+            student=student,
+            defaults={
+                "time_spent": F("time_spent") + time_spent,
+                "attempt_count": F("attempt_count") + 1,
+            },
+            create_defaults={
+                "level": level,
+                "student": student,
+                "top_score": score,
+                "time_spent": time_spent,
+                "attempt_count": 1,
+            },
+        )
+
+        if not created and score > level_metrics.top_score:
+            level_metrics.top_score = score
+            level_metrics.save()
+
+        DailyActivity.objects.update_or_create(
+            date=timezone.now().date(),
+            level=level,
+            defaults={
+                "count": F("count") + 1,
+            },
+            create_defaults={
+                "count": 1,
+            },
+        )
 
     return HttpResponse("[]", content_type="application/json")
-
-
-def record_best_attempt(attempt):
-    best_attempt = Attempt.objects.filter(
-        level=attempt.level,
-        student=attempt.student,
-        night_mode=attempt.night_mode,
-        is_best_attempt=True,
-    ).first()
-    if best_attempt and (best_attempt.score <= attempt.score):
-        best_attempt.is_best_attempt = False
-        best_attempt.save()
-        attempt.is_best_attempt = True
-    elif not best_attempt:
-        attempt.is_best_attempt = True
-
-
-def close_and_reset(attempt):
-    attempt.finish_time = timezone.now()
-    attempt.save()
-    new_attempt = Attempt(
-        level=attempt.level,
-        student=attempt.student,
-        score=None,
-        night_mode=attempt.night_mode,
-        workspace=attempt.workspace,
-        python_workspace=attempt.python_workspace,
-    )
-    new_attempt.save()
-    return new_attempt
 
 
 def load_list_of_workspaces(request):
