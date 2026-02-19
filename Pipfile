@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 # cfl-common = "==8.9.23"
-cfl-common = {git = "https://github.com/ocadotechnology/codeforlife-portal.git", ref = "f7538a82683703d2e002478445eb68b2aa51f0bb", subdirectory = "cfl_common"}
+cfl-common = {git = "https://github.com/ocadotechnology/codeforlife-portal.git", ref = "72466d28cb3839b2dc58c77ac003a902c7bfa1b7", subdirectory = "cfl_common"}
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
