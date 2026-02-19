@@ -85,8 +85,6 @@ def student_row(levels_sorted, student, attempts):
 
                 total_time += attempt.time_spent
 
-                print(attempt.top_score)
-
                 total_score += attempt.top_score
                 total_possible_score += max_score
 
