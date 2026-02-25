@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8d4bafa2ac178b689e73f03bfa9491b52078bc59bbc270f471d66b595782337e"
+            "sha256": "4cd8700eed11043070d2c3773e501a815517bb8ebdc0463f682700095959773a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -132,11 +132,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:4b2e3eedcb837573645f1bf3556fe6b877dbaa5cbac733c1f7790e03b4e2e6e6",
-                "sha256:cc8955324eadf89fe39f5e410f030f80dcb3fb48087025d3ecb3832dfeaee3d3"
+                "sha256:212090303e1af5ff2ab839f52e2558b8b9069030d4407b652f5267722b875108",
+                "sha256:3c6e2a68de36e4a76203cb387db0bed6efc54ba9306c60d1ac7e7dc7875c4c82"
             ],
             "index": "pypi",
-            "version": "==8.9.23"
+            "version": "==8.9.24"
         },
         "charset-normalizer": {
             "hashes": [
@@ -1079,11 +1079,11 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:4b2e3eedcb837573645f1bf3556fe6b877dbaa5cbac733c1f7790e03b4e2e6e6",
-                "sha256:cc8955324eadf89fe39f5e410f030f80dcb3fb48087025d3ecb3832dfeaee3d3"
+                "sha256:212090303e1af5ff2ab839f52e2558b8b9069030d4407b652f5267722b875108",
+                "sha256:3c6e2a68de36e4a76203cb387db0bed6efc54ba9306c60d1ac7e7dc7875c4c82"
             ],
             "index": "pypi",
-            "version": "==8.9.23"
+            "version": "==8.9.24"
         },
         "charset-normalizer": {
             "hashes": [
@@ -1237,11 +1237,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:3fa55227985af6ff0ef5ea51c40c2d5837bd73e654aa4e3af7546abf01924f88",
-                "sha256:992e75450249309f84f5e360b5d75684047110e9ac31f259a22f91ba67fe9d1b"
+                "sha256:b0bd4b8892bcbc721b536a6224013fd301775dfc4cfd5be7c13a910f8fdbc8ec",
+                "sha256:b136b5ed67f3fb0077a236252a78bceadf67e4dfb1f45584830e9a145962ecfb"
             ],
             "index": "pypi",
-            "version": "==8.9.23"
+            "version": "==8.9.24"
         },
         "cryptography": {
             "hashes": [
@@ -1321,6 +1321,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==4.1.0"
+        },
+        "django-constance": {
+            "hashes": [
+                "sha256:30d1b325f636177c708cce63abbde7015593f5c60b2bc0b0e2eebe8c36e2ce59",
+                "sha256:598f8c967a675fe2c7fe3688510ac8302e1b6df2141d01b8d29577532a8241db"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==4.3.4"
         },
         "django-countries": {
             "hashes": [
@@ -1506,12 +1514,12 @@
         },
         "isort": {
             "hashes": [
-                "sha256:1bcabac8bc3c36c7fb7b98a76c8abb18e0f841a3ba81decac7691008592499c1",
-                "sha256:5513527951aadb3ac4292a41a16cbc50dd1642432f5e8c20057d414bdafb4187"
+                "sha256:184916a933041c7cf718787f7e52064f3c06272aff69a5cb4dc46497bd8911d9",
+                "sha256:fddea59202f231e170e52e71e3510b99c373b6e571b55d9c7b31b679c0fed47c"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.10.0'",
-            "version": "==7.0.0"
+            "version": "==8.0.0"
         },
         "jmespath": {
             "hashes": [
