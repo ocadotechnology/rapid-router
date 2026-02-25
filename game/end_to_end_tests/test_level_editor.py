@@ -1,3 +1,4 @@
+import pytest
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -47,6 +48,7 @@ class TestLevelEditor(BaseGameTest):
             assert page.element_exists_by_id(f"{block_type}_checkbox")
             assert page.element_exists_by_id(f"{block_type}_image")
 
+    @pytest.mark.skip(reason="broken (chromium bug)")
     def test_multiple_houses(self):
         [road_start, road_end] = self.set_up_basic_map()
 
@@ -73,6 +75,7 @@ class TestLevelEditor(BaseGameTest):
         )
         assert len(houses_after_delete) == 1
 
+    @pytest.mark.skip(reason="broken (chromium bug)")
     def test_cow_on_origin(self):
         page = self.go_to_level_editor()
         [road_start, road_end] = self.set_up_basic_map()
@@ -94,6 +97,7 @@ class TestLevelEditor(BaseGameTest):
         )
         assert len(start_space_warning) == 1
 
+    @pytest.mark.skip(reason="broken (chromium bug)")
     def test_cow_on_house(self):
         page = self.go_to_level_editor()
         [road_start, road_end] = self.set_up_basic_map()
@@ -165,6 +169,7 @@ class TestLevelEditor(BaseGameTest):
         assert len(scenery_light) == 1
         assert len(cloned_source_light) == 1
 
+    @pytest.mark.skip(reason="broken (chromium bug)")
     def test_custom_description_and_hint(self):
         # login
         self.login_once()
@@ -250,6 +255,7 @@ class TestLevelEditor(BaseGameTest):
         )
         assert solar_panel.is_displayed()
 
+    @pytest.mark.skip(reason="broken (chromium bug)")
     def test_electric_fuel_gauge(self):
         self.login_once()
 
