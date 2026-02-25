@@ -755,7 +755,25 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function setupHelpTab() {
-            var helpMessages = [
+            const isChromium = () => {
+                if (navigator.userAgentData) {
+                    return navigator.userAgentData.brands.some(b => b.brand === 'Chromium');
+                }
+                // Fallback for older Chromium versions or non-supporting browsers
+                return /Chrome|Chromium/i.test(navigator.userAgent) && !/Safari/i.test(navigator.userAgent);
+            };
+
+            let errorMessage = isChromium() ? interpolate("<strong>IMPORTANT</strong>: We are currently " +
+                "experiencing a bug within the Level Creator in Chrome and Edge browsers where adding and deleting road " +
+                "tiles isn't working properly. We are looking into this and are hoping to provide a fix soon.<br><br>If " +
+                "you are using Chrome or Edge and are experiencing this issue, you can use the " +
+                "%(random_icon)s%(random_label)s road generator instead.<br><br>Alternatively, browsers like Firefox " +
+                "and Safari are unaffected by this bug.<hr>", {
+                random_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/random.svg', 'popupHelp'),
+                random_label: '<b>' + gettext('Random') + '</b>'
+            }, true) : "";
+
+            let helpMessages = [
                 gettext('To get started, draw a road.'),
                 gettext('Click on the square you want the road to start from. Then, without letting go of the mouse button, ' +
                     'drag to the square you’d like the road to end on. Do this as many times as you like to add new sections ' +
@@ -847,7 +865,7 @@ ocargo.LevelEditor = function(levelId) {
 
             tabs.help.setOnChange(function() {
                 restorePreviousTab();
-                ocargo.Drawing.startPopup('', '', helpMessages.join('<br><br>'));
+                ocargo.Drawing.startPopup('', errorMessage, helpMessages.join('<br><br>'));
             });
         }
 
@@ -3181,15 +3199,33 @@ ocargo.LevelEditor = function(levelId) {
 
 $(function() {
     new ocargo.LevelEditor(LEVEL);
-    var subtitle = interpolate(
+
+    const isChromium = () => {
+        if (navigator.userAgentData) {
+            return navigator.userAgentData.brands.some(b => b.brand === 'Chromium');
+        }
+        // Fallback for older Chromium versions or non-supporting browsers
+        return /Chrome|Chromium/i.test(navigator.userAgent) && !/Safari/i.test(navigator.userAgent);
+    };
+
+    let title = isChromium() ? "Ongoing issue with the Level Creator" : "Welcome to the Level editor!";
+    let subtitle = isChromium() ? "" : interpolate(
         gettext('Click %(help_icon)s%(help_label)s for clues on getting started.'), {
             help_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp'),
             help_label: '<b>' + gettext('Help') + '</b>'
         },
         true
     );
+    let message = isChromium() ? interpolate("We are currently experiencing a bug within the Level Creator " +
+        "in Chrome and Edge browsers where adding and deleting road tiles isn't working properly. We are looking into " +
+        "this and are hoping to provide a fix soon.<br><br>If you are using Chrome or Edge and are experiencing this " +
+        "issue, you can use the %(random_icon)s%(random_label)s road generator instead.<br><br>Alternatively, browsers " +
+        "like Firefox and Safari are unaffected by this bug.", {
+        random_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/random.svg', 'popupHelp'),
+        random_label: '<b>' + gettext('Random') + '</b>'
+    }, true) : "";
     if (LEVEL === null){
-        ocargo.Drawing.startPopup(gettext('Welcome to the Level editor!'), subtitle, '');
+        ocargo.Drawing.startPopup(title, subtitle, message);
     } else {
         let buttons = '';
         buttons += ocargo.button.dismissButtonHtml("edit_button", "Edit");
@@ -3203,5 +3239,4 @@ $(function() {
             buttons,
           );
     }
-
 });
