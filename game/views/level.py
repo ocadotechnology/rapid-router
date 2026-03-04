@@ -334,7 +334,7 @@ def submit_attempt(request):
 
         if not created and score > level_metrics.top_score:
             level_metrics.top_score = score
-            level_metrics.save()
+            level_metrics.save(update_fields=["top_score"])
 
         DailyActivity.objects.update_or_create(
             date=timezone.now().date(),

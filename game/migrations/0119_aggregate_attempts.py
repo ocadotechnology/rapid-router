@@ -57,9 +57,7 @@ FROM (
         student_id AS sub_student_id,
         score
     FROM game_attempt
-    WHERE finish_time IS NOT NULL
-    AND start_time IS NOT NULL
-    AND score IS NOT NULL
+    WHERE score IS NOT NULL
     AND is_best_attempt = TRUE
 ) AS best_attempt
 WHERE level_id = best_attempt.sub_level_id

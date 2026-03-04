@@ -6,7 +6,13 @@ Headers = ["Class", "Student", "Completed Levels", "Total Time", "Total Score"]
 SharedHeaders = ["Class", "Student"]
 
 
-def scoreboard_csv(student_data, requested_sorted_levels, improvement_data, shared_level_headers, shared_student_data):
+def scoreboard_csv(
+    student_data,
+    requested_sorted_levels,
+    improvement_data,
+    shared_level_headers,
+    shared_student_data,
+):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="scoreboard.csv"'
 
@@ -20,7 +26,13 @@ def scoreboard_csv(student_data, requested_sorted_levels, improvement_data, shar
 
     rows = []
     for student in student_data:
-        result = [student.class_field.name, student.name, student.completed, student.total_time, student.total_score]
+        result = [
+            student.class_field.name,
+            student.name,
+            student.completed,
+            student.total_time,
+            student.total_score,
+        ]
 
         scores = []
         for level_id, level_score in student.level_scores.items():

@@ -1,7 +1,6 @@
 import game.level_management as level_management
 from game.models import Level
 
-
 multiple_house_data = {
     "origin": '{"coordinate":[3,5],"direction":"S"}',
     "python_enabled": False,
@@ -63,7 +62,10 @@ def create_save_level(teacher_or_student, level_name="1", shared_with=None):
 
     return level
 
-def create_save_level_with_multiple_houses(teacher_or_student, level_name="2", shared_with=None):
+
+def create_save_level_with_multiple_houses(
+    teacher_or_student, level_name="2", shared_with=None
+):
     level = Level(default=False, anonymous=multiple_house_data["anonymous"])
     level.owner = teacher_or_student.user
     level_management.save_level(level, multiple_house_data)

@@ -5,6 +5,7 @@ from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils import timezone
 
@@ -366,13 +367,20 @@ class DailyActivity(models.Model):
     """
     A model to record attempt count per level per day.
     """
+
     date = models.DateField(default=timezone.now)
     level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True)
     count = models.PositiveBigIntegerField(default=0)
 
     class Meta:
-        unique_together = ("date", "level")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["date", "level"],
+                condition=~Q(level=None),
+                name="unique_date_level_pair",
+            )
+        ]
         verbose_name_plural = "Daily activities"
 
-    def __str__(self):
+    def __repr__(self):
         return f"On {self.date}, level {self.level} was played {self.count} time(s)."

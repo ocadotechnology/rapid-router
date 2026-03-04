@@ -1,13 +1,6 @@
 import os
 import sys
 
-try:
-    import pysqlite3
-
-    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
-except ImportError:
-    pass
-
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
@@ -26,23 +19,9 @@ SELENIUM_WEBDRIVERS = {
         "kwargs": {"options": headless_chrome_options},
     },
     "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
-    "chrome-headless": {
-        "callable": webdriver.Chrome,
-        "args": (),
-        "kwargs": {"options": headless_chrome_options},
-    },
 }
 
 SELENIUM_WIDTHS = [1624]
-
-if os.environ.get("SELENIUM_HEADLESS", None):
-    from pyvirtualdisplay import Display
-
-    display = Display(visible=False, size=(1920, 1080))
-    display.start()
-    import atexit
-
-    atexit.register(lambda: display.stop())
 
 DEBUG = True
 

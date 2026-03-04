@@ -1,6 +1,15 @@
 from django.contrib import admin
 
-from game.models import Level, Block, Episode, Workspace, LevelDecor, Worksheet, DailyActivity, LevelMetrics
+from game.models import (
+    Level,
+    Block,
+    Episode,
+    Workspace,
+    LevelDecor,
+    Worksheet,
+    DailyActivity,
+    LevelMetrics,
+)
 
 
 class LevelAdmin(admin.ModelAdmin):
@@ -29,13 +38,7 @@ class LevelMetricsAdmin(admin.ModelAdmin):
         "student",
     ]
     raw_id_fields = ["student"]
-    list_display = [
-        "level",
-        "student",
-        "time_spent",
-        "attempt_count",
-        "top_score"
-    ]
+    list_display = ["level", "student", "time_spent", "attempt_count", "top_score"]
 
 
 class DailyActivityAdmin(admin.ModelAdmin):

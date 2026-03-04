@@ -97,7 +97,7 @@ def student_row(levels_sorted, student, attempts):
     success_rate = (
         total_score / total_possible_score * 100 if total_possible_score > 0 else 0
     )
-    total_time = time.strftime('%H:%M:%S', time.gmtime(total_time))
+    total_time = time.strftime("%H:%M:%S", time.gmtime(total_time))
 
     row = StudentRow(
         student=student,
@@ -183,7 +183,9 @@ def _check_attempts(attempts):
             total_score += attempt.top_score
             total_possible_score += max_score
 
-            is_low_attempt = attempt.top_score == 0 or max_score / attempt.top_score < threshold
+            is_low_attempt = (
+                attempt.top_score == 0 or max_score / attempt.top_score < threshold
+            )
             if is_low_attempt:
                 low_episode_ids.add(episode_id)
 
@@ -317,7 +319,7 @@ def scoreboard(request, language):
         ).select_related("level")
         attempts_per_student[student] = attempts
 
-    (student_data, headers, level_headers, levels_sorted) = scoreboard_data(
+    student_data, headers, level_headers, levels_sorted = scoreboard_data(
         episode_ids, attempts_per_student, language
     )
     improvement_data = get_improvement_data(attempts_per_student)
