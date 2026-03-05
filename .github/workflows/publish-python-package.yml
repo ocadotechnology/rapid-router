@@ -30,6 +30,9 @@ jobs:
           ref: ${{ github.sha }}
           persist-credentials: false
 
+      - name: 🛫 Checkout Branch on Workflow SHA
+        run: git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+
       - name: 🐍 Set up Python 3.12
         uses: actions/setup-python@v5
         with:
