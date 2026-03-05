@@ -13,18 +13,30 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write
+    env:
+      CONFIG: pyproject.toml
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: 🤖 Set up CFL bot
+        uses: ocadotechnology/codeforlife-workspace/.github/actions/bot/setup@main
+        id: setup-bot
         with:
+          cfl-app-private-key: ${{ secrets.CFL_APP_PRIVATE_KEY }}
+
+      - name: 🛫 Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ steps.setup-bot.outputs.token }}
           fetch-depth: 0
+          ref: ${{ github.sha }}
           persist-credentials: false
 
-      - name: Setup Python
+      - name: 🛫 Checkout Branch on Workflow SHA
+        run: git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+
+      - name: 🐍 Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-          architecture: "x64"
+          python-version: 3.12
 
       - name: Install pip requirements
         run: |
@@ -35,16 +47,18 @@ jobs:
 
       - name: 📜 Detect Semantic Version
         env:
-          GH_TOKEN: ${{ secrets.CFL_BOT_GH_TOKEN }}
-        run: semantic-release version
+          GH_TOKEN: ${{ steps.setup-bot.outputs.token }}
+          GIT_COMMIT_AUTHOR: ${{ steps.setup-bot.outputs.git-committer }}
+        run: semantic-release --config=${{ env.CONFIG }} version
 
       - name: Build package
         run: python -m build --sdist --wheel
 
       - name: 🚀 Publish Semantic Release
         env:
-          GH_TOKEN: ${{ secrets.CFL_BOT_GH_TOKEN }}
-        run: semantic-release publish
+          GH_TOKEN: ${{ steps.setup-bot.outputs.token }}
+          GIT_COMMIT_AUTHOR: ${{ steps.setup-bot.outputs.git-committer }}
+        run: semantic-release --config=${{ env.CONFIG }} publish
 
       - name: 🚀 Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## v7.6.25 (2026-03-05)
+
+### Bug Fixes
+
+- Use cfl app
+  ([`0948f3c`](https://github.com/ocadotechnology/rapid-router/commit/0948f3cb369ee3620c90a505f0a5635f1bbd97f4))
+
+
+## v7.6.24 (2026-02-25)
+
+### Bug Fixes
+
+- Add Chromium-related bug warning to level editor popups
+  ([#1872](https://github.com/ocadotechnology/rapid-router/pull/1872),
+  [`879939d`](https://github.com/ocadotechnology/rapid-router/commit/879939d17b7702ff8d8a5fc1a666f5d296ce67db))
+
+* fix: Add Chromium-related bug warning to level editor popups
+
+* Mark broken tests
+
+* Install latest common
+
+
 ## v7.6.23 (2026-02-19)
 
 ### Bug Fixes
