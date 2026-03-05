@@ -1,5 +1,5 @@
 """
-    Character data
+Character data
 """
 
 from builtins import object
@@ -73,7 +73,7 @@ CHARACTER_DATA = {
         en_face="characters/front_view/Electric_van.svg",
         top_down="characters/top_view/Electric_van.svg",
         height="20",
-        width="40"
+        width="40",
     ),
 }
 

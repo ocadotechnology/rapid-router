@@ -10,7 +10,6 @@ from game.decor import get_decor_element
 from game.theme import get_theme_by_pk
 from .models import Block, LevelBlock, LevelDecor
 
-
 ##########
 # Levels #
 ##########

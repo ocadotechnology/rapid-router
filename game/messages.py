@@ -99,9 +99,7 @@ def no_permission_python_den_worksheet_title():
 
 
 def no_permission_python_den_worksheet_page():
-    return (
-        "This content is only available to logged in users. Please log in to access this page."
-    )
+    return "This content is only available to logged in users. Please log in to access this page."
 
 
 """ String messages used as level tips in the game view. """
@@ -2017,13 +2015,10 @@ def commands_level93():
 
 
 def hint_level93():
-    return (
-        """Try using the following commands:
+    return """Try using the following commands:
 <pre>my_van.move_forwards()
 my_van.turn_left()
-my_van.turn_right()</pre>"""
-        + PYTHON_HINT
-    )
+my_van.turn_right()</pre>""" + PYTHON_HINT
 
 
 def title_level94():
@@ -2048,13 +2043,10 @@ def commands_level94():
 
 
 def hint_level94():
-    return (
-        """Try using the following commands:
+    return """Try using the following commands:
 <pre>my_van.move_forwards()
 my_van.turn_left()
-my_van.turn_right()</pre>"""
-        + PYTHON_HINT
-    )
+my_van.turn_right()</pre>""" + PYTHON_HINT
 
 
 def title_level95():
@@ -2187,8 +2179,7 @@ def hint_level98():
 To check whether a condition is met you can use something like the following:
 <pre>if my_van.is_road_forward():
     my_van.move_forwards()</pre>
-You may also need to use the <b>else</b> statement."""
-        + PYTHON_HINT
+You may also need to use the <b>else</b> statement.""" + PYTHON_HINT
     )
 
 
@@ -2231,8 +2222,7 @@ def hint_level99():
 To check whether a condition is met you can use something like the following:
 <pre>if my_van.is_road_forward():
     my_van.move_forwards()</pre>
-You may also need to use the <b>elif</b> and <b>else</b> statements."""
-        + PYTHON_HINT
+You may also need to use the <b>elif</b> and <b>else</b> statements.""" + PYTHON_HINT
     )
 
 
@@ -2296,15 +2286,12 @@ def commands_level101():
 
 
 def hint_level101():
-    return (
-        """To define a function in Python you could do something like:
+    return """To define a function in Python you could do something like:
 <pre>def my_function():
     print 'test'</pre>
 To call a defined function you could do something like:
 <pre>my_function()</pre>
-Remember, you must define a function before you call it."""
-        + PYTHON_HINT
-    )
+Remember, you must define a function before you call it.""" + PYTHON_HINT
 
 
 def title_level102():
@@ -2329,14 +2316,11 @@ def commands_level102():
 
 
 def hint_level102():
-    return (
-        """To define a function in Python you could do something like:
+    return """To define a function in Python you could do something like:
 <pre>def my_function():
     print 'test'</pre>
 To call a defined function you could do something like:
-<pre>my_function()</pre>"""
-        + PYTHON_HINT
-    )
+<pre>my_function()</pre>""" + PYTHON_HINT
 
 
 def title_level103():
@@ -2370,8 +2354,7 @@ def my_other_function():
     for i in range(3):
         my_function()
 
-my_other_function()</pre>"""
-        + PYTHON_HINT
+my_other_function()</pre>""" + PYTHON_HINT
     )
 
 
@@ -2406,8 +2389,7 @@ def my_other_function():
     for i in range(3):
         my_function()
 
-my_other_function()</pre>"""
-        + PYTHON_HINT
+my_other_function()</pre>""" + PYTHON_HINT
     )
 
 
@@ -2592,8 +2574,10 @@ def hint_level109():
 
 # Worksheets starter code
 
+
 def worksheet_starter_code():
     return "# Write your code below"
+
 
 # Episode 12, Levels 110 - 122
 (
@@ -2839,7 +2823,7 @@ def worksheet_starter_code():
     lambda: "What do you need to count, how many times you move or how many times you move forwards?",
 )
 
-(title_level1016, description_level1016, hint_level1016, commands_level1016) = (
+title_level1016, description_level1016, hint_level1016, commands_level1016 = (
     lambda: "Cows on the stairs",
     lambda: build_description(
         title_level1016(),
@@ -2860,7 +2844,7 @@ def worksheet_starter_code():
     + "</div>",
 )
 
-(title_level1017, description_level1017, hint_level1017, commands_level1017) = (
+title_level1017, description_level1017, hint_level1017, commands_level1017 = (
     lambda: "Try stepping in Python!",
     lambda: build_description(
         title_level1017(),
@@ -2879,7 +2863,7 @@ def worksheet_starter_code():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1018, description_level1018, hint_level1018, commands_level1018) = (
+title_level1018, description_level1018, hint_level1018, commands_level1018 = (
     lambda: "A long and winding road",
     lambda: build_description(title_level1018(), "Oh dear, you might get a bit dizzy!"),
     lambda: "What are you counting here, straight roads or bends?",
@@ -2907,7 +2891,7 @@ def worksheet_starter_code():
     lambda: "Remember to use if..else",
 )
 
-(title_level1020, description_level1020, hint_level1020, commands_level1020) = (
+title_level1020, description_level1020, hint_level1020, commands_level1020 = (
     lambda: "Now try one in Python!",
     lambda: build_description(
         title_level1020(), "Use if..else in Python for this level"
@@ -2924,7 +2908,7 @@ def worksheet_starter_code():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1021, description_level1021, hint_level1021, commands_level1021) = (
+title_level1021, description_level1021, hint_level1021, commands_level1021 = (
     lambda: "What if there are multiple houses?",
     lambda: build_description(
         title_level1021(),
@@ -2966,7 +2950,7 @@ def worksheet_starter_code():
     lambda: "Think carefully about the order in which you ask questions in your if..else if block",
 )
 
-(title_level1024, description_level1024, hint_level1024, commands_level1024) = (
+title_level1024, description_level1024, hint_level1024, commands_level1024 = (
     lambda: "Give Python a go!",
     lambda: build_description(
         title_level1024(), "Look carefully for the shortest route."
@@ -2985,7 +2969,7 @@ def worksheet_starter_code():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1025, description_level1025, hint_level1025, commands_level1025) = (
+title_level1025, description_level1025, hint_level1025, commands_level1025 = (
     lambda: "Now we've added a traffic light",
     lambda: build_description(
         title_level1025(), "Look carefully for the shortest route."
@@ -3051,7 +3035,7 @@ def worksheet_starter_code():
     lambda: hint_level1010(),
 )
 
-(title_level1030, description_level1030, hint_level1030, commands_level1030) = (
+title_level1030, description_level1030, hint_level1030, commands_level1030 = (
     lambda: title_level84(),
     lambda: build_description(
         title_level1030(),
@@ -3092,7 +3076,7 @@ def worksheet_starter_code():
     lambda: "Think carefully about the order in which you ask questions in your if-statement here...",
 )
 
-(title_level1033, description_level1033, hint_level1033, commands_level1033) = (
+title_level1033, description_level1033, hint_level1033, commands_level1033 = (
     lambda: "Looking both ways",
     lambda: build_description(title_level1033(), "Can you find the shortest route?"),
     lambda: "In this level, you want to check for a left turn first. If there is no left turn, turn right. Keep in mind what that looks like in Python.",
@@ -3108,7 +3092,7 @@ def worksheet_starter_code():
     + '<div class="large-4 columns"></div></div>',
 )
 
-(title_level1034, description_level1034, hint_level1034, commands_level1034) = (
+title_level1034, description_level1034, hint_level1034, commands_level1034 = (
     lambda: "The pond is nice but out of the way",
     lambda: build_description(
         title_level1034(),
@@ -3150,7 +3134,7 @@ def worksheet_starter_code():
     lambda: hint_level38(),
 )
 
-(title_level1037, description_level1037, hint_level1037, commands_level1037) = (
+title_level1037, description_level1037, hint_level1037, commands_level1037 = (
     lambda: title_level100(),
     lambda: build_description(
         title_level100(),
@@ -3160,7 +3144,7 @@ def worksheet_starter_code():
     lambda: commands_level100(),
 )
 
-(title_level1038, description_level1038, hint_level1038, commands_level1038) = (
+title_level1038, description_level1038, hint_level1038, commands_level1038 = (
     lambda: title_level39(),
     lambda: description_level39(),
     lambda: hint_level39(),
@@ -3184,7 +3168,7 @@ def worksheet_starter_code():
     + "</div>",
 )
 
-(title_level1039, description_level1039, hint_level1039, commands_level1039) = (
+title_level1039, description_level1039, hint_level1039, commands_level1039 = (
     lambda: title_level47(),
     lambda: build_description(
         title_level47(),
@@ -3209,7 +3193,7 @@ def worksheet_starter_code():
     + "</div>",
 )
 
-(title_level1040, description_level1040, hint_level1040, commands_level1040) = (
+title_level1040, description_level1040, hint_level1040, commands_level1040 = (
     lambda: title_level48(),
     lambda: description_level48(),
     lambda: hint_level48(),
@@ -3243,7 +3227,7 @@ def worksheet_starter_code():
     lambda: hint_level83(),
 )
 
-(title_level1042, description_level1042, hint_level1042, commands_level1042) = (
+title_level1042, description_level1042, hint_level1042, commands_level1042 = (
     lambda: title_level95(),
     lambda: build_description(
         title_level95(),
@@ -3253,7 +3237,7 @@ def worksheet_starter_code():
     lambda: commands_level95(),
 )
 
-(title_level1043, description_level1043, hint_level1043, commands_level1043) = (
+title_level1043, description_level1043, hint_level1043, commands_level1043 = (
     lambda: title_level96(),
     lambda: build_description(
         title_level96(),
@@ -3273,7 +3257,7 @@ def worksheet_starter_code():
     lambda: hint_level84(),
 )
 
-(title_level1045, description_level1045, hint_level1045, commands_level1045) = (
+title_level1045, description_level1045, hint_level1045, commands_level1045 = (
     lambda: title_level97(),
     lambda: build_description(
         title_level97(),
@@ -3283,28 +3267,28 @@ def worksheet_starter_code():
     lambda: commands_level97(),
 )
 
-(title_level1046, description_level1046, hint_level1046, commands_level1046) = (
+title_level1046, description_level1046, hint_level1046, commands_level1046 = (
     lambda: title_level106(),
     lambda: description_level106(),
     lambda: hint_level106(),
     lambda: commands_level106(),
 )
 
-(title_level1047, description_level1047, hint_level1047, commands_level1047) = (
+title_level1047, description_level1047, hint_level1047, commands_level1047 = (
     lambda: title_level107(),
     lambda: description_level107(),
     lambda: hint_level107(),
     lambda: commands_level107(),
 )
 
-(title_level1048, description_level1048, hint_level1048, commands_level1048) = (
+title_level1048, description_level1048, hint_level1048, commands_level1048 = (
     lambda: title_level108(),
     lambda: description_level108(),
     lambda: hint_level108(),
     lambda: commands_level108(),
 )
 
-(title_level1049, description_level1049, hint_level1049, commands_level1049) = (
+title_level1049, description_level1049, hint_level1049, commands_level1049 = (
     lambda: title_level109(),
     lambda: description_level109(),
     lambda: hint_level109(),
@@ -3331,7 +3315,7 @@ def worksheet_starter_code():
     lambda: hint_level62(),
 )
 
-(title_level1052, description_level1052, hint_level1052, commands_level1052) = (
+title_level1052, description_level1052, hint_level1052, commands_level1052 = (
     lambda: title_level63(),
     lambda: description_level63(),
     lambda: hint_level63(),
@@ -3341,7 +3325,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1053, description_level1053, hint_level1053, commands_level1053) = (
+title_level1053, description_level1053, hint_level1053, commands_level1053 = (
     lambda: title_level64(),
     lambda: description_level64(),
     lambda: hint_level64(),
@@ -3351,7 +3335,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1054, description_level1054, hint_level1054, commands_level1054) = (
+title_level1054, description_level1054, hint_level1054, commands_level1054 = (
     lambda: title_level65(),
     lambda: description_level65(),
     lambda: hint_level65(),
@@ -3361,7 +3345,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1055, description_level1055, hint_level1055, commands_level1055) = (
+title_level1055, description_level1055, hint_level1055, commands_level1055 = (
     lambda: title_level66(),
     lambda: description_level66(),
     lambda: hint_level66(),
@@ -3371,7 +3355,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1056, description_level1056, hint_level1056, commands_level1056) = (
+title_level1056, description_level1056, hint_level1056, commands_level1056 = (
     lambda: title_level67(),
     lambda: description_level67(),
     lambda: hint_level67(),
@@ -3381,7 +3365,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1057, description_level1057, hint_level1057, commands_level1057) = (
+title_level1057, description_level1057, hint_level1057, commands_level1057 = (
     lambda: "Have a go at procedures",
     lambda: build_description(
         title_level1057(),
@@ -3394,7 +3378,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1058, description_level1058, hint_level1058, commands_level1058) = (
+title_level1058, description_level1058, hint_level1058, commands_level1058 = (
     lambda: title_level91(),
     lambda: build_description(
         title_level1058(),
@@ -3407,7 +3391,7 @@ def worksheet_starter_code():
     + "<br>my_van.turn_right()",
 )
 
-(title_level1059, description_level1059, hint_level1059, commands_level1059) = (
+title_level1059, description_level1059, hint_level1059, commands_level1059 = (
     lambda: title_level101(),
     lambda: build_description(
         title_level101(),
@@ -3417,7 +3401,7 @@ def worksheet_starter_code():
     lambda: commands_level101(),
 )
 
-(title_level1060, description_level1060, hint_level1060, commands_level1060) = (
+title_level1060, description_level1060, hint_level1060, commands_level1060 = (
     lambda: title_level102(),
     lambda: description_level102(),
     lambda: hint_level102(),

@@ -7,7 +7,6 @@ from django.dispatch import receiver
 from .models import Level, Episode, LevelDecor, LevelBlock
 from . import level_management
 
-
 LEVEL_PREFIX = "model_level"
 EPISODE_PREFIX = "model_episode"
 LEVEL_DECOR_PREFIX = "level_decor"

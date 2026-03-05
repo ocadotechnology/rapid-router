@@ -1,5 +1,5 @@
 """
-    Theme data
+Theme data
 """
 
 from builtins import object

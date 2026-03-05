@@ -245,14 +245,11 @@ class TestLevelEditor(BaseGameTest):
         assert "test hint" in hint_modal_text_two
 
     def test_solar_panels(self):
-        """test that the solar panels appear as a scenery option when clicking on the scenery tab
-        """
+        """test that the solar panels appear as a scenery option when clicking on the scenery tab"""
         page = self.go_to_level_editor()
         page.go_to_scenery_tab()
 
-        solar_panel = self.selenium.find_element(
-            By.ID, "solar_panel"
-        )
+        solar_panel = self.selenium.find_element(By.ID, "solar_panel")
         assert solar_panel.is_displayed()
 
     @pytest.mark.skip(reason="broken (chromium bug)")

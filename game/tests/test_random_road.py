@@ -136,7 +136,7 @@ class RandomRoadTestCase(TestCase):
                 []
             )  # So that A->B->C and C->B->A don't count as two separate curves
             if len(node["connectedNodes"]) > 1:
-                for (one_way, other_way) in itertools.combinations(
+                for one_way, other_way in itertools.combinations(
                     node["connectedNodes"], 2
                 ):
                     if (

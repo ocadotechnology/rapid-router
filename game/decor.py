@@ -1,5 +1,5 @@
 """
-    Decor data
+Decor data
 """
 
 from builtins import object
@@ -353,7 +353,7 @@ DECOR_DATA = {
         height=100,
         width=100,
         theme=get_theme("grass"),
-        pk=33
+        pk=33,
     ),
     ("solar_panel", "farm"): Decor(
         z_index=4,
@@ -363,7 +363,7 @@ DECOR_DATA = {
         height=100,
         width=100,
         theme=get_theme("farm"),
-        pk=34
+        pk=34,
     ),
     ("solar_panel", "snow"): Decor(
         z_index=4,
@@ -373,7 +373,7 @@ DECOR_DATA = {
         height=100,
         width=100,
         theme=get_theme("snow"),
-        pk=35
+        pk=35,
     ),
     ("solar_panel", "city"): Decor(
         z_index=4,
@@ -383,8 +383,8 @@ DECOR_DATA = {
         height=100,
         width=100,
         theme=get_theme("city"),
-        pk=36
-    )
+        pk=36,
+    ),
 }
 
 
