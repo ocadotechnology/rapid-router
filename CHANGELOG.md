@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.6.25 (2026-03-05)
+
+### Bug Fixes
+
+- Use cfl app
+  ([`0948f3c`](https://github.com/ocadotechnology/rapid-router/commit/0948f3cb369ee3620c90a505f0a5635f1bbd97f4))
+
+
 ## v7.6.24 (2026-02-25)
 
 ### Bug Fixes
