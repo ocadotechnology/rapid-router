@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     "rest_framework",
     "import_export",
     "sekizai",  # for javascript and css management
+    "codeforlife.user",
 )
 
 MIDDLEWARE = [
