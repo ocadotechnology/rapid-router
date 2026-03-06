@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch
 
-from common.models import Teacher, User
+from common.models import Teacher
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
@@ -11,10 +11,13 @@ from django.core import mail
 from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 from game.models import Level
 from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses, multiple_house_data
 from game.tests.utils.teacher import add_teacher_to_school, create_school
+
+User = get_user_model()
 
 
 class LevelEditorTestCase(TestCase):
