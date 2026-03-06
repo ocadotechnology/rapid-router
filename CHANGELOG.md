@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.6.26 (2026-03-05)
+
+### Bug Fixes
+
+- New common and portal
+  ([`a0b47d0`](https://github.com/ocadotechnology/rapid-router/commit/a0b47d08dd9141cbb28a3c9b31bd26c9bebf57b3))
+
+
 ## v7.6.25 (2026-03-05)
 
 ### Bug Fixes
