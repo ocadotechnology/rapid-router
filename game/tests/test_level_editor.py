@@ -21,7 +21,7 @@ User = get_user_model()
 
 
 class LevelEditorTestCase(TestCase):
-    fixtures = ["seed"]
+    fixtures = ["legacy"]
 
     LEVEL_DATA1 = {
         "origin": '{"coordinate":[3,5],"direction":"S"}',

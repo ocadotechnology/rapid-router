@@ -11,7 +11,7 @@ from .utils.level import create_save_level
 
 
 class LevelModerationTestCase(TestCase):
-    fixtures = ["seed"]
+    fixtures = ["legacy"]
 
     @classmethod
     def setUpClass(cls):

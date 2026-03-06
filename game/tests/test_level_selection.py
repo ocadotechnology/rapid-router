@@ -19,7 +19,7 @@ from game.views.level import _next_level_url, _prev_level_url
 
 
 class LevelSelectionTestCase(TestCase):
-    fixtures = ["seed"]
+    fixtures = ["legacy"]
 
     @classmethod
     def setUpClass(cls):
