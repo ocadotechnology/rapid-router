@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0def97c19165888b90d6fffcc64a9962962d6773e928258cef482c8ef92c9acd"
+            "sha256": "9a50d3f46fd8b2fcaf46a2f02d4612d7016467f0f5662331a473894290f48c8e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -198,7 +198,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "07bf4733c91b283b7324526e147865e46a75bdeb",
+            "ref": "96b5931fcaf4e91e10d88c8690b69cb778786d63",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -1871,7 +1871,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "07bf4733c91b283b7324526e147865e46a75bdeb",
+            "ref": "96b5931fcaf4e91e10d88c8690b69cb778786d63",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -2034,7 +2034,7 @@
         },
         "codeforlife-portal": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "521c7757fec9352f41ae0e6d6b58b5cddb34e88a"
+            "ref": "1dab128a95cf2974850453e5afa451799bfd4f30"
         },
         "coverage": {
             "extras": [
@@ -2229,6 +2229,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==4.1.0"
+        },
+        "django-constance": {
+            "hashes": [
+                "sha256:30d1b325f636177c708cce63abbde7015593f5c60b2bc0b0e2eebe8c36e2ce59",
+                "sha256:598f8c967a675fe2c7fe3688510ac8302e1b6df2141d01b8d29577532a8241db"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==4.3.4"
         },
         "django-cors-headers": {
             "hashes": [
@@ -3155,11 +3163,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:9170634f126f8efdae22fb58ae8a0eaa86f38365bc57897a6c4f781d1f5875bd",
-                "sha256:9a33809944b9db043ad67ca0db94b14bf452cc6aeaac46a88ea55b26e2e9d291"
+                "sha256:1ec356301b7dc906d83f371c8f487070e99d3ccf9e501686456394622a01a934",
+                "sha256:68a9a4619a666ea6439f2ff250c12a853cd1cbd5158d258bd824a7df6be2f868"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==4.9.2"
+            "version": "==4.9.4"
         },
         "pluggy": {
             "hashes": [
