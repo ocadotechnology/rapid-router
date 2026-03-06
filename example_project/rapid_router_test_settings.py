@@ -166,3 +166,7 @@ if MODULE_NAME == "local":
 ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
 
 AUTH_USER_MODEL = "common.User"
+
+ENV = MODULE_NAME
+
+from codeforlife.settings import GCP_KMS_KEY_URI
