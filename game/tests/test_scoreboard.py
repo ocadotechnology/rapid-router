@@ -36,7 +36,7 @@ from game.views.scoreboard_csv import (
 
 
 class ScoreboardTestCase(TestCase):
-    fixtures = ["legacy"]
+    fixtures = ["legacy", "game"]
     
     def test_teacher_multiple_students_multiple_levels(self):
         # Setup official levels data
@@ -327,7 +327,7 @@ class ScoreboardTestCase(TestCase):
 
 
 class ScoreboardCsvTestCase(TestCase):
-    fixtures = ["legacy"]
+    fixtures = ["legacy", "game"]
 
     def test_scoreboard_csv(self):
         # Take the first two levels of the main game

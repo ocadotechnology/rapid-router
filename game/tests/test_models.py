@@ -10,7 +10,7 @@ from .utils.level import create_save_level
 
 
 class TestModels(TestCase):
-    fixtures = ["legacy"]
+    fixtures = ["legacy", "game"]
 
     def test_level_next_level_on_delete(self):
         """

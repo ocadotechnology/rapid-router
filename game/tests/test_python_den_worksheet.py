@@ -8,7 +8,7 @@ from game.models import Worksheet
 
 
 class PythonDenWorksheetTestCase(TestCase):
-    fixtures = ["legacy"]
+    fixtures = ["legacy", "game"]
 
     @classmethod
     def setUpClass(cls):
