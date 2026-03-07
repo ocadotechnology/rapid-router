@@ -4,14 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cfl-common = {git = "https://github.com/ocadotechnology/codeforlife-portal.git", ref = "96b5931fcaf4e91e10d88c8690b69cb778786d63", subdirectory = "cfl_common"}
+cfl-common = "==8.9.29"
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
 
 [dev-packages]
 black = "*"
-codeforlife-portal = {ref = "1dab128a95cf2974850453e5afa451799bfd4f30", git = "https://github.com/ocadotechnology/codeforlife-portal.git"}
+codeforlife-portal = "==8.9.29"
 django-extensions = "==4.1"
 django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
