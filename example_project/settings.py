@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     "rest_framework",
     "import_export",
     "sekizai",  # for javascript and css management
+    "codeforlife.user",
 )
 
 MIDDLEWARE = [
@@ -150,3 +151,9 @@ if MODULE_NAME == "local":
     )
 
 ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
+
+AUTH_USER_MODEL = "user.User"
+
+ENV = MODULE_NAME
+
+from codeforlife.settings import GCP_KMS_KEY_URI

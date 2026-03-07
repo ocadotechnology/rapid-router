@@ -2,10 +2,11 @@ import typing as t
 from builtins import str
 
 from common.models import Class, Student, UserProfile
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.query import QuerySet
 
+User = get_user_model()
 
 def theme_choices():
     from game.theme import get_all_themes
