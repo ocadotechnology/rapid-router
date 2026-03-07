@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.6.27 (2026-03-07)
+
+### Bug Fixes
+
+- Workspace 1054 ([#1870](https://github.com/ocadotechnology/rapid-router/pull/1870),
+  [`9175d94`](https://github.com/ocadotechnology/rapid-router/commit/9175d941d51372413f188a8306a0a441b8e46a6a))
+
+
 ## v7.6.26 (2026-03-05)
 
 ### Bug Fixes
