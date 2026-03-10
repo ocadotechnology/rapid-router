@@ -1,6 +1,30 @@
 # CHANGELOG
 
 
+## v7.6.27 (2026-03-07)
+
+### Bug Fixes
+
+- Workspace 1054 ([#1870](https://github.com/ocadotechnology/rapid-router/pull/1870),
+  [`9175d94`](https://github.com/ocadotechnology/rapid-router/commit/9175d941d51372413f188a8306a0a441b8e46a6a))
+
+
+## v7.6.26 (2026-03-05)
+
+### Bug Fixes
+
+- New common and portal
+  ([`a0b47d0`](https://github.com/ocadotechnology/rapid-router/commit/a0b47d08dd9141cbb28a3c9b31bd26c9bebf57b3))
+
+
+## v7.6.25 (2026-03-05)
+
+### Bug Fixes
+
+- Use cfl app
+  ([`0948f3c`](https://github.com/ocadotechnology/rapid-router/commit/0948f3cb369ee3620c90a505f0a5635f1bbd97f4))
+
+
 ## v7.6.24 (2026-02-25)
 
 ### Bug Fixes

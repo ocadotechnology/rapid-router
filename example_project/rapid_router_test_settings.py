@@ -4,7 +4,7 @@ import sys
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
-headless_chrome_options.add_argument("--headless")
+headless_chrome_options.add_argument("--headless=new")
 headless_chrome_options.add_argument("--window-size=1920,1080")
 headless_chrome_options.add_argument("--start-maximized")
 headless_chrome_options.add_argument("--disable-gpu")
@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "django_reverse_js",
     "django_otp",
     "django_otp.plugins.otp_static",
@@ -101,6 +102,7 @@ INSTALLED_APPS = (
     "rest_framework",
     "import_export",
     "sekizai",  # for javascript and css management
+    "codeforlife.user",
 )
 
 MIDDLEWARE = [
@@ -175,3 +177,9 @@ if MODULE_NAME == "local":
     )
 
 ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
+
+AUTH_USER_MODEL = "user.User"
+
+ENV = MODULE_NAME
+
+from codeforlife.settings import GCP_KMS_KEY_URI
