@@ -9,8 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("common", "0058_userprofile_google_refresh_token_and_more"),
-        ("game", "0117_update_solutions_to_if_else"),
+        ("game", "0001_initial"),
     ]
 
     operations = [

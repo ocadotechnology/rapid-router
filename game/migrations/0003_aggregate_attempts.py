@@ -4,7 +4,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game", "0118_dailyactivity_levelmetrics_clean_attempt"),
+        ("game", "0002_dailyactivity_levelmetrics_clean_attempt"),
     ]
 
     def delete_attempts_with_invalid_score(apps, *args):

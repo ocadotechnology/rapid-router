@@ -12,7 +12,7 @@ def set_level_order(apps: Apps, *args):
 
 class Migration(migrations.Migration):
 
-    dependencies = [("game", "0120_delete_attempt")]
+    dependencies = [("game", "0004_delete_attempt")]
 
     operations = [
         migrations.RunPython(
