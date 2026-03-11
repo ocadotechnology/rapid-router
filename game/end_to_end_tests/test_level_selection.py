@@ -7,8 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
-from game.models import Episode
-from game.tests.utils.level_metrics import create_level_metrics
+from game.models import Episode, LevelMetrics
 
 
 class TestLevelSelection(BaseGameTest):
@@ -23,7 +22,7 @@ class TestLevelSelection(BaseGameTest):
         # Student has perfect score for each level in an episode
         episode = Episode.objects.get(name="Loops with Conditions")
         for level in episode.levels:
-            create_level_metrics(student, level, 20)
+            LevelMetrics.objects.create(level=level, student=student, top_score=20)
 
         #  Student logs in
         code_page = self.go_to_homepage().go_to_student_login_page()
