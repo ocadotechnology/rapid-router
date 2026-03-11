@@ -181,3 +181,4 @@ AUTH_USER_MODEL = "user.User"
 
 ENV = MODULE_NAME
 
+from codeforlife.settings import GCP_KMS_KEY_URI
