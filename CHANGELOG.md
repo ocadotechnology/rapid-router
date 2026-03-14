@@ -1,6 +1,110 @@
 # CHANGELOG
 
 
+## v7.7.0 (2026-03-14)
+
+### Features
+
+- Simplify attempts ([#1809](https://github.com/ocadotechnology/rapid-router/pull/1809),
+  [`6df6ecd`](https://github.com/ocadotechnology/rapid-router/commit/6df6ecd4818ff9413558361acd4ff21e747eb6b8))
+
+* feat: Simplify Attempt table, update logic around it
+
+* Install same branch portal
+
+* Convert secs to clock format + chunkify migration
+
+* Keep track of attempt in frontend
+
+* Bigger chunks and logs
+
+* Remove logging
+
+* Add comments
+
+* Merge master and add date field
+
+* Add DailyActivity model for RR and attempt counters
+
+* Clean invalid attempts first and do less joins
+
+* Phase 1: stop using Attempt table, use LevelMetrics
+
+* Update test util
+
+* Fix test
+
+* Add integer validators
+
+* Aggregate attempts migration
+
+* SQL type issues and stuff
+
+* Fix minor issue
+
+* Aggregate daily activity per level per day
+
+* Use pysqlite3 in test settings
+
+* Install latest portal
+
+* Update oolean type
+
+* Use EXTRACT instead of UNIXEPOCH
+
+* Use BIGINT instead of INT64
+
+* Delete Attempt table
+
+* Local postgres DB settings
+
+* PSQL DB settings
+
+* test PSQL in CI pipeline
+
+* try a different name
+
+* try localhost host
+
+* Install latest common
+
+* Install branches directly in pipfile
+
+* Test updates
+
+* Install pyvirtualdisplay
+
+* Go back to Chrome
+
+* ayfkm
+
+* add kwarg ejobwoihfweiblbdlkweb
+
+* Condemn flaky tests
+
+* Reupdate level 13's next level
+
+* Remove print
+
+* Feedback
+
+* Default selenium
+
+* Rename migrations order
+
+* Rename table ref in migration
+
+* Remove last migration
+
+* Feedback pt. 2
+
+* Bring key back
+
+* Relock
+
+* Relock again
+
+
 ## v7.6.27 (2026-03-07)
 
 ### Bug Fixes
