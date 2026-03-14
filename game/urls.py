@@ -67,9 +67,7 @@ urlpatterns = [
         play_custom_level,
         name="play_custom_level",
     ),
-    re_path(
-        r"^episode/(?P<episodeId>[0-9]+)/$", start_episode, name="start_episode"
-    ),
+    re_path(r"^episode/(?P<episodeId>[0-9]+)/$", start_episode, name="start_episode"),
     re_path(
         r"^levels/random/([0-9]+)/$",
         random_level_for_episode,
@@ -183,9 +181,7 @@ urlpatterns = [
                     name="share_level_for_editor",
                 ),
                 re_path(r"^levels/owned/$", owned_levels, name="owned_levels"),
-                re_path(
-                    r"^levels/shared/$", shared_levels, name="shared_levels"
-                ),
+                re_path(r"^levels/shared/$", shared_levels, name="shared_levels"),
             ]
         ),
     ),
@@ -204,9 +200,7 @@ urlpatterns = [
                     block_detail,
                     name="block-detail",
                 ),
-                re_path(
-                    r"^characters/$", character_list, name="character-list"
-                ),
+                re_path(r"^characters/$", character_list, name="character-list"),
                 re_path(
                     r"^characters/(?P<pk>[0-9]+)/$",
                     character_detail,

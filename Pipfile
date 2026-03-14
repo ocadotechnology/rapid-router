@@ -4,14 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cfl-common = "==8.9.29"
+cfl-common = "==8.9.31"
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
 
 [dev-packages]
 black = "*"
-codeforlife-portal = "==8.9.29"
+codeforlife-portal = "==8.9.31"
 django-extensions = "==4.1"
 django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
@@ -19,12 +19,12 @@ importlib-metadata = "<5" # Using version 5 causes an issue when trying to run p
 isort = "*"
 pyOpenSSL = "==25.3.0"
 pytest = "==8.*"
+pytest-cov = "*"
 pytest-django = "==4.8.0"
 pytest-order = "*"
 pytest-xdist = "*"
 selenium = "==4.29.0"
 Werkzeug = "==3.1.5"
-pytest-cov = "*"
 
 [requires]
 python_version = "3.12"

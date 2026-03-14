@@ -1,5 +1,8 @@
 from common.tests.utils.classes import create_class_directly
-from common.tests.utils.organisation import create_organisation_directly, join_teacher_to_organisation
+from common.tests.utils.organisation import (
+    create_organisation_directly,
+    join_teacher_to_organisation,
+)
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from deploy import captcha
@@ -133,7 +136,9 @@ class LevelModerationTestCase(TestCase):
         assert student1.new_user.first_name not in response.content.decode()
         assert student2.new_user.first_name in response.content.decode()
         # Try to delete level1, it shouldn't work
-        delete_level1_url = reverse("delete_level_for_editor", kwargs={"levelId": level1.id})
+        delete_level1_url = reverse(
+            "delete_level_for_editor", kwargs={"levelId": level1.id}
+        )
         response = self.client.get(delete_level1_url)
         assert response.status_code == 401
         # Check level2 is still there
@@ -151,7 +156,9 @@ class LevelModerationTestCase(TestCase):
         assert student1.new_user.first_name in response.content.decode()
         assert student2.new_user.first_name in response.content.decode()
         # Delete level2
-        delete_level2_url = reverse("delete_level_for_editor", kwargs={"levelId": level2.id})
+        delete_level2_url = reverse(
+            "delete_level_for_editor", kwargs={"levelId": level2.id}
+        )
         response = self.client.get(delete_level2_url)
         assert response.status_code == 200
         # Check level1 is still there and level2 is not there anymore
@@ -163,6 +170,10 @@ class LevelModerationTestCase(TestCase):
     def teacher_login(self, email, password):
         self.client.post(
             reverse("teacher_login"),
-            {"auth-username": email, "auth-password": password, "teacher_login_view-current_step": "auth"},
+            {
+                "auth-username": email,
+                "auth-password": password,
+                "teacher_login_view-current_step": "auth",
+            },
             follow=True,
         )

@@ -2,16 +2,15 @@ from __future__ import absolute_import, division
 
 from builtins import str
 
-import game.level_management as level_management
-import game.messages as messages
 from django.core.cache import cache
-from django.db.models import Max
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
+
+import game.level_management as level_management
+import game.messages as messages
 from game import app_settings, random_road
 from game.cache import cached_episode
-from game.models import Attempt, Episode, Level, Worksheet
-
+from game.models import Episode, Level, Worksheet, LevelMetrics
 from .level_editor import play_anonymous_level
 
 
@@ -104,7 +103,7 @@ def fetch_episode_data(early_access, start=1, end=12):
                 start=1,
             )
         ]
-        
+
         worksheets += [
             worksheet_to_dict(index, worksheet)
             for index, worksheet in enumerate(
@@ -115,7 +114,7 @@ def fetch_episode_data(early_access, start=1, end=12):
                 start=1 + len(worksheets),
             )
         ]
-        
+
         episodes.append(
             dict(
                 episode,
@@ -127,7 +126,7 @@ def fetch_episode_data(early_access, start=1, end=12):
                 worksheets=worksheets,
             )
         )
-    
+
     return episodes
 
 
@@ -153,10 +152,7 @@ def is_teacher(user):
 
 
 def is_admin_teacher(user):
-    return (
-        hasattr(user.userprofile, "teacher")
-        and user.userprofile.teacher.is_admin
-    )
+    return hasattr(user.userprofile, "teacher") and user.userprofile.teacher.is_admin
 
 
 def get_blockly_episodes(request):
@@ -164,9 +160,7 @@ def get_blockly_episodes(request):
 
 
 def get_python_episodes(request):
-    return fetch_episode_data(
-        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 24
-    )
+    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 16, 24)
 
 
 def levels(request, language):
@@ -183,31 +177,23 @@ def levels(request, language):
     """
     user = request.user
     if user.is_authenticated and is_student(user):
-        best_attempts = (
-            Attempt.objects.filter(student=user.userprofile.student)
-            .values("level_id")
-            .annotate(best_score=Max("score"))
-            .all()
-        )
-
-        attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
+        attempts = LevelMetrics.objects.filter(student=user.userprofile.student)
+        scores_per_level = {attempt.level.id: attempt.top_score for attempt in attempts}
     else:
-        attempts = {}
+        scores_per_level = {}
 
     owned_level_data = []
     directly_shared_levels = []
     indirectly_shared_levels = {}
     if not request.user.is_anonymous:
-        owned_levels, shared_levels = level_management.get_loadable_levels(
-            request.user
-        )
+        owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
 
         for level in owned_levels:
             owned_level_data.append(
                 {
                     "id": level.id,
                     "title": level.name,
-                    "score": attempts.get(level.id),
+                    "score": scores_per_level.get(level.id),
                     "maxScore": 10,
                 }
             )
@@ -225,7 +211,7 @@ def levels(request, language):
                         indirectly_shared_levels[teacher] = []
 
                     indirectly_shared_levels[teacher].append(
-                        get_shared_level(level, attempts)
+                        get_shared_level(level, scores_per_level)
                     )
                 else:
                     student_class = level.owner.student.class_field
@@ -234,7 +220,7 @@ def levels(request, language):
                     # get levels shared by students in the current user's classes
                     if class_teacher == user:
                         directly_shared_levels.append(
-                            get_shared_level(level, attempts, student_class)
+                            get_shared_level(level, scores_per_level, student_class)
                         )
                     # get levels shared by students in the other teachers' classes
                     else:
@@ -242,17 +228,17 @@ def levels(request, language):
                             indirectly_shared_levels[class_teacher] = []
 
                         indirectly_shared_levels[class_teacher].append(
-                            get_shared_level(level, attempts, student_class)
+                            get_shared_level(level, scores_per_level, student_class)
                         )
             # if user is a student or a standard teacher, just get levels shared with them directly.
             else:
-                directly_shared_levels.append(get_shared_level(level, attempts))
+                directly_shared_levels.append(get_shared_level(level, scores_per_level))
 
     context = {
         "owned_levels": owned_level_data,
         "directly_shared_levels": directly_shared_levels,
         "indirectly_shared_levels": indirectly_shared_levels,
-        "scores": attempts,
+        "scores": scores_per_level,
     }
 
     if language == "blockly":
@@ -260,7 +246,7 @@ def levels(request, language):
 
         for episode in blockly_episodes:
             for level in episode["levels"]:
-                attach_attempts_to_level(attempts, level)
+                attach_attempts_to_level(scores_per_level, level)
                 level["locked_for_class"] = Level.objects.get(
                     id=level["id"]
                 ).locked_for_class
@@ -272,7 +258,7 @@ def levels(request, language):
 
         for episode in python_episodes:
             for level in episode["levels"]:
-                attach_attempts_to_level(attempts, level)
+                attach_attempts_to_level(scores_per_level, level)
                 level["locked_for_class"] = Level.objects.get(
                     id=level["id"]
                 ).locked_for_class

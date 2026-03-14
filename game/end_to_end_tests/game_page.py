@@ -19,9 +19,7 @@ class GamePage(BasePage):
     def __init__(self, browser):
         super(GamePage, self).__init__(browser)
 
-        self.browser.execute_script(
-            "ocargo.animation.FAST_ANIMATION_DURATION = 1;"
-        )
+        self.browser.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         assert self.on_correct_page("game_page")
 
@@ -32,19 +30,13 @@ class GamePage(BasePage):
         return self
 
     def dismiss_dialog(self, button_id):
-        self.wait_for_element_to_be_clickable(
-            (By.ID, button_id), wait_seconds=15
-        )
+        self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=15)
         self.browser.find_element(By.ID, button_id).click()
-        self.wait_for_element_to_be_invisible(
-            (By.ID, button_id), wait_seconds=15
-        )
+        self.wait_for_element_to_be_invisible((By.ID, button_id), wait_seconds=15)
 
     def save_solution(self, workspace_name):
         self.browser.find_element(By.ID, "save_tab").click()
-        self.browser.find_element(By.ID, "workspaceNameInput").send_keys(
-            workspace_name
-        )
+        self.browser.find_element(By.ID, "workspaceNameInput").send_keys(workspace_name)
         self.browser.find_element(By.ID, "saveWorkspace").click()
         return self
 
@@ -79,9 +71,7 @@ class GamePage(BasePage):
 
     def solution_button(self):
         self.browser.find_element(By.ID, "solution_tab").click()
-        solution_loaded = self.browser.execute_script(
-            "return ocargo.solutionLoaded;"
-        )
+        solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
         timeout = time.time() + 30
 
         while not solution_loaded:
@@ -102,25 +92,17 @@ class GamePage(BasePage):
 
     def assert_level_number(self, level_number, from_python_den):
         viewname = (
-            "play_python_default_level"
-            if from_python_den
-            else "play_default_level"
+            "play_python_default_level" if from_python_den else "play_default_level"
         )
 
         path = reverse(viewname, kwargs={"level_name": str(level_number)})
-        assert_that(
-            self.browser.current_url.replace("#myModal", ""), ends_with(path)
-        )
+        assert_that(self.browser.current_url.replace("#myModal", ""), ends_with(path))
 
     def assert_episode_number(self, episode_number, from_python_den):
-        viewname = (
-            "start_python_episode" if from_python_den else "start_episode"
-        )
+        viewname = "start_python_episode" if from_python_den else "start_episode"
 
         path = reverse(viewname, kwargs={"episodeId": str(episode_number)})
-        assert_that(
-            self.browser.current_url.replace("#myModal", ""), ends_with(path)
-        )
+        assert_that(self.browser.current_url.replace("#myModal", ""), ends_with(path))
 
     def assert_is_green_light(self, traffic_light_index):
         self._assert_light_is_on(traffic_light_index, "green")
@@ -139,9 +121,7 @@ class GamePage(BasePage):
         self.browser.find_element(By.ID, "fast_tab").click()
 
         try:
-            self.wait_for_element_to_be_clickable(
-                (By.ID, wait_for_element_id), 45
-            )
+            self.wait_for_element_to_be_clickable((By.ID, wait_for_element_id), 45)
         except TimeoutException as e:
             millis = int(round(time.time() * 1000))
             screenshot_filename = "/tmp/game_tests_%s-%s.png" % (
@@ -157,9 +137,7 @@ class GamePage(BasePage):
     def run_retry_program(self):
         self.run_program("try_again_button")
         modal_content = self.browser.find_element(By.ID, "modal-content").text
-        assert_that(
-            modal_content, contains_string("Try creating a simpler program.")
-        )
+        assert_that(modal_content, contains_string("Try creating a simpler program."))
         self.browser.find_element(By.ID, "try_again_button").click()
         time.sleep(1)
         return self
@@ -315,9 +293,7 @@ while not my_van.at_destination():
 
     def _run_procedure_error_program(self, text):
         self.run_program("close_button")
-        error_message = self.browser.find_element(
-            By.ID, "myModal-mainText"
-        ).text
+        error_message = self.browser.find_element(By.ID, "myModal-mainText").text
         assert_that(error_message, contains_string(text))
 
     def _assert_score(self, element_id, score):

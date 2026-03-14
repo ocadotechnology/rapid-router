@@ -17,9 +17,7 @@ class ScoreboardForm(forms.Form):
             choices=classes_choices, widget=forms.CheckboxSelectMultiple()
         )
 
-        episodes_range = (
-            range(1, 10) if language == "blockly" else range(12, 16)
-        )
+        episodes_range = range(1, 10) if language == "blockly" else range(12, 16)
 
         # Each tuple in choices has two elements, id and name of each level
         # First element is the actual value set on the model

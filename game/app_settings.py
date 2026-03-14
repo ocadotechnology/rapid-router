@@ -6,7 +6,9 @@ NIGHT_MODE_FEATURE_ENABLED = getattr(settings, "NIGHT_MODE_FEATURE_ENABLED", Fal
 COW_FEATURE_ENABLED = getattr(settings, "COW_FEATURE_ENABLED", True)
 
 #: Name of a function that determines if a request qualifies for early access
-EARLY_ACCESS_FUNCTION_NAME = getattr(settings, "RAPID_ROUTER_EARLY_ACCESS_FUNCTION_NAME", "")
+EARLY_ACCESS_FUNCTION_NAME = getattr(
+    settings, "RAPID_ROUTER_EARLY_ACCESS_FUNCTION_NAME", ""
+)
 
 
 def default_early_access_function(request):
@@ -19,4 +21,6 @@ def default_early_access_function(request):
 
 
 #: Function that determines if a request qualifies for early access
-EARLY_ACCESS_FUNCTION = getattr(settings, "RAPID_ROUTER_EARLY_ACCESS_FUNCTION", default_early_access_function)
+EARLY_ACCESS_FUNCTION = getattr(
+    settings, "RAPID_ROUTER_EARLY_ACCESS_FUNCTION", default_early_access_function
+)

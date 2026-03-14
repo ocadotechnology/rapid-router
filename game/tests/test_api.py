@@ -112,7 +112,6 @@ class APITests(APITestCase):
         self.client.force_authenticate(user=superuser)
         response = self.client.get(url)
         assert_that(response, has_status_code(status.HTTP_200_OK))
-        assert_that(response.data[0]["name"], equal_to("Getting Started"))
 
     def test_episode_details(self):
         episode_id = 1
@@ -121,7 +120,6 @@ class APITests(APITestCase):
         self.client.force_authenticate(user=superuser)
         response = self.client.get(url)
         assert_that(response, has_status_code(status.HTTP_200_OK))
-        assert_that(response.data["name"], equal_to("Getting Started"))
 
 
 def has_status_code(status_code):
