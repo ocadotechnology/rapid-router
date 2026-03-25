@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v7.7.2 (2026-03-25)
+
+### Bug Fixes
+
+- Missing migration for DailyActivity
+  ([`afae7d7`](https://github.com/ocadotechnology/rapid-router/commit/afae7d7e121bb8a6861110b9d5565fbf7b3c3af2))
+
+### Build System
+
+- Update dev deps
+  ([`5d36c12`](https://github.com/ocadotechnology/rapid-router/commit/5d36c12126edd194fccda0c731d453f9e8d3b240))
+
+
 ## v7.7.1 (2026-03-25)
 
 ### Bug Fixes
