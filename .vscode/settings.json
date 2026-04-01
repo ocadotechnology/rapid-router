@@ -6,7 +6,7 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.tabSize": 4
   },
-  "black-formatter.args": ["--config", "../backend/pyproject.toml"],
+  "black-formatter.args": ["--config", "../../backend/pyproject.toml"],
   "black-formatter.path": [".venv/bin/python", "-m", "black"],
   "cSpell.words": ["codeforlife", "klass", "ocado", "kurono", "pipenv"],
   "editor.codeActionsOnSave": {
@@ -21,20 +21,14 @@
     "**/.pytest_cache": true,
     "**/__pycache__": true
   },
-  "isort.args": ["--settings-file=../backend/pyproject.toml"],
+  "isort.args": ["--settings-file=../../backend/pyproject.toml"],
   "isort.path": [".venv/bin/python", "-m", "isort"],
-  "mypy-type-checker.args": ["--config-file=../backend/pyproject.toml"],
+  "mypy-type-checker.args": ["--config-file=../../backend/pyproject.toml"],
   "mypy-type-checker.path": [".venv/bin/python", "-m", "mypy"],
-  "pylint.args": ["--rcfile=../backend/pyproject.toml"],
+  "pylint.args": ["--rcfile=../../backend/pyproject.toml"],
   "pylint.path": [".venv/bin/python", "-m", "pylint"],
   "python.defaultInterpreterPath": ".venv/bin/python",
-  "python.testing.pytestArgs": [
-    "-n=auto",
-    "--cov=.",
-    "--cov-report=html",
-    "-c=../backend/pyproject.toml",
-    "."
-  ],
+  "python.testing.pytestArgs": ["-n=auto", "--cov=.", "--cov-report=html", "."],
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false
 }
