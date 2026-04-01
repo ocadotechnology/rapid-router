@@ -9,10 +9,11 @@ from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from django.urls import reverse
+from game.models import Workspace
+
 from portal.tests.pageObjects.portal.base_page import BasePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 
-from game.models import Workspace
 from . import custom_handler
 from .editor_page import EditorPage
 from .game_page import GamePage
@@ -47,7 +48,11 @@ class BaseGameTest(SeleniumTestCase):
 
     def _complete_level(self, level_number, from_python_den=False, **kwargs):
         page = self.go_to_level(level_number, from_python_den)
-        (self.complete_and_check_level(level_number, page, from_python_den, **kwargs))
+        (
+            self.complete_and_check_level(
+                level_number, page, from_python_den, **kwargs
+            )
+        )
 
     def complete_and_check_level(
         self,
@@ -93,7 +98,9 @@ class BaseGameTest(SeleniumTestCase):
 
     def go_to_level(self, level_name, from_python_den=False):
         viewname = (
-            "play_python_default_level" if from_python_den else "play_default_level"
+            "play_python_default_level"
+            if from_python_den
+            else "play_default_level"
         )
 
         path = reverse(viewname, kwargs={"level_name": str(level_name)})
@@ -101,9 +108,13 @@ class BaseGameTest(SeleniumTestCase):
 
         return GamePage(self.selenium)
 
-    def go_to_level_without_dismissing_dialog(self, level_name, from_python_den=False):
+    def go_to_level_without_dismissing_dialog(
+        self, level_name, from_python_den=False
+    ):
         viewname = (
-            "play_python_default_level" if from_python_den else "play_default_level"
+            "play_python_default_level"
+            if from_python_den
+            else "play_default_level"
         )
 
         path = reverse(viewname, kwargs={"level_name": str(level_name)})
@@ -124,9 +135,13 @@ class BaseGameTest(SeleniumTestCase):
 
     def go_to_episode(self, episodeId):
         if int(episodeId) > 9:
-            path = reverse("start_python_episode", kwargs={"episodeId": str(episodeId)})
+            path = reverse(
+                "start_python_episode", kwargs={"episodeId": str(episodeId)}
+            )
         else:
-            path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
+            path = reverse(
+                "start_episode", kwargs={"episodeId": str(episodeId)}
+            )
         self._go_to_path(path)
 
         return GamePage(self.selenium)
@@ -141,7 +156,11 @@ class BaseGameTest(SeleniumTestCase):
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level).load_solution(workspace_id).run_retry_program()
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
+            .run_retry_program()
+        )
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()
@@ -149,7 +168,9 @@ class BaseGameTest(SeleniumTestCase):
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
         return (
-            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
+            self.go_to_level(level)
+            .load_solution(workspace_id)
+            .run_crashing_program()
         )
 
     def run_animal_sound_horn_test(self, level):
@@ -226,7 +247,9 @@ class BaseGameTest(SeleniumTestCase):
             login_page = self.go_to_homepage().go_to_teacher_login_page()
             login_page.login(email, password)
             email = email
-            BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
+            BaseGameTest.user_profile = UserProfile.objects.get(
+                user___email_plain=email
+            )
 
             BaseGameTest.already_logged_on = True
 
@@ -243,7 +266,9 @@ class BaseGameTest(SeleniumTestCase):
         BaseGameTest.already_logged_on = False
 
     def solution_file_path(self, filename):
-        return os.path.join(BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml")
+        return os.path.join(
+            BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml"
+        )
 
     def read_solution(self, filename):
         path = self.solution_file_path(filename)
