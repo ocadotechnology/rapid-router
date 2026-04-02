@@ -33,6 +33,7 @@ class LevelModerationTestCase(TestCase):
     def test_moderation_teachers_class(self):
         level_name = "test_level1"
         email, password = signup_teacher_directly()
+        create_organisation_directly(email)
         _, class_name, access_code = create_class_directly(email)
 
         _, _, student = create_school_student_directly(access_code)
@@ -57,6 +58,7 @@ class LevelModerationTestCase(TestCase):
         email, password = signup_teacher_directly()
 
         email2, _ = signup_teacher_directly()
+        create_organisation_directly(email2)
         _, class_name, access_code = create_class_directly(email2)
 
         _, _, student = create_school_student_directly(access_code)
@@ -73,6 +75,7 @@ class LevelModerationTestCase(TestCase):
     def test_moderation_empty_class_filter(self):
         level_name = "test_level1"
         email, password = signup_teacher_directly()
+        create_organisation_directly(email)
         _, class_name, access_code = create_class_directly(email)
 
         _, _, student = create_school_student_directly(access_code)
@@ -90,6 +93,7 @@ class LevelModerationTestCase(TestCase):
     def test_moderation_shared_with(self):
         level_name = "test_level1"
         email, password = signup_teacher_directly()
+        create_organisation_directly(email)
         _, class_name, access_code = create_class_directly(email)
 
         _, _, student = create_school_student_directly(access_code)

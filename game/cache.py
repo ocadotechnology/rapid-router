@@ -1,11 +1,14 @@
 from __future__ import absolute_import
+
 from builtins import str
+
 from django.core.cache import cache
-from django.db.models.signals import post_save, post_delete
-from django.shortcuts import get_object_or_404
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from .models import Level, Episode, LevelDecor, LevelBlock
+from django.shortcuts import get_object_or_404
+
 from . import level_management
+from .models import Episode, Level, LevelBlock, LevelDecor
 
 LEVEL_PREFIX = "model_level"
 EPISODE_PREFIX = "model_episode"
@@ -14,7 +17,7 @@ LEVEL_BLOCKS_PREFIX = "level_blocks"
 
 
 def get_level(level):
-    return get_object_or_404(Level, name=level, default=True)
+    return get_object_or_404(Level, _name_plain=level, default=True)
 
 
 def get_custom_level(level):
