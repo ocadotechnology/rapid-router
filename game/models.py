@@ -168,16 +168,19 @@ class Level(EncryptedModel):
     @property
     def name(self):
         """The level's name."""
-        if self._name_enc is not None:
+        if not self.default and self._name_enc is not None:
             return EncryptedTextField.get(self, "_name_enc")
         return self._name_plain
 
     @name.setter
     def name(self, value: str):
         """Set the level's name."""
-        self._name_plain = value
-        EncryptedTextField.set(self, value, "_name_enc")
-        Sha256Field.set(self, value, "_name_hash")
+        if self.default:
+            self._name_plain = value
+        else:
+            self._name_plain = value  # TODO: remove when all are encrypted.
+            EncryptedTextField.set(self, value, "_name_enc")
+            Sha256Field.set(self, value, "_name_hash")
 
     # --------------------------------------------------------------------------
 
@@ -247,15 +250,18 @@ class Level(EncryptedModel):
     @property
     def subtitle(self):
         """The level's subtitle."""
-        if self._subtitle_enc is not None:
+        if not self.default and self._subtitle_enc is not None:
             return EncryptedTextField.get(self, "_subtitle_enc")
         return self._subtitle_plain
 
     @subtitle.setter
     def subtitle(self, value: t.Optional[str]):
         """Set the level's subtitle."""
-        self._subtitle_plain = value
-        EncryptedTextField.set(self, value, "_subtitle_enc")
+        if self.default:
+            self._subtitle_plain = value
+        else:
+            self._subtitle_plain = value  # TODO: remove when all are encrypted.
+            EncryptedTextField.set(self, value, "_subtitle_enc")
 
     # --------------------------------------------------------------------------
     # Lesson
@@ -274,15 +280,18 @@ class Level(EncryptedModel):
     @property
     def lesson(self):
         """The level's description."""
-        if self._lesson_enc is not None:
+        if not self.default and self._lesson_enc is not None:
             return EncryptedTextField.get(self, "_lesson_enc")
         return self._lesson_plain
 
     @lesson.setter
     def lesson(self, value: str):
         """Set the level's description."""
-        self._lesson_plain = value
-        EncryptedTextField.set(self, value, "_lesson_enc")
+        if self.default:
+            self._lesson_plain = value
+        else:
+            self._lesson_plain = value  # TODO: remove when all are encrypted.
+            EncryptedTextField.set(self, value, "_lesson_enc")
 
     # --------------------------------------------------------------------------
     # Hint
@@ -302,15 +311,18 @@ class Level(EncryptedModel):
     @property
     def hint(self):
         """The level's hint."""
-        if self._hint_enc is not None:
+        if not self.default and self._hint_enc is not None:
             return EncryptedTextField.get(self, "_hint_enc")
         return self._hint_plain
 
     @hint.setter
     def hint(self, value: str):
         """Set the level's hint."""
-        self._hint_plain = value
-        EncryptedTextField.set(self, value, "_hint_enc")
+        if self.default:
+            self._hint_plain = value
+        else:
+            self._hint_plain = value  # TODO: remove when all are encrypted.
+            EncryptedTextField.set(self, value, "_hint_enc")
 
     # --------------------------------------------------------------------------
 
