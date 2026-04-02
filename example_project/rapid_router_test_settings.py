@@ -3,7 +3,7 @@ import os
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
-headless_chrome_options.binary_location = "/usr/local/bin/google-chrome"
+# headless_chrome_options.binary_location = "/usr/local/bin/google-chrome"
 headless_chrome_options.add_argument("--headless=new")
 headless_chrome_options.add_argument("--window-size=1920,1080")
 headless_chrome_options.add_argument("--start-maximized")
