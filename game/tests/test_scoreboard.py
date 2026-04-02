@@ -57,8 +57,8 @@ class ScoreboardTestCase(TestCase):
             f"{x}"
             for x in range(1, len(episode1.levels) + len(episode2.levels) + 1)
         ]
-        level1 = Level.objects.get(name="1")
-        level13 = Level.objects.get(name="13")
+        level1 = Level.objects.get(_name_plain="1")
+        level13 = Level.objects.get(_name_plain="13")
 
         c = Client()
         c.post(

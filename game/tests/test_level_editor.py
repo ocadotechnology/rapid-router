@@ -403,7 +403,7 @@ class LevelEditorTestCase(TestCase):
         )
 
         assert response.status_code == 200
-        new_level = Level.objects.get(name="abc")
+        new_level = Level.objects.get(_name_plain="abc")
         assert new_level.character.name == "Van"
 
     def test_language_set_appropriately(self):
@@ -443,7 +443,7 @@ class LevelEditorTestCase(TestCase):
         )
 
         assert response.status_code == 200
-        new_level = Level.objects.get(name="abc")
+        new_level = Level.objects.get(_name_plain="abc")
 
         assert new_level.python_view_enabled
         assert not new_level.python_enabled
@@ -496,7 +496,7 @@ class LevelEditorTestCase(TestCase):
         )
 
         assert response.status_code == 200
-        new_level = Level.objects.get(name="multiple_houses")
+        new_level = Level.objects.get(_name_plain="multiple_houses")
         assert new_level.destinations == "[[3,4],[3,3]]"
 
     def test_level_loading_with_multiple_houses(self):
