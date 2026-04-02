@@ -1,6 +1,8 @@
 import typing as t
 from builtins import str
 
+from codeforlife.models import EncryptedModel
+from codeforlife.models.fields import EncryptedTextField, Sha256Field
 from common.models import Class, Student, UserProfile
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
@@ -8,8 +10,10 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
+
 
 def theme_choices():
     from game.theme import get_all_themes
@@ -20,7 +24,9 @@ def theme_choices():
 def character_choices():
     from game.character import get_all_character
 
-    return [(character.name, character.name) for character in get_all_character()]
+    return [
+        (character.name, character.name) for character in get_all_character()
+    ]
 
 
 class Block(models.Model):
@@ -117,7 +123,7 @@ class Episode(models.Model):
         return f"Episode: {self.name}"
 
 
-class LevelManager(models.Manager):
+class LevelManager(EncryptedModel.Manager["Level"]):
     def sorted_levels(self):
         # Sorts all the levels by integer conversion of "name" which should equate to the correct play order
         # Custom levels do not have an episode
@@ -133,10 +139,48 @@ def sort_levels(levels):
     return sorted(levels, key=lambda level: int(level.name))
 
 
-class Level(models.Model):
+class Level(EncryptedModel):
+    associated_data = "level"
+    field_aliases = {
+        "name": {"_name_plain", "_name_enc", "_name_hash"},
+        "subtitle": {"_subtitle_plain", "_subtitle_enc"},
+        "lesson": {"_lesson_plain", "_lesson_enc"},
+        "hint": {"_hint_plain", "_hint_enc"},
+    }
+
     after_worksheet: t.Optional["Worksheet"]
 
-    name = models.CharField(max_length=100)
+    # --------------------------------------------------------------------------
+    # Name
+    # --------------------------------------------------------------------------
+
+    _name_hash = Sha256Field(
+        verbose_name=_("name hash"), db_column="name_hash", null=True
+    )
+    _name_plain = models.CharField(max_length=100)
+    _name_enc = EncryptedTextField(
+        associated_data="name",
+        db_column="name_enc",
+        null=True,
+        verbose_name=_("name"),
+    )
+
+    @property
+    def name(self):
+        """The level's name."""
+        if self._name_enc is not None:
+            return EncryptedTextField.get(self, "_name_enc")
+        return self._name_plain
+
+    @name.setter
+    def name(self, value: str):
+        """Set the level's name."""
+        self._name_plain = value
+        EncryptedTextField.set(self, value, "_name_enc")
+        Sha256Field.set(self, value, "_name_hash")
+
+    # --------------------------------------------------------------------------
+
     episode = models.ForeignKey(
         Episode, blank=True, null=True, default=None, on_delete=models.PROTECT
     )
@@ -163,7 +207,9 @@ class Level(models.Model):
         on_delete=models.SET_NULL,
         related_name="prev_level",
     )
-    shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
+    shared_with = models.ManyToManyField(
+        User, related_name="shared", blank=True
+    )
     model_solution = models.CharField(blank=True, max_length=20, default="[]")
     disable_route_score = models.BooleanField(default=False)
     disable_algorithm_score = models.BooleanField(default=False)
@@ -185,14 +231,89 @@ class Level(models.Model):
         null=True,
         default=None,
     )
-    subtitle = models.TextField(max_length=100, blank=True, null=True)
-    lesson = models.TextField(
+
+    # --------------------------------------------------------------------------
+    # Subtitle
+    # --------------------------------------------------------------------------
+
+    _subtitle_plain = models.TextField(max_length=100, blank=True, null=True)
+    _subtitle_enc = EncryptedTextField(
+        associated_data="subtitle",
+        db_column="subtitle_enc",
+        null=True,
+        verbose_name=_("subtitle"),
+    )
+
+    @property
+    def subtitle(self):
+        """The level's subtitle."""
+        if self._subtitle_enc is not None:
+            return EncryptedTextField.get(self, "_subtitle_enc")
+        return self._subtitle_plain
+
+    @subtitle.setter
+    def subtitle(self, value: t.Optional[str]):
+        """Set the level's subtitle."""
+        self._subtitle_plain = value
+        EncryptedTextField.set(self, value, "_subtitle_enc")
+
+    # --------------------------------------------------------------------------
+    # Lesson
+    # --------------------------------------------------------------------------
+
+    _lesson_plain = models.TextField(
         max_length=10000, default="Can you find the shortest route?"
     )
-    hint = models.TextField(
+    _lesson_enc = EncryptedTextField(
+        associated_data="lesson",
+        db_column="lesson_enc",
+        null=True,
+        verbose_name=_("lesson"),
+    )
+
+    @property
+    def lesson(self):
+        """The level's description."""
+        if self._lesson_enc is not None:
+            return EncryptedTextField.get(self, "_lesson_enc")
+        return self._lesson_plain
+
+    @lesson.setter
+    def lesson(self, value: str):
+        """Set the level's description."""
+        self._lesson_plain = value
+        EncryptedTextField.set(self, value, "_lesson_enc")
+
+    # --------------------------------------------------------------------------
+    # Hint
+    # --------------------------------------------------------------------------
+
+    _hint_plain = models.TextField(
         max_length=10000,
         default="Think back to earlier levels. What did you learn?",
     )
+    _hint_enc = EncryptedTextField(
+        associated_data="hint",
+        db_column="hint_enc",
+        null=True,
+        verbose_name=_("hint"),
+    )
+
+    @property
+    def hint(self):
+        """The level's hint."""
+        if self._hint_enc is not None:
+            return EncryptedTextField.get(self, "_hint_enc")
+        return self._hint_plain
+
+    @hint.setter
+    def hint(self, value: str):
+        """Set the level's hint."""
+        self._hint_plain = value
+        EncryptedTextField.set(self, value, "_hint_enc")
+
+    # --------------------------------------------------------------------------
+
     commands = models.TextField(
         max_length=10000,
         default='<div class="row">'
@@ -230,12 +351,35 @@ class Level(models.Model):
         Class, blank=True, related_name="locked_levels"
     )
     needs_approval = models.BooleanField(default=True)
-    objects = LevelManager()
+
+    objects: LevelManager = LevelManager()
 
     class Meta:
         constraints = [
+            # TODO: add these checks once all data is encrypted.
+            # models.CheckConstraint(
+            #     condition=~Q(
+            #         default=True,
+            #         _name_enc__isnull=False,
+            #     ),
+            #     name="level__default_name_is_not_encrypted",
+            # ),
+            # models.CheckConstraint(
+            #     condition=~Q(
+            #         default=True,
+            #         _name_hash__isnull=False,
+            #     ),
+            #     name="level__default_name_is_not_hashed",
+            # ),
+            # models.CheckConstraint(
+            #     condition=~Q(
+            #         default=False,
+            #         _name_plain__isnull=False,
+            #     ),
+            #     name="level__non_default_name_is_not_plain",
+            # ),
             models.CheckConstraint(
-                check=~models.Q(
+                condition=~Q(
                     default=True,
                     needs_approval=True,
                 ),
@@ -280,6 +424,13 @@ class Level(models.Model):
     def difficulty(self):
         return self.episode.difficulty if self.episode else "easy"
 
+    @property
+    def dek_aead(self):
+        if self.owner is None:
+            raise ValueError("Level must have an owner to access dek_aead.")
+
+        return self.owner.user.dek_aead
+
 
 class LevelBlock(models.Model):
     type = models.ForeignKey(Block, on_delete=models.CASCADE)
@@ -294,8 +445,39 @@ class LevelDecor(models.Model):
     decor_name = models.CharField(max_length=100, default="tree1")
 
 
-class Workspace(models.Model):
-    name = models.CharField(max_length=200)
+class Workspace(EncryptedModel):
+    associated_data = "workspace"
+    field_aliases = {
+        "name": {"_name_plain", "_name_enc"},
+    }
+
+    # --------------------------------------------------------------------------
+    # Name
+    # --------------------------------------------------------------------------
+
+    _name_plain = models.CharField(max_length=200)
+    _name_enc = EncryptedTextField(
+        associated_data="name",
+        db_column="name_enc",
+        null=True,
+        verbose_name=_("name"),
+    )
+
+    @property
+    def name(self):
+        """The level's name."""
+        if self._name_enc is not None:
+            return EncryptedTextField.get(self, "_name_enc")
+        return self._name_plain
+
+    @name.setter
+    def name(self, value: str):
+        """Set the level's name."""
+        self._name_plain = value
+        EncryptedTextField.set(self, value, "_name_enc")
+
+    # --------------------------------------------------------------------------
+
     owner = models.ForeignKey(
         UserProfile,
         related_name="workspaces",
@@ -312,10 +494,19 @@ class Workspace(models.Model):
     def __str__(self):
         return str(self.name)
 
+    @property
+    def dek_aead(self):
+        if self.owner is None:
+            raise ValueError("Workspace must have an owner to access dek_aead.")
+
+        return self.owner.user.dek_aead
+
 
 class LevelMetrics(models.Model):
     time_spent = models.PositiveBigIntegerField(default=0)
-    level = models.ForeignKey(Level, related_name="metrics", on_delete=models.CASCADE)
+    level = models.ForeignKey(
+        Level, related_name="metrics", on_delete=models.CASCADE
+    )
     student = models.ForeignKey(
         Student,
         related_name="level_metrics",
@@ -351,14 +542,18 @@ class Worksheet(models.Model):
     lesson_plan_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
-    slides_link = models.CharField(max_length=500, null=True, blank=True, default=None)
+    slides_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
     student_worksheet_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
     indy_worksheet_link = models.CharField(
         max_length=500, null=True, blank=True, default=None
     )
-    video_link = models.CharField(max_length=500, null=True, blank=True, default=None)
+    video_link = models.CharField(
+        max_length=500, null=True, blank=True, default=None
+    )
     locked_classes = models.ManyToManyField(
         Class, blank=True, related_name="locked_worksheets"
     )
