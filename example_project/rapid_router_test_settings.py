@@ -3,6 +3,7 @@ import os
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
+headless_chrome_options.binary_location = "/usr/local/bin/google-chrome"
 headless_chrome_options.add_argument("--headless=new")
 headless_chrome_options.add_argument("--window-size=1920,1080")
 headless_chrome_options.add_argument("--start-maximized")
@@ -130,12 +131,16 @@ PIPELINE = {
         },
         "popup": {
             "source_filenames": (
-                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+                os.path.join(
+                    BASE_DIR, "static/portal/sass/partials/_popup.scss"
+                ),
             ),
             "output_filename": "portal/css/popup.css",
         },
         "game-scss": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/game/sass/game.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/game/sass/game.scss"),
+            ),
             "output_filename": "game/css/gamestyles.css",
         },
     },
