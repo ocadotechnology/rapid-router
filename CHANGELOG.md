@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.7.3 (2026-04-10)
+
+### Bug Fixes
+
+- Install latest common
+  ([`533a4dd`](https://github.com/ocadotechnology/rapid-router/commit/533a4dd5410945514ef23229b80c5a5f0715af3b))
+
+
 ## v7.7.2 (2026-03-25)
 
 ### Bug Fixes
