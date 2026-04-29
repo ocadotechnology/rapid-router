@@ -77,7 +77,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "game/static")]
 
-SECRET_KEY = "bad_test_secret"
 ROOT_URLCONF = "example_project.urls"
 
 WSGI_APPLICATION = "example_project.wsgi.application"
@@ -176,4 +175,4 @@ from common.csp_config import *
 
 AUTH_USER_MODEL = "user.User"
 
-from codeforlife.settings import GCP_KMS_KEY_URI
+from codeforlife.settings import GCP_KMS_KEY_URI, SECRET_KEY
