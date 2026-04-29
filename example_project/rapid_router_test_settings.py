@@ -174,14 +174,6 @@ except ImportError:
 
 from common.csp_config import *
 
-if MODULE_NAME == "local":
-    # NOTE: This is only used locally for testing purposes.
-    os.environ.setdefault(
-        "ENCRYPTION_KEY", "XTgWqMlZCMI_E5BvCArkif9nrJIIhe_6Ic6Q_UcWJDk="
-    )
-
 AUTH_USER_MODEL = "user.User"
-
-ENV = MODULE_NAME
 
 from codeforlife.settings import GCP_KMS_KEY_URI
