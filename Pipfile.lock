@@ -155,7 +155,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "a75d551a6c5926fa98051dad3eddae0248aa447d",
+            "ref": "0f7dbac7ca7d94b2253eff3a06b71a95e6fea2a1",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -304,7 +304,7 @@
         "codeforlife": {
             "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
-            "ref": "b652e68259bb703fe4c9415f2c5e26729577bbab"
+            "ref": "ab6fc6b391abfb50887e8c504edf435615797b2e"
         },
         "cryptography": {
             "hashes": [
@@ -1691,7 +1691,7 @@
         },
         "cfl-common": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "a75d551a6c5926fa98051dad3eddae0248aa447d",
+            "ref": "0f7dbac7ca7d94b2253eff3a06b71a95e6fea2a1",
             "subdirectory": "cfl_common"
         },
         "charset-normalizer": {
@@ -1863,11 +1863,11 @@
         "codeforlife": {
             "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
-            "ref": "b652e68259bb703fe4c9415f2c5e26729577bbab"
+            "ref": "ab6fc6b391abfb50887e8c504edf435615797b2e"
         },
         "codeforlife-portal": {
             "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
-            "ref": "a75d551a6c5926fa98051dad3eddae0248aa447d"
+            "ref": "0f7dbac7ca7d94b2253eff3a06b71a95e6fea2a1"
         },
         "coverage": {
             "extras": [
