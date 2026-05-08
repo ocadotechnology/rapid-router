@@ -10,7 +10,6 @@ from deploy import captcha
 from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
-
 from game.models import Level
 from game.permissions import can_play_level
 from game.tests.utils.level import create_save_level
@@ -85,7 +84,9 @@ class LevelSelectionTestCase(TestCase):
         response = self.client.get(url)
 
         assert response.status_code == 200
-        assert response.context["blocklyEpisodes"][0]["name"] == "Getting Started"
+        assert (
+            response.context["blocklyEpisodes"][0]["name"] == "Getting Started"
+        )
         assert (
             response.context["blocklyEpisodes"][0]["levels"][0]["title"]
             == "Can you help the van get to the house?"
@@ -105,8 +106,8 @@ class LevelSelectionTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user__email=email1)
-        teacher2 = Teacher.objects.get(new_user__email=email2)
+        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
+        teacher2 = Teacher.objects.get(new_user___email_plain=email2)
 
         school1 = create_school()
         add_teacher_to_school(teacher1, school1, is_admin=True)
@@ -173,16 +174,24 @@ class LevelSelectionTestCase(TestCase):
         assert response.status_code == 200
         assert len(response.context["directly_shared_levels"]) == 1
         assert (
-            response.context["directly_shared_levels"][0]["owner"] == student1.new_user
+            response.context["directly_shared_levels"][0]["owner"]
+            == student1.new_user
         )
         assert response.context["indirectly_shared_levels"][teacher2.new_user]
-        assert len(response.context["indirectly_shared_levels"][teacher2.new_user]) == 2
         assert (
-            response.context["indirectly_shared_levels"][teacher2.new_user][0]["owner"]
+            len(response.context["indirectly_shared_levels"][teacher2.new_user])
+            == 2
+        )
+        assert (
+            response.context["indirectly_shared_levels"][teacher2.new_user][0][
+                "owner"
+            ]
             == teacher2.new_user
         )
         assert (
-            response.context["indirectly_shared_levels"][teacher2.new_user][1]["owner"]
+            response.context["indirectly_shared_levels"][teacher2.new_user][1][
+                "owner"
+            ]
             == student2.new_user
         )
 
@@ -196,14 +205,15 @@ class LevelSelectionTestCase(TestCase):
         assert response.status_code == 200
         assert len(response.context["directly_shared_levels"]) == 1
         assert (
-            response.context["directly_shared_levels"][0]["owner"] == student2.new_user
+            response.context["directly_shared_levels"][0]["owner"]
+            == student2.new_user
         )
         assert response.context["indirectly_shared_levels"] == {}
 
     def test_cannot_access_locked_level(self):
         email, password = signup_teacher_directly()
 
-        teacher = Teacher.objects.get(new_user__email=email)
+        teacher = Teacher.objects.get(new_user___email_plain=email)
 
         school = create_school()
         add_teacher_to_school(teacher, school, is_admin=True)
@@ -223,7 +233,7 @@ class LevelSelectionTestCase(TestCase):
     def test_next_level_for_locked_levels(self):
         email, password = signup_teacher_directly()
 
-        teacher = Teacher.objects.get(new_user__email=email)
+        teacher = Teacher.objects.get(new_user___email_plain=email)
 
         school = create_school()
         add_teacher_to_school(teacher, school, is_admin=True)
@@ -231,17 +241,17 @@ class LevelSelectionTestCase(TestCase):
         klass, _, access_code = create_class_directly(email)
         _, _, student = create_school_student_directly(access_code)
 
-        level1 = Level.objects.get(name="1")
-        level2 = Level.objects.get(name="2")
-        level3 = Level.objects.get(name="3")
-        level4 = Level.objects.get(name="4")
-        level76 = Level.objects.get(name="76")
-        level77 = Level.objects.get(name="77")
-        level78 = Level.objects.get(name="78")
-        level79 = Level.objects.get(name="79")
-        level1014 = Level.objects.get(name="1014")
-        level1015 = Level.objects.get(name="1015")
-        level1016 = Level.objects.get(name="1016")
+        level1 = Level.objects.get(_name_plain="1")
+        level2 = Level.objects.get(_name_plain="2")
+        level3 = Level.objects.get(_name_plain="3")
+        level4 = Level.objects.get(_name_plain="4")
+        level76 = Level.objects.get(_name_plain="76")
+        level77 = Level.objects.get(_name_plain="77")
+        level78 = Level.objects.get(_name_plain="78")
+        level79 = Level.objects.get(_name_plain="79")
+        level1014 = Level.objects.get(_name_plain="1014")
+        level1015 = Level.objects.get(_name_plain="1015")
+        level1016 = Level.objects.get(_name_plain="1016")
 
         level2.locked_for_class.add(klass)
         level3.locked_for_class.add(klass)
@@ -256,18 +266,26 @@ class LevelSelectionTestCase(TestCase):
         prev_level_url = _prev_level_url(level4, student.new_user, False, False)
         assert prev_level_url == f"/rapidrouter/{level1.name}/"
 
-        next_level_url = _next_level_url(level76, student.new_user, False, False)
+        next_level_url = _next_level_url(
+            level76, student.new_user, False, False
+        )
 
         assert next_level_url == f"/rapidrouter/{level79.name}/"
 
-        prev_level_url = _prev_level_url(level79, student.new_user, False, False)
+        prev_level_url = _prev_level_url(
+            level79, student.new_user, False, False
+        )
         assert prev_level_url == f"/rapidrouter/{level76.name}/"
 
-        next_level_url = _next_level_url(level1014, student.new_user, False, True)
+        next_level_url = _next_level_url(
+            level1014, student.new_user, False, True
+        )
 
         assert next_level_url == f"/pythonden/16/"
 
-        prev_level_url = _prev_level_url(level1016, student.new_user, False, True)
+        prev_level_url = _prev_level_url(
+            level1016, student.new_user, False, True
+        )
         assert prev_level_url == f"/pythonden/14/"
 
     @patch(
@@ -279,44 +297,54 @@ class LevelSelectionTestCase(TestCase):
         mock_datetime.now.return_value = november
 
         response = self.client.get(f"{reverse('home')}/rapidrouter/1/")
-        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode("utf-8")
+        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode(
+            "utf-8"
+        )
         assert (
             """CHARACTER_URL = "characters/top_view/Van.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """WRECKAGE_URL = "van_wreckage.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """WRECKAGE_URL = "van_wreckage.svg"\n"""
+            in response.content.decode("utf-8")
         )
         assert (
             """BACKGROUND_URL = "decor/grass/tile1.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """HOUSE_URL = "decor/grass/house.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """HOUSE_URL = "decor/grass/house.svg"\n"""
+            in response.content.decode("utf-8")
         )
-        assert """CFC_URL = "decor/grass/cfc.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """CFC_URL = "decor/grass/cfc.svg"\n"""
+            in response.content.decode("utf-8")
         )
 
         december = datetime(2023, 12, 1, 0, 0, 0, 0)
         mock_datetime.now.return_value = december
 
         response = self.client.get(f"{reverse('home')}/rapidrouter/1/")
-        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode("utf-8")
+        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode(
+            "utf-8"
+        )
         assert (
             """CHARACTER_URL = "characters/top_view/Sleigh.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """WRECKAGE_URL = "sleigh_wreckage.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """WRECKAGE_URL = "sleigh_wreckage.svg"\n"""
+            in response.content.decode("utf-8")
         )
         assert (
             """BACKGROUND_URL = "decor/snow/tile1.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """HOUSE_URL = "decor/snow/house.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """HOUSE_URL = "decor/snow/house.svg"\n"""
+            in response.content.decode("utf-8")
         )
-        assert """CFC_URL = "decor/snow/cfc.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """CFC_URL = "decor/snow/cfc.svg"\n"""
+            in response.content.decode("utf-8")
         )

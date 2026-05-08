@@ -3,6 +3,7 @@ import os
 from selenium import webdriver
 
 headless_chrome_options = webdriver.ChromeOptions()
+# headless_chrome_options.binary_location = "/usr/local/bin/google-chrome"
 headless_chrome_options.add_argument("--headless=new")
 headless_chrome_options.add_argument("--window-size=1920,1080")
 headless_chrome_options.add_argument("--start-maximized")
@@ -76,7 +77,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "game/static")]
 
-SECRET_KEY = "bad_test_secret"
 ROOT_URLCONF = "example_project.urls"
 
 WSGI_APPLICATION = "example_project.wsgi.application"
@@ -130,12 +130,16 @@ PIPELINE = {
         },
         "popup": {
             "source_filenames": (
-                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+                os.path.join(
+                    BASE_DIR, "static/portal/sass/partials/_popup.scss"
+                ),
             ),
             "output_filename": "portal/css/popup.css",
         },
         "game-scss": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/game/sass/game.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/game/sass/game.scss"),
+            ),
             "output_filename": "game/css/gamestyles.css",
         },
     },
@@ -169,16 +173,6 @@ except ImportError:
 
 from common.csp_config import *
 
-if MODULE_NAME == "local":
-    # NOTE: This is only used locally for testing purposes.
-    os.environ.setdefault(
-        "ENCRYPTION_KEY", "XTgWqMlZCMI_E5BvCArkif9nrJIIhe_6Ic6Q_UcWJDk="
-    )
-
-ENCRYPTION_KEY = os.environ["ENCRYPTION_KEY"]
-
 AUTH_USER_MODEL = "user.User"
 
-ENV = MODULE_NAME
-
-from codeforlife.settings import GCP_KMS_KEY_URI
+from codeforlife.settings import GCP_KMS_KEY_URI, SECRET_KEY

@@ -1,6 +1,6 @@
 from game.character import get_character
 from game.end_to_end_tests.base_game_test import BaseGameTest
-from game.models import Level, Block, LevelBlock
+from game.models import Block, Level, LevelBlock
 from game.theme import get_theme
 
 
@@ -30,21 +30,12 @@ class TestCowCrashes(BaseGameTest):
 
     def run_cow_crashing_test(self, workspace_file):
         user_profile = self.login_once()
-        TestCowCrashes.cow_level.owner = user_profile
-        TestCowCrashes.cow_level.save()
-        workspace_id = self.use_workspace(workspace_file, user_profile)
-        self.go_to_custom_level(TestCowCrashes.cow_level).load_solution(
-            workspace_id
-        ).run_cow_crashing_program()
 
-    @classmethod
-    def setUpClass(cls):
-        BaseGameTest.setUpClass()
         grass = get_theme(name="grass")
-
         van = get_character("Van")
 
         TestCowCrashes.cow_level = Level(
+            owner=user_profile,
             name="Cow crashing",
             anonymous=False,
             blockly_enabled=True,
@@ -74,3 +65,8 @@ class TestCowCrashes(BaseGameTest):
                 type=block, number=None, level=TestCowCrashes.cow_level
             )
             new_block.save()
+
+        workspace_id = self.use_workspace(workspace_file, user_profile)
+        self.go_to_custom_level(TestCowCrashes.cow_level).load_solution(
+            workspace_id
+        ).run_cow_crashing_program()
