@@ -3,7 +3,7 @@ from __future__ import absolute_import, division
 import time
 from builtins import map, next, object
 
-from common.models import Class, Teacher, Student
+from codeforlife.legacy.models import Class, Teacher, Student
 from django.http import Http404
 from django.shortcuts import render
 
@@ -48,7 +48,10 @@ def student_row(levels_sorted, student, attempts):
         level_scores[level.id] = {}
         level_scores[level.id]["score"] = ""
 
-        if level.episode is None and student.new_user not in level.shared_with.all():
+        if (
+            level.episode is None
+            and student.new_user not in level.shared_with.all()
+        ):
             level_scores[level.id]["score"] = "Not shared"
 
         if level.owner == student.user:
@@ -89,13 +92,18 @@ def student_row(levels_sorted, student, attempts):
                 total_possible_score += max_score
 
                 level_scores[level.id]["score"] = int(attempt.top_score)
-                level_scores[level.id]["full_score"] = attempt.top_score == max_score
+                level_scores[level.id]["full_score"] = (
+                    attempt.top_score == max_score
+                )
                 level_scores[level.id]["is_low_attempt"] = (
-                    attempt.top_score == 0 or max_score / attempt.top_score < threshold
+                    attempt.top_score == 0
+                    or max_score / attempt.top_score < threshold
                 )
 
     success_rate = (
-        total_score / total_possible_score * 100 if total_possible_score > 0 else 0
+        total_score / total_possible_score * 100
+        if total_possible_score > 0
+        else 0
     )
     total_time = time.strftime("%H:%M:%S", time.gmtime(total_time))
 
@@ -175,7 +183,9 @@ def _check_attempts(attempts):
         total_possible_score = 0
         # Get the attempts for the specific Episode
         attempts = [
-            attempt for attempt in attempts if attempt.level.episode.id == episode_id
+            attempt
+            for attempt in attempts
+            if attempt.level.episode.id == episode_id
         ]
         for attempt in attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
@@ -184,7 +194,8 @@ def _check_attempts(attempts):
             total_possible_score += max_score
 
             is_low_attempt = (
-                attempt.top_score == 0 or max_score / attempt.top_score < threshold
+                attempt.top_score == 0
+                or max_score / attempt.top_score < threshold
             )
             if is_low_attempt:
                 low_episode_ids.add(episode_id)
@@ -198,9 +209,14 @@ def get_improvement_data(attempts_per_student):
     for student, attempts in attempts_per_student.items():
         episodes_of_concern = _check_attempts(attempts)
         if episodes_of_concern:
-            areas = [messages.get_episode_title(ep_id) for ep_id in episodes_of_concern]
+            areas = [
+                messages.get_episode_title(ep_id)
+                for ep_id in episodes_of_concern
+            ]
             areas_summary = ", ".join(areas)
-            the_students.append(StudentInTrouble(student=student, areas=areas_summary))
+            the_students.append(
+                StudentInTrouble(student=student, areas=areas_summary)
+            )
     return the_students
 
 
@@ -436,9 +452,9 @@ def sorted_levels_by(level_ids):
 
 def are_classes_viewable_by_teacher(class_ids, user):
     teachers = Teacher.objects.filter(school=user.teacher.school)
-    classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list(
-        "id", flat=True
-    )
+    classes_in_teachers_school = Class.objects.filter(
+        teacher__in=teachers
+    ).values_list("id", flat=True)
     for class_id in class_ids:
         is_authorised = class_id in classes_in_teachers_school
         if not is_authorised:
@@ -509,5 +525,6 @@ class User(object):
 
     def is_independent_student(self):
         return (
-            hasattr(self.profile, "student") and self.profile.student.is_independent()
+            hasattr(self.profile, "student")
+            and self.profile.student.is_independent()
         )

@@ -150,7 +150,7 @@ try:
 except ImportError:
     pass
 
-from common.csp_config import *
+from codeforlife.legacy.csp_config import *
 
 AUTH_USER_MODEL = "user.User"
 

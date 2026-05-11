@@ -3,7 +3,7 @@ from builtins import str
 
 from codeforlife.models import EncryptedModel
 from codeforlife.models.fields import EncryptedTextField, Sha256Field
-from common.models import Class, Student, UserProfile
+from codeforlife.legacy.models import Class, Student, UserProfile
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models

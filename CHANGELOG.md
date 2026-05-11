@@ -6284,7 +6284,7 @@ Signed-off-by: Niket <niket.shah1@ocado.com>
 
 * update chromedriver
 
-* updates tests to use the api from common correctly
+* updates tests to use the api from codeforlife.legacy correctly
 
 * Don’t fix cfl-common version due to pipeenv resolution
 
