@@ -64,7 +64,7 @@ INSTALLED_APPS = (
     "game",
     "pipeline",
     "portal",
-    "common",
+    "codeforlife.legacy",
     "django.contrib.admin",
     "django.contrib.admindocs",
     "django.contrib.auth",
