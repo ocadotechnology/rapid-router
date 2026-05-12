@@ -18,7 +18,7 @@ django-test-migrations = "==1.4.0"
 importlib-metadata = "<5" # Using version 5 causes an issue when trying to run pytest. Not sure why, linked to: https://stackoverflow.com/questions/73929564/entrypoints-object-has-no-attribute-get-digital-ocean
 isort = "*"
 pyOpenSSL = "==26.0.0"
-pytest = "==8.*"
+pytest = "==9.*"
 pytest-cov = "*"
 pytest-django = "==4.8.0"
 pytest-order = "*"
