@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.9.0 (2026-05-12)
+
+### Features
+
+- Workspace 1111 ([#1877](https://github.com/ocadotechnology/rapid-router/pull/1877),
+  [`7a2ece9`](https://github.com/ocadotechnology/rapid-router/commit/7a2ece9e01c1b4cbdd80288c4ef1514c9cfbb6dc))
+
+
 ## v7.8.0 (2026-05-08)
 
 ### Features
@@ -6284,7 +6292,7 @@ Signed-off-by: Niket <niket.shah1@ocado.com>
 
 * update chromedriver
 
-* updates tests to use the api from codeforlife.legacy correctly
+* updates tests to use the api from common correctly
 
 * Don’t fix cfl-common version due to pipeenv resolution
 
