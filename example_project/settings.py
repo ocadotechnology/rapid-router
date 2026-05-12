@@ -64,7 +64,7 @@ INSTALLED_APPS = (
     "game",
     "pipeline",
     "portal",
-    "common",
+    "codeforlife.legacy",
     "django.contrib.admin",
     "django.contrib.admindocs",
     "django.contrib.auth",
@@ -150,7 +150,7 @@ try:
 except ImportError:
     pass
 
-from common.csp_config import *
+from codeforlife.legacy.csp_config import *
 
 AUTH_USER_MODEL = "user.User"
 

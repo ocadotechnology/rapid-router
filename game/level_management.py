@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from builtins import str
 from itertools import chain
 
-from common.mail import campaign_ids, send_dotdigital_email
+from codeforlife.legacy.mail import campaign_ids, send_dotdigital_email
 
 from game.character import get_character_by_pk
 from game.decor import get_decor_element

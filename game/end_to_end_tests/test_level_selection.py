@@ -1,7 +1,11 @@
-from common.tests.utils.classes import create_class_directly
-from common.tests.utils.organisation import create_organisation_directly
-from common.tests.utils.student import create_school_student_directly
-from common.tests.utils.teacher import signup_teacher_directly
+from codeforlife.legacy.tests.utils.classes import create_class_directly
+from codeforlife.legacy.tests.utils.organisation import (
+    create_organisation_directly,
+)
+from codeforlife.legacy.tests.utils.student import (
+    create_school_student_directly,
+)
+from codeforlife.legacy.tests.utils.teacher import signup_teacher_directly
 from hamcrest import assert_that, ends_with, equal_to
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -22,7 +26,9 @@ class TestLevelSelection(BaseGameTest):
         # Student has perfect score for each level in an episode
         episode = Episode.objects.get(name="Loops with Conditions")
         for level in episode.levels:
-            LevelMetrics.objects.create(level=level, student=student, top_score=20)
+            LevelMetrics.objects.create(
+                level=level, student=student, top_score=20
+            )
 
         #  Student logs in
         code_page = self.go_to_homepage().go_to_student_login_page()

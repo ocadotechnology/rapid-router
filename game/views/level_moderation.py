@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 
-from common.models import Student, Class
+from codeforlife.legacy.models import Student, Class
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -74,7 +74,9 @@ def level_moderation(request):
             class_ids = set(map(int, request.POST.getlist("classes")))
 
             # check user has permission to look at the classes
-            if not all(class_id in classes_taught_ids for class_id in class_ids):
+            if not all(
+                class_id in classes_taught_ids for class_id in class_ids
+            ):
                 return renderError(
                     request,
                     messages.no_permission_level_moderation_title(),
@@ -113,7 +115,8 @@ def level_moderation(request):
                 shared_str = "-"
             else:
                 shared_str = ", ".join(
-                    app_tags.make_into_username(user) for user in users_shared_with
+                    app_tags.make_into_username(user)
+                    for user in users_shared_with
                 )
 
             student_name = f"{app_tags.make_into_username(owner.user)}"

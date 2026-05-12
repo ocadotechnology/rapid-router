@@ -2,10 +2,12 @@ import json
 from datetime import datetime
 from unittest.mock import patch
 
-from common.models import Teacher
-from common.tests.utils.classes import create_class_directly
-from common.tests.utils.student import create_school_student_directly
-from common.tests.utils.teacher import signup_teacher_directly
+from codeforlife.legacy.models import Teacher
+from codeforlife.legacy.tests.utils.classes import create_class_directly
+from codeforlife.legacy.tests.utils.student import (
+    create_school_student_directly,
+)
+from codeforlife.legacy.tests.utils.teacher import signup_teacher_directly
 from deploy import captcha
 from django.test.client import Client
 from django.test.testcases import TestCase

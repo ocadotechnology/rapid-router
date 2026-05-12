@@ -4,8 +4,8 @@ import json
 import re
 from builtins import map, str
 
-from common.app_settings import domain
-from common.models import Student, Teacher
+from codeforlife.legacy.app_settings import domain
+from codeforlife.legacy.models import Student, Teacher
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.http import HttpResponse
@@ -28,6 +28,7 @@ from game.theme import get_all_themes
 from game.views.level import LevelSerializer
 
 User = get_user_model()
+
 
 def level_editor(request, levelId=None):
     """Renders the level editor page.
@@ -68,12 +69,18 @@ def available_blocks():
     if app_settings.COW_FEATURE_ENABLED:
         return Block.objects.all()
     else:
-        return Block.objects.all().exclude(type__in=["cow_crossing", "sound_horn"])
+        return Block.objects.all().exclude(
+            type__in=["cow_crossing", "sound_horn"]
+        )
 
 
-def play_anonymous_level(request, levelId, from_level_editor=True, random_level=False):
+def play_anonymous_level(
+    request, levelId, from_level_editor=True, random_level=False
+):
     night_mode = (
-        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
+        False
+        if not app_settings.NIGHT_MODE_FEATURE_ENABLED
+        else "night" in request.GET
     )
     level = Level.objects.filter(id=levelId)
 
@@ -175,17 +182,23 @@ def get_list_of_loadable_levels(user):
 
 def owned_levels(request):
     level_data = levels_owned_by(request.user)
-    return HttpResponse(json.dumps(level_data), content_type="application/javascript")
+    return HttpResponse(
+        json.dumps(level_data), content_type="application/javascript"
+    )
 
 
 def shared_levels(request):
     level_data = levels_shared_with(request.user)
-    return HttpResponse(json.dumps(level_data), content_type="application/javascript")
+    return HttpResponse(
+        json.dumps(level_data), content_type="application/javascript"
+    )
 
 
 def get_loadable_levels_for_editor(request):
     response = get_list_of_loadable_levels(request.user)
-    return HttpResponse(json.dumps(response), content_type="application/javascript")
+    return HttpResponse(
+        json.dumps(response), content_type="application/javascript"
+    )
 
 
 def load_level_for_editor(request, levelID):
@@ -199,7 +212,10 @@ def load_level_for_editor(request, levelID):
     level_dict["decor"] = level_management.get_decor(level)
     level_dict["blocks"] = cached_level_blocks(level)
 
-    response = {"owned": level.owner == request.user.userprofile, "level": level_dict}
+    response = {
+        "owned": level.owner == request.user.userprofile,
+        "level": level_dict,
+    }
 
     return HttpResponse(json.dumps(response), content_type="application/json")
 
@@ -240,7 +256,8 @@ def save_level_for_editor(request, levelId=None):
     level_management.save_level(level, data)
 
     is_user_school_student = (
-        hasattr(level.owner, "student") and not level.owner.student.is_independent()
+        hasattr(level.owner, "student")
+        and not level.owner.student.is_independent()
     )
     is_user_independent = (
         hasattr(level.owner, "student") and level.owner.student.is_independent()
@@ -374,7 +391,9 @@ class SharingInformationForEditor(APIView):
                     "id": classmate.new_user.id,
                     "name": app_tags.make_into_username(classmate.new_user),
                     "shared": level.owner == classmate.user
-                    or level.shared_with.filter(id=classmate.new_user.id).exists(),
+                    or level.shared_with.filter(
+                        id=classmate.new_user.id
+                    ).exists(),
                 }
                 for classmate in classmates
             ]
@@ -412,7 +431,9 @@ class SharingInformationForEditor(APIView):
                         "students": [
                             {
                                 "id": student.new_user.id,
-                                "name": app_tags.make_into_username(student.new_user),
+                                "name": app_tags.make_into_username(
+                                    student.new_user
+                                ),
                                 "shared": level.owner == student.user
                                 or level.shared_with.filter(
                                     id=student.new_user.id
@@ -430,7 +451,9 @@ class SharingInformationForEditor(APIView):
                 valid_recipients["teachers"] = [
                     {
                         "id": fellow_teacher.new_user.id,
-                        "name": app_tags.make_into_username(fellow_teacher.new_user),
+                        "name": app_tags.make_into_username(
+                            fellow_teacher.new_user
+                        ),
                         "admin": fellow_teacher.is_admin,
                         "shared": level.owner == fellow_teacher.user
                         or level.shared_with.filter(
@@ -450,7 +473,10 @@ class ShareLevelView(APIView):
     """Handles the sharing request of a level."""
 
     authentication_classes = (SessionAuthentication,)
-    permission_classes = [permissions.CanShareLevel, permissions.CanShareLevelWith]
+    permission_classes = [
+        permissions.CanShareLevel,
+        permissions.CanShareLevelWith,
+    ]
 
     def post(self, request, **kwargs):
         """

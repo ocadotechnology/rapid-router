@@ -1,12 +1,14 @@
 import random
 import string
 
-from common.models import School, Teacher
+from codeforlife.legacy.models import School, Teacher
 
 
 def create_school() -> School:
     school = School()
-    school.name = "".join(random.choice(string.ascii_uppercase) for _ in range(10))
+    school.name = "".join(
+        random.choice(string.ascii_uppercase) for _ in range(10)
+    )
     school.country = "GB"
     school.save()
 
