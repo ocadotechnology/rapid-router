@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "02c14d923b8d69462e41419d86887c138f5c22229c17c29a90115d609179efd6"
+            "sha256": "c3c7e3a1467e1dc666c250397087fcfd6fa24ca03526e52a6fc0fd56f5bad1f2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -290,12 +290,12 @@
         },
         "codeforlife": {
             "hashes": [
-                "sha256:24127f71d8f4dce88ac434c736d6896e7245569ac96a97f95b0d3d7c1a05cc7e",
-                "sha256:69a0dd8abb128357782e7cfc73f2d0d582667472b4631636b3939d3c317374e6"
+                "sha256:36346448d720af51af90a7d6c58d48d9417a8cc3278c8114a33a5783e8c7a1fa",
+                "sha256:d72cd2cc623ff0909486caf1551bcb6ba9aa4e44ed057b190eda73051d380835"
             ],
             "index": "pypi",
             "markers": "python_version == '3.12'",
-            "version": "==0.34.0"
+            "version": "==0.34.1"
         },
         "cryptography": {
             "hashes": [

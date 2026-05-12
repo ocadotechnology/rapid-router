@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-codeforlife = "==0.34.0"
+codeforlife = "==0.34.1"
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
