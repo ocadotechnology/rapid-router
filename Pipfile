@@ -12,7 +12,6 @@ pyhamcrest = "==2.0.2"
 [dev-packages]
 black = "*"
 # codeforlife-portal = "==8.12.1"
-codeforlife-portal = {ref = "workspace_1057_part2", git = "https://github.com/ocadotechnology/codeforlife-portal.git"}
 django-extensions = "==4.1"
 django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
