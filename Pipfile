@@ -4,8 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-# codeforlife = "==0.34.1"
-codeforlife = {ref = "workspace_1057_part2", git = "https://github.com/ocadotechnology/codeforlife-package-python.git"}
+codeforlife = "==0.35.0"
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
