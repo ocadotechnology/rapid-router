@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "99c83e8ee26b7db1b596463508dc4404e2b6e3087f674b8316f85356d9a18e29"
+            "sha256": "345de825854993c072d115dba2465b73b5e9b0faf9ea6836f9eb493449e5cc9a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -289,13 +289,9 @@
             "version": "==3.4.7"
         },
         "codeforlife": {
-            "hashes": [
-                "sha256:36346448d720af51af90a7d6c58d48d9417a8cc3278c8114a33a5783e8c7a1fa",
-                "sha256:d72cd2cc623ff0909486caf1551bcb6ba9aa4e44ed057b190eda73051d380835"
-            ],
-            "index": "pypi",
+            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
-            "version": "==0.34.1"
+            "ref": "1dfbab33b2ea0925edcb3a992931a1ceb9e935fe"
         },
         "cryptography": {
             "hashes": [
@@ -1749,21 +1745,13 @@
             "version": "==8.3.3"
         },
         "codeforlife": {
-            "hashes": [
-                "sha256:36346448d720af51af90a7d6c58d48d9417a8cc3278c8114a33a5783e8c7a1fa",
-                "sha256:d72cd2cc623ff0909486caf1551bcb6ba9aa4e44ed057b190eda73051d380835"
-            ],
-            "index": "pypi",
+            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
-            "version": "==0.34.1"
+            "ref": "1dfbab33b2ea0925edcb3a992931a1ceb9e935fe"
         },
         "codeforlife-portal": {
-            "hashes": [
-                "sha256:3bd14426275e96874f1e4a28eae8ccade7c00834bb47045946b146f9dd0649c3",
-                "sha256:8d41306cb0c18c9535327dbe97a1dca126ccd6673435d51acd6e9ce437897d2f"
-            ],
-            "index": "pypi",
-            "version": "==8.12.1"
+            "git": "https://github.com/ocadotechnology/codeforlife-portal.git",
+            "ref": "55e6439dfdd71ade28b6db3a8e224a1816bfe06e"
         },
         "coverage": {
             "extras": [
