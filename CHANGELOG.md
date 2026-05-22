@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v7.11.1 (2026-05-21)
+
+### Bug Fixes
+
+- New version
+  ([`7b06215`](https://github.com/ocadotechnology/rapid-router/commit/7b06215918e23161f058afe080d8e684c20152e7))
+
+
+## v7.11.0 (2026-05-21)
+
+### Features
+
+- Workspace 1115 ([#1880](https://github.com/ocadotechnology/rapid-router/pull/1880),
+  [`df3bbaf`](https://github.com/ocadotechnology/rapid-router/commit/df3bbaf245f6bbc82090170e2e7722bb113d0f41))
+
+
 ## v7.10.0 (2026-05-14)
 
 ### Features
