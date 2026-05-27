@@ -1,14 +1,16 @@
-from codeforlife.models.fields import (
-    EncryptedTextField,
-    Sha256Field,
-)
+from codeforlife.models.fields import EncryptedTextField, Sha256Field
 from django.db import migrations
+from django.db.models import CharField, CheckConstraint, Q, TextField
 
 level_migrations = [
     # Name
-    migrations.RemoveField(
+    migrations.AlterField(
         model_name="level",
         name="_name_plain",
+        field=CharField(
+            max_length=100,
+            db_column="name_plain",
+        ),
     ),
     migrations.AlterField(
         model_name="level",
@@ -33,10 +35,26 @@ level_migrations = [
         ),
         preserve_default=False,
     ),
+    migrations.AddConstraint(
+        model_name="level",
+        constraint=CheckConstraint(
+            condition=Q(
+                Q(("_name_plain", ""), ("default", False)),
+                Q(("_name_enc", b""), ("_name_hash", ""), ("default", True)),
+                _connector="OR",
+            ),
+            name="level__name_is_plain_if_default_else_encrypted",
+        ),
+    ),
     # Subtitle
-    migrations.RemoveField(
+    migrations.AlterField(
         model_name="level",
         name="_subtitle_plain",
+        field=TextField(
+            max_length=100,
+            blank=True,
+            db_column="subtitle_plain",
+        ),
     ),
     migrations.AlterField(
         model_name="level",
@@ -49,10 +67,25 @@ level_migrations = [
         ),
         preserve_default=False,
     ),
+    migrations.AddConstraint(
+        model_name="level",
+        constraint=CheckConstraint(
+            condition=Q(
+                Q(("_subtitle_plain", ""), ("default", False)),
+                Q(("_subtitle_enc", b""), ("default", True)),
+                _connector="OR",
+            ),
+            name="level__subtitle_is_plain_if_default_else_encrypted",
+        ),
+    ),
     # Lesson
-    migrations.RemoveField(
+    migrations.AlterField(
         model_name="level",
         name="_lesson_plain",
+        field=TextField(
+            max_length=10000,
+            db_column="lesson_plain",
+        ),
     ),
     migrations.AlterField(
         model_name="level",
@@ -65,10 +98,25 @@ level_migrations = [
         ),
         preserve_default=False,
     ),
+    migrations.AddConstraint(
+        model_name="level",
+        constraint=CheckConstraint(
+            condition=Q(
+                Q(("_lesson_plain", ""), ("default", False)),
+                Q(("_lesson_enc", b""), ("default", True)),
+                _connector="OR",
+            ),
+            name="level__lesson_is_plain_if_default_else_encrypted",
+        ),
+    ),
     # Hint
-    migrations.RemoveField(
+    migrations.AlterField(
         model_name="level",
         name="_hint_plain",
+        field=TextField(
+            max_length=10000,
+            db_column="hint_plain",
+        ),
     ),
     migrations.AlterField(
         model_name="level",
@@ -80,6 +128,17 @@ level_migrations = [
             default=b"",
         ),
         preserve_default=False,
+    ),
+    migrations.AddConstraint(
+        model_name="level",
+        constraint=CheckConstraint(
+            condition=Q(
+                Q(("_hint_plain", ""), ("default", False)),
+                Q(("_hint_enc", b""), ("default", True)),
+                _connector="OR",
+            ),
+            name="level__hint_is_plain_if_default_else_encrypted",
+        ),
     ),
 ]
 

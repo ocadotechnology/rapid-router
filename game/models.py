@@ -144,10 +144,10 @@ def sort_levels(levels):
 class Level(EncryptedModel):
     associated_data = "level"
     field_aliases = {
-        "name": {"_name_enc", "_name_hash"},
-        "subtitle": {"_subtitle_enc"},
-        "lesson": {"_lesson_enc"},
-        "hint": {"_hint_enc"},
+        "name": {"_name_plain", "_name_enc", "_name_hash"},
+        "subtitle": {"_subtitle_plain", "_subtitle_enc"},
+        "lesson": {"_lesson_plain", "_lesson_enc"},
+        "hint": {"_hint_plain", "_hint_enc"},
     }
 
     after_worksheet: t.Optional["Worksheet"]
@@ -156,9 +156,16 @@ class Level(EncryptedModel):
     # Name
     # --------------------------------------------------------------------------
 
+    name_max_length = 100
+    name_validators: Validators = [MaxLengthValidator(name_max_length)]
+
     _name_hash = Sha256Field(
         verbose_name=_("name hash"),
         db_column="name_hash",
+    )
+    _name_plain = models.CharField(
+        max_length=name_max_length,
+        db_column="name_plain",
     )
     _name_enc = EncryptedTextField(
         associated_data="name",
@@ -166,19 +173,24 @@ class Level(EncryptedModel):
         verbose_name=_("name"),
     )
 
-    name_validators: Validators = [MaxLengthValidator(100)]
-
     @property
     def name(self):
         """The level's name."""
-        return EncryptedTextField.get(self, "_name_enc")
+        return (
+            self._name_plain
+            if self.default
+            else EncryptedTextField.get(self, "_name_enc")
+        )
 
     @name.setter
     @validated_field_setter(*name_validators)
     def name(self, value: str):
         """Set the level's name."""
-        EncryptedTextField.set(self, value, "_name_enc")
-        Sha256Field.set(self, value, "_name_hash")
+        if self.default:
+            self._name_plain = value
+        else:
+            EncryptedTextField.set(self, value, "_name_enc")
+            Sha256Field.set(self, value, "_name_hash")
 
     # --------------------------------------------------------------------------
 
@@ -237,72 +249,109 @@ class Level(EncryptedModel):
     # Subtitle
     # --------------------------------------------------------------------------
 
+    subtitle_max_length = 100
+    subtitle_validators: Validators = [MaxLengthValidator(subtitle_max_length)]
+
+    _subtitle_plain = models.TextField(
+        max_length=subtitle_max_length,
+        blank=True,
+        db_column="subtitle_plain",
+    )
     _subtitle_enc = EncryptedTextField(
         associated_data="subtitle",
         db_column="subtitle_enc",
         verbose_name=_("subtitle"),
     )
 
-    subtitle_validators: Validators = [MaxLengthValidator(100)]
-
     @property
     def subtitle(self):
         """The level's subtitle."""
-        return EncryptedTextField.get(self, "_subtitle_enc")
+        return (
+            self._subtitle_plain
+            if self.default
+            else EncryptedTextField.get(self, "_subtitle_enc")
+        )
 
     @subtitle.setter
     @validated_field_setter(*subtitle_validators, blank=True)
     def subtitle(self, value: str):
         """Set the level's subtitle."""
-        EncryptedTextField.set(self, value, "_subtitle_enc")
+        if self.default:
+            self._subtitle_plain = value
+        else:
+            EncryptedTextField.set(self, value, "_subtitle_enc")
 
     # --------------------------------------------------------------------------
     # Lesson
     # --------------------------------------------------------------------------
 
+    lesson_max_length = 10000
+    lesson_default = "Can you find the shortest route?"
+    lesson_validators: Validators = [MaxLengthValidator(lesson_max_length)]
+
+    _lesson_plain = models.TextField(
+        max_length=lesson_max_length,
+        db_column="lesson_plain",
+    )
     _lesson_enc = EncryptedTextField(
         associated_data="lesson",
         db_column="lesson_enc",
         verbose_name=_("lesson"),
     )
 
-    lesson_default = "Can you find the shortest route?"
-    lesson_validators: Validators = [MaxLengthValidator(10000)]
-
     @property
     def lesson(self):
         """The level's description."""
-        return EncryptedTextField.get(self, "_lesson_enc")
+        return (
+            self._lesson_plain
+            if self.default
+            else EncryptedTextField.get(self, "_lesson_enc")
+        )
 
     @lesson.setter
     @validated_field_setter(*lesson_validators)
     def lesson(self, value: str):
         """Set the level's description."""
-        EncryptedTextField.set(self, value, "_lesson_enc")
+        if self.default:
+            self._lesson_plain = value
+        else:
+            EncryptedTextField.set(self, value, "_lesson_enc")
 
     # --------------------------------------------------------------------------
     # Hint
     # --------------------------------------------------------------------------
 
+    hint_max_length = 10000
+    hint_default = "Think back to earlier levels. What did you learn?"
+    hint_validators: Validators = [MaxLengthValidator(hint_max_length)]
+
+    _hint_plain = models.TextField(
+        max_length=hint_max_length,
+        db_column="hint_plain",
+    )
     _hint_enc = EncryptedTextField(
         associated_data="hint",
         db_column="hint_enc",
         verbose_name=_("hint"),
     )
 
-    hint_default = "Think back to earlier levels. What did you learn?"
-    hint_validators: Validators = [MaxLengthValidator(10000)]
-
     @property
     def hint(self):
         """The level's hint."""
-        return EncryptedTextField.get(self, "_hint_enc")
+        return (
+            self._hint_plain
+            if self.default
+            else EncryptedTextField.get(self, "_hint_enc")
+        )
 
     @hint.setter
     @validated_field_setter(*hint_validators)
     def hint(self, value: str):
         """Set the level's hint."""
-        EncryptedTextField.set(self, value, "_hint_enc")
+        if self.default:
+            self._hint_plain = value
+        else:
+            EncryptedTextField.set(self, value, "_hint_enc")
 
     # --------------------------------------------------------------------------
 
@@ -349,10 +398,35 @@ class Level(EncryptedModel):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                condition=~Q(
-                    default=True,
-                    needs_approval=True,
+                condition=(
+                    Q(default=False, _name_plain="")
+                    | Q(default=True, _name_enc=b"", _name_hash="")
                 ),
+                name="level__name_is_plain_if_default_else_encrypted",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(default=False, _subtitle_plain="")
+                    | Q(default=True, _subtitle_enc=b"")
+                ),
+                name="level__subtitle_is_plain_if_default_else_encrypted",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(default=False, _lesson_plain="")
+                    | Q(default=True, _lesson_enc=b"")
+                ),
+                name="level__lesson_is_plain_if_default_else_encrypted",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(default=False, _hint_plain="")
+                    | Q(default=True, _hint_enc=b"")
+                ),
+                name="level__hint_is_plain_if_default_else_encrypted",
+            ),
+            models.CheckConstraint(
+                condition=~Q(default=True, needs_approval=True),
                 name="level__default_does_not_need_approval",
             ),
         ]

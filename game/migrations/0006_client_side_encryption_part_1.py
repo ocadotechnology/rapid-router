@@ -1,7 +1,4 @@
-from codeforlife.models.fields import (
-    EncryptedTextField,
-    Sha256Field,
-)
+from codeforlife.models.fields import EncryptedTextField, Sha256Field
 from django.db import migrations
 
 level_migrations = [
