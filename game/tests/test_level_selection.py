@@ -108,8 +108,8 @@ class LevelSelectionTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
-        teacher2 = Teacher.objects.get(new_user___email_plain=email2)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
+        teacher2 = Teacher.objects.get(new_user___email_hash__sha256=email2)
 
         school1 = create_school()
         add_teacher_to_school(teacher1, school1, is_admin=True)
@@ -215,7 +215,7 @@ class LevelSelectionTestCase(TestCase):
     def test_cannot_access_locked_level(self):
         email, password = signup_teacher_directly()
 
-        teacher = Teacher.objects.get(new_user___email_plain=email)
+        teacher = Teacher.objects.get(new_user___email_hash__sha256=email)
 
         school = create_school()
         add_teacher_to_school(teacher, school, is_admin=True)
@@ -235,7 +235,7 @@ class LevelSelectionTestCase(TestCase):
     def test_next_level_for_locked_levels(self):
         email, password = signup_teacher_directly()
 
-        teacher = Teacher.objects.get(new_user___email_plain=email)
+        teacher = Teacher.objects.get(new_user___email_hash__sha256=email)
 
         school = create_school()
         add_teacher_to_school(teacher, school, is_admin=True)
@@ -243,17 +243,17 @@ class LevelSelectionTestCase(TestCase):
         klass, _, access_code = create_class_directly(email)
         _, _, student = create_school_student_directly(access_code)
 
-        level1 = Level.objects.get(_name_plain="1")
-        level2 = Level.objects.get(_name_plain="2")
-        level3 = Level.objects.get(_name_plain="3")
-        level4 = Level.objects.get(_name_plain="4")
-        level76 = Level.objects.get(_name_plain="76")
-        level77 = Level.objects.get(_name_plain="77")
-        level78 = Level.objects.get(_name_plain="78")
-        level79 = Level.objects.get(_name_plain="79")
-        level1014 = Level.objects.get(_name_plain="1014")
-        level1015 = Level.objects.get(_name_plain="1015")
-        level1016 = Level.objects.get(_name_plain="1016")
+        level1 = Level.objects.get(_name_hash__sha256="1")
+        level2 = Level.objects.get(_name_hash__sha256="2")
+        level3 = Level.objects.get(_name_hash__sha256="3")
+        level4 = Level.objects.get(_name_hash__sha256="4")
+        level76 = Level.objects.get(_name_hash__sha256="76")
+        level77 = Level.objects.get(_name_hash__sha256="77")
+        level78 = Level.objects.get(_name_hash__sha256="78")
+        level79 = Level.objects.get(_name_hash__sha256="79")
+        level1014 = Level.objects.get(_name_hash__sha256="1014")
+        level1015 = Level.objects.get(_name_hash__sha256="1015")
+        level1016 = Level.objects.get(_name_hash__sha256="1016")
 
         level2.locked_for_class.add(klass)
         level3.locked_for_class.add(klass)

@@ -113,7 +113,7 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
 
         level = Level.objects.all().last()
-        teacher_user = User.objects.get(_email_plain=email)
+        teacher_user = User.objects.get(_email_hash__sha256=email)
 
         assert level.needs_approval == True
         assert level.shared_with.count() == 1
@@ -179,7 +179,7 @@ class LevelEditorTestCase(TestCase):
 
     def test_level_sharing_with_no_school(self):
         email1, password1 = signup_teacher_directly()
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
         self.login(email1, password1)
         level = create_save_level(teacher1)
 
@@ -192,8 +192,8 @@ class LevelEditorTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, _ = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
-        teacher2 = Teacher.objects.get(new_user___email_plain=email2)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
+        teacher2 = Teacher.objects.get(new_user___email_hash__sha256=email2)
 
         self.login(email1, password1)
         level = create_save_level(teacher1)
@@ -209,7 +209,7 @@ class LevelEditorTestCase(TestCase):
 
     def test_level_sharing_with_empty_school(self):
         email1, password1 = signup_teacher_directly()
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
 
         self.login(email1, password1)
         level = create_save_level(teacher1)
@@ -226,8 +226,8 @@ class LevelEditorTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
-        teacher2 = Teacher.objects.get(new_user___email_plain=email2)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
+        teacher2 = Teacher.objects.get(new_user___email_hash__sha256=email2)
 
         self.login(email1, password1)
         level = create_save_level(teacher1)
@@ -407,7 +407,7 @@ class LevelEditorTestCase(TestCase):
         )
 
         assert response.status_code == 200
-        new_level = Level.objects.get(_name_plain="abc")
+        new_level = Level.objects.get(_name_hash__sha256="abc")
         assert new_level.character.name == "Van"
 
     def test_language_set_appropriately(self):
@@ -447,7 +447,7 @@ class LevelEditorTestCase(TestCase):
         )
 
         assert response.status_code == 200
-        new_level = Level.objects.get(_name_plain="abc")
+        new_level = Level.objects.get(_name_hash__sha256="abc")
 
         assert new_level.python_view_enabled
         assert not new_level.python_enabled
@@ -456,7 +456,7 @@ class LevelEditorTestCase(TestCase):
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
 
         self.login(email1, password1)
         level = create_save_level(teacher1)
@@ -500,14 +500,14 @@ class LevelEditorTestCase(TestCase):
         )
 
         assert response.status_code == 200
-        new_level = Level.objects.get(_name_plain="multiple_houses")
+        new_level = Level.objects.get(_name_hash__sha256="multiple_houses")
         assert new_level.destinations == "[[3,4],[3,3]]"
 
     def test_level_loading_with_multiple_houses(self):
 
         email1, password1 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
 
         self.login(email1, password1)
         level = create_save_level_with_multiple_houses(teacher1)
@@ -522,7 +522,7 @@ class LevelEditorTestCase(TestCase):
     def test_custom_level_scoring(self, mock_save_level):
         email1, password1 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
 
         self.login(email1, password1)
 
@@ -547,8 +547,8 @@ class LevelEditorTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
-        teacher2 = Teacher.objects.get(new_user___email_plain=email2)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
+        teacher2 = Teacher.objects.get(new_user___email_hash__sha256=email2)
 
         # Add teachers to the same school
         school = create_school()
@@ -585,7 +585,7 @@ class LevelEditorTestCase(TestCase):
             create_school_student_directly(access_code)
         )
 
-        teacher = Teacher.objects.get(new_user___email_plain=email)
+        teacher = Teacher.objects.get(new_user___email_hash__sha256=email)
 
         # Create a level as student and share it with teacher
         self.student_login(student_name, access_code, student_password)

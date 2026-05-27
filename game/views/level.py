@@ -447,7 +447,7 @@ def load_workspace_solution(request, level_name):
         workspace.contents = solutions["blockly_default"]
         workspace.python_contents = solutions["python_default"]
 
-        level = Level.objects.get(_name_plain=level_name, default=True)
+        level = Level.objects.get(_name_hash__sha256=level_name, default=True)
 
         if level.blockly_enabled:
             workspace.contents = solutions[level_name]

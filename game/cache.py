@@ -17,7 +17,7 @@ LEVEL_BLOCKS_PREFIX = "level_blocks"
 
 
 def get_level(level):
-    return get_object_or_404(Level, _name_plain=level, default=True)
+    return get_object_or_404(Level, _name_hash__sha256=level, default=True)
 
 
 def get_custom_level(level):
