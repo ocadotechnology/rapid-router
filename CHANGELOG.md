@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.12.0 (2026-06-19)
+
+### Features
+
+- Remove text fields ([#1879](https://github.com/ocadotechnology/rapid-router/pull/1879),
+  [`71be985`](https://github.com/ocadotechnology/rapid-router/commit/71be9856b45e672e02b5d9376d69eabf4de8b78c))
+
+
 ## v7.11.2 (2026-06-03)
 
 ### Bug Fixes
