@@ -108,8 +108,8 @@ class LevelSelectionTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(new_user___email_plain=email1)
-        teacher2 = Teacher.objects.get(new_user___email_plain=email2)
+        teacher1 = Teacher.objects.get(new_user___email_hash__sha256=email1)
+        teacher2 = Teacher.objects.get(new_user___email_hash__sha256=email2)
 
         school1 = create_school()
         add_teacher_to_school(teacher1, school1, is_admin=True)
@@ -215,7 +215,7 @@ class LevelSelectionTestCase(TestCase):
     def test_cannot_access_locked_level(self):
         email, password = signup_teacher_directly()
 
-        teacher = Teacher.objects.get(new_user___email_plain=email)
+        teacher = Teacher.objects.get(new_user___email_hash__sha256=email)
 
         school = create_school()
         add_teacher_to_school(teacher, school, is_admin=True)
@@ -235,7 +235,7 @@ class LevelSelectionTestCase(TestCase):
     def test_next_level_for_locked_levels(self):
         email, password = signup_teacher_directly()
 
-        teacher = Teacher.objects.get(new_user___email_plain=email)
+        teacher = Teacher.objects.get(new_user___email_hash__sha256=email)
 
         school = create_school()
         add_teacher_to_school(teacher, school, is_admin=True)

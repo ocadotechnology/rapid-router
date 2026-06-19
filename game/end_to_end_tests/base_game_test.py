@@ -252,7 +252,7 @@ class BaseGameTest(SeleniumTestCase):
             login_page.login(email, password)
             email = email
             BaseGameTest.user_profile = UserProfile.objects.get(
-                user___email_plain=email
+                user___email_hash__sha256=email
             )
 
             BaseGameTest.already_logged_on = True

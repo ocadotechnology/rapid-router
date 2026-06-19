@@ -1,40 +1,7 @@
-from codeforlife.models.fields import (
-    EncryptedTextField,
-    Sha256Field,
-)
-from django.db import migrations, models
+from codeforlife.models.fields import EncryptedTextField, Sha256Field
+from django.db import migrations
 
 level_migrations = [
-    # TODO: add these checks once all data is encrypted.
-    # migrations.AddConstraint(
-    #     model_name="level",
-    #     constraint=models.CheckConstraint(
-    #         condition=models.Q(
-    #             ("_name_enc__isnull", False), ("default", True), _negated=True
-    #         ),
-    #         name="level__default_name_is_not_encrypted",
-    #     ),
-    # ),
-    # migrations.AddConstraint(
-    #     model_name="level",
-    #     constraint=models.CheckConstraint(
-    #         condition=models.Q(
-    #             ("_name_hash__isnull", False), ("default", True), _negated=True
-    #         ),
-    #         name="level__default_name_is_not_hashed",
-    #     ),
-    # ),
-    # migrations.AddConstraint(
-    #     model_name="level",
-    #     constraint=models.CheckConstraint(
-    #         condition=models.Q(
-    #             ("_name_plain__isnull", False),
-    #             ("default", False),
-    #             _negated=True,
-    #         ),
-    #         name="level__non_default_name_is_not_plain",
-    #     ),
-    # ),
     # Name
     migrations.RenameField(
         model_name="level",
