@@ -8,16 +8,16 @@ on:
 
 jobs:
   test:
-    if: github.repository_owner_id == 2088731
+    if: github.repository_owner_id == vars.CFL_EDU_ORG_ID
     runs-on: ubuntu-22.04
     steps:
       - name: 🐍 Set up Python 3.12 Environment
-        uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@main
+        uses: codeforlife-education/codeforlife-workspace/.github/actions/python/setup-environment@main
         with:
           python-version: 3.12
 
       - name: 🐕‍🦺 Run Snyk Tests
-        uses: ocadotechnology/codeforlife-workspace/.github/actions/snyk/run-tests@main
+        uses: codeforlife-education/codeforlife-workspace/.github/actions/snyk/run-tests@main
         with:
           snyk-token: ${{ secrets.SNYK_TOKEN }}
           config-path: "backend/.snyk"

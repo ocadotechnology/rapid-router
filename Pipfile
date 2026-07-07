@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 codeforlife = "==0.37.0"
 # codeforlife = {file = "../../backend/package", editable = true}
-# codeforlife = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/ocadotechnology/codeforlife-package-python.git"}
+# codeforlife = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/codeforlife-education/codeforlife-package-python.git"}
 django-reverse-js = "==0.1.8"
 ipython = "*"
 pyhamcrest = "==2.0.2"
@@ -15,7 +15,7 @@ pyhamcrest = "==2.0.2"
 black = "*"
 codeforlife-portal = "==8.15.0"
 # codeforlife-portal = {file = "../portal", editable = true}
-# codeforlife-portal = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/ocadotechnology/rapid-router.git"}
+# codeforlife-portal = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/codeforlife-education/rapid-router.git"}
 django-extensions = "==4.1"
 django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"

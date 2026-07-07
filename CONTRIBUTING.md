@@ -1,3 +1,3 @@
 # Contributing
 
-Find our contribution agreement [here](https://github.com/ocadotechnology/codeforlife-workspace/blob/main/CONTRIBUTING.md).
+Find our contribution agreement [here](https://github.com/codeforlife-education/codeforlife-workspace/blob/main/CONTRIBUTING.md).
