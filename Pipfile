@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-codeforlife = "==0.37.0"
+codeforlife = "==0.37.3"
 # codeforlife = {file = "../../backend/package", editable = true}
 # codeforlife = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/codeforlife-education/codeforlife-package-python.git"}
 django-reverse-js = "==0.1.8"
@@ -13,7 +13,7 @@ pyhamcrest = "==2.0.2"
 
 [dev-packages]
 black = "*"
-codeforlife-portal = "==8.15.0"
+codeforlife-portal = "==8.15.2"
 # codeforlife-portal = {file = "../portal", editable = true}
 # codeforlife-portal = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/codeforlife-education/rapid-router.git"}
 django-extensions = "==4.1"
