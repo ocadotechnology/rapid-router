@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.12.2 (2026-07-14)
+
+### Bug Fixes
+
+- Install latest package
+  ([`20b9885`](https://github.com/codeforlife-education/rapid-router/commit/20b988576814055bb63e651f7b6a3e07fde7b4db))
+
+
 ## v7.12.1 (2026-07-07)
 
 ### Bug Fixes
