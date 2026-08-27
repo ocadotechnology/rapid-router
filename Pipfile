@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-codeforlife = "==0.37.3"
+codeforlife = "==1.0.0"
 # codeforlife = {file = "../../backend/package", editable = true}
 # codeforlife = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/codeforlife-education/codeforlife-package-python.git"}
 django-reverse-js = "==0.1.8"
@@ -13,7 +13,7 @@ pyhamcrest = "==2.0.2"
 
 [dev-packages]
 black = "*"
-codeforlife-portal = "==8.15.2"
+codeforlife-portal = "==8.15.3"
 # codeforlife-portal = {file = "../portal", editable = true}
 # codeforlife-portal = {ref = "BRANCH_NAME_OR_COMMIT_SHA", git = "https://github.com/codeforlife-education/rapid-router.git"}
 django-extensions = "==4.1"
@@ -21,7 +21,7 @@ django-selenium-clean = "==1.0.1"
 django-test-migrations = "==1.4.0"
 importlib-metadata = "<5" # Using version 5 causes an issue when trying to run pytest. Not sure why, linked to: https://stackoverflow.com/questions/73929564/entrypoints-object-has-no-attribute-get-digital-ocean
 isort = "*"
-pyOpenSSL = "==26.2.0"
+pyOpenSSL = "==26.4.0"
 pytest = "==8.*"
 pytest-cov = "*"
 pytest-django = "==4.8.0"
