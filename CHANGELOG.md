@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.12.12 (2026-10-13)
+
+### Bug Fixes
+
+- Install latest portal and package
+  ([`4945161`](https://github.com/codeforlife-education/rapid-router/commit/4945161b9a945b5e7453b82371dcaf70255a1ddb))
+
+
 ## v7.12.11 (2026-10-01)
 
 ### Bug Fixes
