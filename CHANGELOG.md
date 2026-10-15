@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v7.12.13 (2026-10-15)
+
+### Bug Fixes
+
+- New cfl package ([#1881](https://github.com/codeforlife-education/rapid-router/pull/1881),
+  [`9d3dddc`](https://github.com/codeforlife-education/rapid-router/commit/9d3dddcafbcd347529bbb82f18c632eb840c7baf))
+
+
 ## v7.12.12 (2026-10-15)
 
 ### Bug Fixes
