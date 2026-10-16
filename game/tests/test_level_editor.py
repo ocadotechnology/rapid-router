@@ -569,8 +569,7 @@ class LevelEditorTestCase(TestCase):
         assert len(response.context["directly_shared_levels"]) == 1
 
         # Make teacher2 inactive
-        teacher2.new_user.is_active = 0
-        teacher2.new_user.save()
+        teacher2.new_user.anonymize()
 
         # `teacher1` shouldn't see any shared levels now
         response = self.client.get(levels_url)
@@ -601,8 +600,7 @@ class LevelEditorTestCase(TestCase):
         assert len(response.context["directly_shared_levels"]) == 1
 
         # Make student inactive
-        student.new_user.is_active = 0
-        student.new_user.save()
+        student.new_user.anonymize()
 
         # Teacher shouldn't see any shared levels now
         response = self.client.get(levels_url)
